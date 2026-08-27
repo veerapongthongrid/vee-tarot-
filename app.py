@@ -7,7 +7,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# สไตล์แต่งปุ่มให้สวยงามบนมือถือ
+# สไตล์แต่งปุ่มและจัดหัวข้อให้อยู่กึ่งกลาง
 st.markdown(
     """
     <style>
@@ -18,19 +18,33 @@ st.markdown(
         padding: 12px;
         margin-bottom: 10px;
     }
-    .btn-main {
-        background-color: #4B0082;
-        color: white;
+    .main-title {
+        text-align: center;
+        font-size: 26px;
+        font-weight: bold;
+        color: #31333F;
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+    .sub-text {
+        text-align: center;
+        color: #555555;
+        margin-bottom: 20px;
     }
     </style>
 """,
     unsafe_allow_html=True,
 )
 
-# หัวข้อใหม่ตามต้องการ
-st.title("🔮 เปิดไพ่ทำนายดวง")
-st.subheader("โดยพี่หมอวีร์")
-st.write("ตั้งจิตอธิษฐานนึกถึงเรื่องที่ต้องการถาม แล้วกดปุ่มเปิดไพ่ได้เลยครับ")
+# หัวข้อจัดกึ่งกลาง ขนาดเท่ากัน มีไอคอนหน้า-หลัง
+st.markdown(
+    '<div class="main-title">🔮 เปิดไพ่ทำนายดวง โดยพี่หมอวีร์ 🔮</div>',
+    unsafe_allow_html=True,
+)
+st.markdown(
+    '<div class="sub-text">ตั้งจิตอธิษฐานนึกถึงเรื่องที่ต้องการถาม แล้วกดปุ่มเปิดไพ่ได้เลยครับ</div>',
+    unsafe_allow_html=True,
+)
 
 # รายชื่อไพ่ 78 ใบ
 major_arcana = [
@@ -80,7 +94,6 @@ full_deck = major_arcana + minor_arcana
 
 st.write("---")
 
-# ปุ่มกดเลือกเปิดไพ่
 col1, col2 = st.columns(2)
 
 with col1:
@@ -89,30 +102,20 @@ with col1:
 with col2:
     btn_2_cards = st.button("✨ เปิดไพ่ทำนายเพิ่ม 2 ใบ", use_container_width=True)
 
-# การทำงานเมื่อกดปุ่มเปิดไพ่ 3 ใบ
 if btn_3_cards:
     drawn = random.sample(full_deck, 3)
     st.success("🎴 ผลการเปิดไพ่ของคุณ (3 ใบ)")
     st.write("---")
     for i, card in enumerate(drawn, 1):
         st.markdown(f"### ใบที่ {i}: **{card}**")
-        st.image(
-            "https://raw.githubusercontent.com/effata/tarot-cards/main/cards/c01.jpg",
-            caption=card,
-            width=220,
-        )
+        st.image("https://picsum.photos/id/1025/300/450", caption=card, width=200)
         st.write("---")
 
-# การทำงานเมื่อกดปุ่มเปิดไพ่ทำนายเพิ่ม 2 ใบ
 if btn_2_cards:
     drawn = random.sample(full_deck, 2)
     st.info("✨ ผลการเปิดไพ่ทำนายเพิ่ม (2 ใบ)")
     st.write("---")
     for i, card in enumerate(drawn, 1):
         st.markdown(f"### ใบที่ขยายความเพิ่มเติม {i}: **{card}**")
-        st.image(
-            "https://raw.githubusercontent.com/effata/tarot-cards/main/cards/c01.jpg",
-            caption=card,
-            width=220,
-        )
+        st.image("https://picsum.photos/id/1025/300/450", caption=card, width=200)
         st.write("---")
