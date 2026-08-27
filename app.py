@@ -7,7 +7,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# แต่งพื้นหลังธีมหมอดู ลึกลับ อวกาศ ดวงดาว และบังคับ Columns บนมือถือไม่ให้ตกบรรทัด
+# แต่งพื้นหลังธีมหมอดู ลึกลับ อวกาศ ดวงดาว
 st.markdown(
     """
     <style>
@@ -59,44 +59,36 @@ st.markdown(
         border-color: #BA68C8 !important;
     }
 
-    /* ตกแต่งรูปภาพไพ่ */
-    .card-img {
-        width: 100%;
-        max-width: 100px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+    /* กล่องการ์ดแต่ละใบ */
+    .card-box {
+        background: rgba(44, 12, 62, 0.6);
         border: 1px solid #8A2BE2;
-        margin-top: 5px;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(138, 43, 226, 0.25);
     }
 
-    /* บังคับให้ Column ใน Streamlit เรียงแนวนอนเสมอแม้บนมือถือ */
-    div[data-testid="column"] {
-        flex: 1 1 0% !important;
-        min-width: 0px !important;
-        padding: 0 2px !important;
-    }
-
-    div[data-testid="stHorizontalBlock"] {
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
+    .card-img {
+        width: 140px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(138, 43, 226, 0.6);
+        border: 1px solid #BA68C8;
+        margin-top: 10px;
     }
 
     .card-title {
-        text-align: center;
-        font-size: 13px;
+        font-size: 18px;
         font-weight: bold;
-        color: #E1BEE7;
-        margin: 0;
+        color: #F3E5F5;
+        margin-bottom: 4px;
     }
 
     .card-sub {
-        text-align: center;
-        font-size: 10px;
-        color: #C8B6E2;
-        margin: 0 0 5px 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        font-size: 14px;
+        color: #BA68C8;
+        margin-bottom: 10px;
     }
 
     h3 {
@@ -192,37 +184,38 @@ st.markdown(
 
 st.write("---")
 
-col_btn1, col_btn2 = st.columns(2)
-
-with col_btn1:
-    btn_3_cards = st.button("🔮 เปิดไพ่ 3 ใบ", use_container_width=True)
-
-with col_btn2:
-    btn_2_cards = st.button("✨ เปิดไพ่ทำนายเพิ่ม 2 ใบ", use_container_width=True)
+btn_3_cards = st.button("🔮 เปิดไพ่ 3 ใบ", use_container_width=True)
+btn_2_cards = st.button("✨ เปิดไพ่ทำนายเพิ่ม 2 ใบ", use_container_width=True)
 
 if btn_3_cards:
     drawn = random.sample(full_deck, 3)
     st.markdown("### 🎴 ผลการเปิดไพ่ของคุณ (3 ใบ)")
     st.write("---")
 
-    cols = st.columns(3)
     for i, card in enumerate(drawn):
         img_url = TAROT_IMAGES.get(card)
-        with cols[i]:
-            st.markdown(f'<p class="card-title">ใบที่ {i+1}</p>', unsafe_allow_html=True)
-            st.markdown(f'<p class="card-sub">{card}</p>', unsafe_allow_html=True)
-            st.markdown(f'<div style="text-align:center;"><img src="{img_url}" class="card-img"></div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="card-box">'
+            f'<div class="card-title">ใบที่ {i+1}</div>'
+            f'<div class="card-sub">{card}</div>'
+            f'<img src="{img_url}" class="card-img">'
+            f"</div>",
+            unsafe_allow_html=True,
+        )
 
 if btn_2_cards:
     drawn = random.sample(full_deck, 2)
     st.markdown("### ✨ ผลการเปิดไพ่ทำนายเพิ่ม (2 ใบ)")
     st.write("---")
 
-    cols = st.columns(2)
     for i, card in enumerate(drawn):
         img_url = TAROT_IMAGES.get(card)
-        with cols[i]:
-            st.markdown(f'<p class="card-title">ใบเพิ่ม {i+1}</p>', unsafe_allow_html=True)
-            st.markdown(f'<p class="card-sub">{card}</p>', unsafe_allow_html=True)
-            st.markdown(f'<div style="text-align:center;"><img src="{img_url}" class="card-img"></div>', unsafe_allow_html=True)
-            
+        st.markdown(
+            f'<div class="card-box">'
+            f'<div class="card-title">ใบเพิ่ม {i+1}</div>'
+            f'<div class="card-sub">{card}</div>'
+            f'<img src="{img_url}" class="card-img">'
+            f"</div>",
+            unsafe_allow_html=True,
+        )
+        
