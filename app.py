@@ -1,4 +1,5 @@
 import random
+import time
 import streamlit as st
 
 st.set_page_config(
@@ -6,6 +7,21 @@ st.set_page_config(
     page_icon="🔮",
     initial_sidebar_state="collapsed",
 )
+
+# ลิงก์ไฟล์เสียงมาตรฐาน (เล่นผ่านเว็บได้ลื่นๆ)
+SOUND_SHUFFLE = "https://assets.mixkit.co/active_storage/sfx/2070/2070-preview.mp3"  # เสียงสับไพ่
+SOUND_REVEAL = "https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"  # เสียงเวทมนตร์ตอนเผยไพ่
+
+
+# ฟังก์ชันสำหรับเล่นเสียงอัตโนมัติ
+def play_sound(sound_url):
+    sound_html = f"""
+        <audio autoplay style="display:none;">
+            <source src="{sound_url}" type="audio/mp3">
+        </audio>
+    """
+    st.markdown(sound_html, unsafe_allow_html=True)
+
 
 # แต่งพื้นหลังธีมหมอดู ลึกลับ อวกาศ ดวงดาว
 st.markdown(
@@ -92,7 +108,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ฐานข้อมูลรูปภาพไพ่ยิปซีมาตรฐาน ครบ 78 ใบ (ใช้ลิงก์ CDN เสถียรสูง 100%)
+# ฐานข้อมูลรูปภาพไพ่ยิปซีมาตรฐาน ครบ 78 ใบ
 BASE_URL = "https://sacred-texts.com/tarot/pkt/img/"
 
 TAROT_IMAGES = {
@@ -188,6 +204,8 @@ if "drawn_3" not in st.session_state:
     st.session_state.drawn_3 = None
 if "drawn_2" not in st.session_state:
     st.session_state.drawn_2 = None
+if "play_reveal_sound" not in st.session_state:
+    st.session_state.play_reveal_sound = False
 
 # หัวข้อหลัก
 st.markdown(
@@ -203,47 +221,7 @@ st.write("---")
 
 # ปุ่มหลักสำหรับเปิดไพ่ 3 ใบ
 if st.button("🔮 เปิดไพ่ 3 ใบ", use_container_width=True):
-    st.session_state.drawn_3 = random.sample(full_deck, 3)
-    st.session_state.drawn_2 = None  # ล้างค่าทำนายเพิ่มเก่าเมื่อสุ่ม 3 ใบใหม่
-
-# แสดงผลไพ่ 3 ใบ
-if st.session_state.drawn_3:
-    st.markdown("### 🎴 ผลการเปิดไพ่ของคุณ (3 ใบ)")
-    st.write("---")
-
-    for i, card in enumerate(st.session_state.drawn_3):
-        img_url = TAROT_IMAGES.get(card)
-        st.markdown(
-            f'<div class="card-box">'
-            f'<div class="card-title">ใบที่ {i+1}</div>'
-            f'<div class="card-sub">{card}</div>'
-            f'<img src="{img_url}" style="width:140px; border-radius:10px; border:1px solid #BA68C8; box-shadow:0 0 15px rgba(138,43,226,0.6);">'
-            f"</div>",
-            unsafe_allow_html=True,
-        )
-
-    # ปุ่มเปิดไพ่เพิ่ม 2 ใบ จะแสดงต่อเมื่อเปิดไพ่ 3 ใบเรียบร้อยแล้วเท่านั้น
-    st.write("---")
-    if st.button("✨ เปิดไพ่ทำนายเพิ่ม 2 ใบ", use_container_width=True):
-        # สุ่มไพ่เพิ่ม 2 ใบโดยไม่ซ้ำกับ 3 ใบแรก
-        remaining_deck = [
-            c for c in full_deck if c not in st.session_state.drawn_3
-        ]
-        st.session_state.drawn_2 = random.sample(remaining_deck, 2)
-
-# แสดงผลไพ่เพิ่ม 2 ใบที่ด้านล่างสุด
-if st.session_state.drawn_2:
-    st.markdown("### ✨ ผลการเปิดไพ่ทำนายเพิ่ม (2 ใบ)")
-    st.write("---")
-
-    for i, card in enumerate(st.session_state.drawn_2):
-        img_url = TAROT_IMAGES.get(card)
-        st.markdown(
-            f'<div class="card-box">'
-            f'<div class="card-title">ใบเพิ่ม {i+1}</div>'
-            f'<div class="card-sub">{card}</div>'
-            f'<img src="{img_url}" style="width:140px; border-radius:10px; border:1px solid #BA68C8; box-shadow:0 0 15px rgba(138,43,226,0.6);">'
-            f"</div>",
-            unsafe_allow_html=True,
-        )
+    play_sound(SOUND_SHUFFLE)  # เล่นเสียงสับไพ่ระหว่างรอกด
+    with st.spinner(
+        "✨ กำลังสับไพ่และตั้งจิตอธิษฐานสื่อสารกับดวงดาว... โปรดรอสักครู่..."
         
