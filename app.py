@@ -101,8 +101,9 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ฐานข้อมูลรูปภาพไพ่ยิปซีมาตรฐาน
+# ฐานข้อมูลรูปภาพไพ่ยิปซีมาตรฐาน ครบ 78 ใบ (Major 22 + Minor 56)
 TAROT_IMAGES = {
+    # Major Arcana (22 ใบ)
     "0. The Fool": (
         "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg"
     ),
@@ -168,6 +169,178 @@ TAROT_IMAGES = {
     ),
     "21. The World": (
         "https://upload.wikimedia.org/wikipedia/commons/ff/ff/RWS_Tarot_21_World.jpg"
+    ),
+    # Wands - ไม้เท้า (14 ใบ)
+    "Ace of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/1/11/Wands01.jpg"
+    ),
+    "Two of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/0/0f/Wands02.jpg"
+    ),
+    "Three of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/ff/ff/Wands03.jpg"
+    ),
+    "Four of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/a/a4/Wands04.jpg"
+    ),
+    "Five of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/9/9d/Wands05.jpg"
+    ),
+    "Six of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/3/3b/Wands06.jpg"
+    ),
+    "Seven of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/e/e4/Wands07.jpg"
+    ),
+    "Eight of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/6/6b/Wands08.jpg"
+    ),
+    "Nine of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/4/4d/Wands09.jpg"
+    ),
+    "Ten of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/0/0b/Wands10.jpg"
+    ),
+    "Page of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/6/6a/Wands11.jpg"
+    ),
+    "Knight of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/1/16/Wands12.jpg"
+    ),
+    "Queen of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/0/0d/Wands13.jpg"
+    ),
+    "King of Wands": (
+        "https://upload.wikimedia.org/wikipedia/commons/c/ce/Wands14.jpg"
+    ),
+    # Cups - ถ้วย (14 ใบ)
+    "Ace of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/3/36/Cups01.jpg"
+    ),
+    "Two of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/f/f8/Cups02.jpg"
+    ),
+    "Three of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/7/7a/Cups03.jpg"
+    ),
+    "Four of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/3/35/Cups04.jpg"
+    ),
+    "Five of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/d/d7/Cups05.jpg"
+    ),
+    "Six of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/1/17/Cups06.jpg"
+    ),
+    "Seven of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/a/ae/Cups07.jpg"
+    ),
+    "Eight of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/6/60/Cups08.jpg"
+    ),
+    "Nine of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/2/24/Cups09.jpg"
+    ),
+    "Ten of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/8/84/Cups10.jpg"
+    ),
+    "Page of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/a/ad/Cups11.jpg"
+    ),
+    "Knight of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/f/fa/Cups12.jpg"
+    ),
+    "Queen of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/6/62/Cups13.jpg"
+    ),
+    "King of Cups": (
+        "https://upload.wikimedia.org/wikipedia/commons/0/04/Cups14.jpg"
+    ),
+    # Swords - ดาบ (14 ใบ)
+    "Ace of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/1/1a/Swords01.jpg"
+    ),
+    "Two of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/9/9e/Swords02.jpg"
+    ),
+    "Three of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/0/02/Swords03.jpg"
+    ),
+    "Four of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/b/bf/Swords04.jpg"
+    ),
+    "Five of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/2/23/Swords05.jpg"
+    ),
+    "Six of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/2/29/Swords06.jpg"
+    ),
+    "Seven of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/3/34/Swords07.jpg"
+    ),
+    "Eight of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/a/a7/Swords08.jpg"
+    ),
+    "Nine of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/2/2f/Swords09.jpg"
+    ),
+    "Ten of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords10.jpg"
+    ),
+    "Page of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/4/4c/Swords11.jpg"
+    ),
+    "Knight of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/b/b0/Swords12.jpg"
+    ),
+    "Queen of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords13.jpg"
+    ),
+    "King of Swords": (
+        "https://upload.wikimedia.org/wikipedia/commons/3/33/Swords14.jpg"
+    ),
+    # Pentacles - เหรียญ (14 ใบ)
+    "Ace of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/f/fd/Pentalces01.jpg"
+    ),
+    "Two of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/9/9f/Pentalces02.jpg"
+    ),
+    "Three of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/4/42/Pentalces03.jpg"
+    ),
+    "Four of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/3/35/Pentalces04.jpg"
+    ),
+    "Five of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/9/96/Pentalces05.jpg"
+    ),
+    "Six of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/a/a6/Pentalces06.jpg"
+    ),
+    "Seven of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/6/6a/Pentalces07.jpg"
+    ),
+    "Eight of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/4/49/Pentalces08.jpg"
+    ),
+    "Nine of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/f/f0/Pentalces09.jpg"
+    ),
+    "Ten of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/4/42/Pentalces10.jpg"
+    ),
+    "Page of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/e/ec/Pentalces11.jpg"
+    ),
+    "Knight of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/d/d5/Pentalces12.jpg"
+    ),
+    "Queen of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/8/88/Pentalces13.jpg"
+    ),
+    "King of Pentacles": (
+        "https://upload.wikimedia.org/wikipedia/commons/1/1c/Pentalces14.jpg"
     ),
 }
 
