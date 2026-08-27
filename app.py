@@ -25,7 +25,7 @@ st.markdown(
     
     .main-title {
         text-align: center;
-        font-size: 26px;
+        font-size: 24px;
         font-weight: bold;
         color: #F3E5F5;
         text-shadow: 0 0 10px #8A2BE2, 0 0 20px #8A2BE2;
@@ -37,7 +37,7 @@ st.markdown(
         text-align: center;
         color: #C8B6E2;
         margin-bottom: 25px;
-        font-size: 15px;
+        font-size: 14px;
     }
 
     div.stButton > button {
@@ -60,8 +60,8 @@ st.markdown(
     }
 
     [data-testid="stImage"] img {
-        border-radius: 12px;
-        box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        border-radius: 10px;
+        box-shadow: 0 0 12px rgba(138, 43, 226, 0.5);
         border: 1px solid #6A1B9A;
     }
 
@@ -77,7 +77,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ฐานข้อมูลรูปภาพไพ่ยิปซี (Wikimedia)
+# ฐานข้อมูลรูปภาพไพ่ยิปซีมาตรฐาน
 TAROT_IMAGES = {
     "0. The Fool": (
         "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg"
@@ -145,13 +145,9 @@ TAROT_IMAGES = {
     "21. The World": (
         "https://upload.wikimedia.org/wikipedia/commons/ff/ff/RWS_Tarot_21_World.jpg"
     ),
-    "DEFAULT": (
-        "https://upload.wikimedia.org/wikipedia/commons/5/54/Card_back_06.svg"
-    ),
 }
 
 full_deck = list(TAROT_IMAGES.keys())
-full_deck.remove("DEFAULT")
 
 # หัวข้อหลัก
 st.markdown(
@@ -182,10 +178,9 @@ if btn_3_cards:
     cols = st.columns(3)
     for i, card in enumerate(drawn):
         with cols[i]:
-            st.markdown(f"**ใบที่ {i+1}**")
-            st.markdown(f"*{card}*")
-            img_url = TAROT_IMAGES.get(card, TAROT_IMAGES["DEFAULT"])
-            st.image(img_url, use_column_width=True)
+            st.markdown(f"<p style='text-align:center;'><b>ใบที่ {i+1}</b><br><i>{card}</i></p>", unsafe_allow_html=True)
+            img_url = TAROT_IMAGES.get(card)
+            st.image(img_url, width=120)
 
 if btn_2_cards:
     drawn = random.sample(full_deck, 2)
@@ -196,8 +191,7 @@ if btn_2_cards:
     cols = st.columns(2)
     for i, card in enumerate(drawn):
         with cols[i]:
-            st.markdown(f"**ใบที่เพิ่ม {i+1}**")
-            st.markdown(f"*{card}*")
-            img_url = TAROT_IMAGES.get(card, TAROT_IMAGES["DEFAULT"])
-            st.image(img_url, use_column_width=True)
+            st.markdown(f"<p style='text-align:center;'><b>ใบที่เพิ่ม {i+1}</b><br><i>{card}</i></p>", unsafe_allow_html=True)
+            img_url = TAROT_IMAGES.get(card)
+            st.image(img_url, width=140)
             
