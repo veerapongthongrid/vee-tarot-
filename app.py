@@ -59,6 +59,12 @@ st.markdown(
         border-color: #BA68C8 !important;
     }
 
+    [data-testid="stImage"] img {
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        border: 1px solid #6A1B9A;
+    }
+
     h3 {
         color: #E1BEE7 !important;
     }
@@ -70,37 +76,83 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ฟังก์ชันสร้างการ์ดไพ่แบบเวทมนตร์ภายในแอป (ไม่เพิ่งเว็บภายนอก)
-def render_tarot_card(card_name):
-    svg_card = f"""
-    <div style="
-        width: 200px; 
-        height: 320px; 
-        background: linear-gradient(145deg, #2b1055, #7597de);
-        border: 3px solid #ffd700;
-        border-radius: 15px;
-        box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px;
-        margin: 10px 0;
-        text-align: center;
-        box-sizing: border-box;
-    ">
-        <div style="font-size: 24px;">✨ 🔮 ✨</div>
-        <div style="
-            font-size: 18px; 
-            font-weight: bold; 
-            color: #ffffff; 
-            text-shadow: 0 0 8px #000;
-            word-break: break-word;
-        ">{card_name}</div>
-        <div style="font-size: 24px;">🌙 ⭐ ☀️</div>
-    </div>
-    """
-    st.markdown(svg_card, unsafe_allow_html=True)
+# ฐานข้อมูลรูปภาพไพ่ยิปซีของแท้ ( Wikimedia / Static Image Server )
+TAROT_IMAGES = {
+    "0. The Fool": (
+        "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg"
+    ),
+    "1. The Magician": (
+        "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg"
+    ),
+    "2. The High Priestess": (
+        "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg"
+    ),
+    "3. The Empress": (
+        "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg"
+    ),
+    "4. The Emperor": (
+        "https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg"
+    ),
+    "5. The Hierophant": (
+        "https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg"
+    ),
+    "6. The Lovers": (
+        "https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg"
+    ),
+    "7. The Chariot": (
+        "https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg"
+    ),
+    "8. Strength": (
+        "https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg"
+    ),
+    "9. The Hermit": (
+        "https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg"
+    ),
+    "10. Wheel of Fortune": (
+        "https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg"
+    ),
+    "11. Justice": (
+        "https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_11_Justice.jpg"
+    ),
+    "12. The Hanged Man": (
+        "https://upload.wikimedia.org/wikipedia/commons/2/2b/RWS_Tarot_12_Hanged_Man.jpg"
+    ),
+    "13. Death": (
+        "https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg"
+    ),
+    "14. Temperance": (
+        "https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS_Tarot_14_Temperance.jpg"
+    ),
+    "15. The Devil": (
+        "https://upload.wikimedia.org/wikipedia/commons/5/55/RWS_Tarot_15_Devil.jpg"
+    ),
+    "16. The Tower": (
+        "https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg"
+    ),
+    "17. The Star": (
+        "https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg"
+    ),
+    "18. The Moon": (
+        "https://upload.wikimedia.org/wikipedia/commons/7/7f/RWS_Tarot_18_Moon.jpg"
+    ),
+    "19. The Sun": (
+        "https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg"
+    ),
+    "20. Judgement": (
+        "https://upload.wikimedia.org/wikipedia/commons/d/dd/RWS_Tarot_20_Judgement.jpg"
+    ),
+    "21. The World": (
+        "https://upload.wikimedia.org/wikipedia/commons/ff/ff/RWS_Tarot_21_World.jpg"
+    ),
+    # สำหรับ Minor Arcana ถ้าไม่พบรูปเฉพาะใบจะใช้รูปหลังไพ่ยิปซีคลาสสิกที่แน่นอน
+    "DEFAULT": (
+        "https://upload.wikimedia.org/wikipedia/commons/5/54/Card_back_06.svg"
+    ),
+}
+
+# รายชื่อไพ่ทั้งหมด
+full_deck = list(TAROT_IMAGES.keys())
+full_deck.remove("DEFAULT")
 
 # หัวข้อหลัก
 st.markdown(
@@ -111,52 +163,6 @@ st.markdown(
     '<div class="sub-text">🌌 ตั้งจิตอธิษฐานนึกถึงเรื่องที่ต้องการถาม แล้วกดปุ่มเปิดไพ่ได้เลยครับ 🌌</div>',
     unsafe_allow_html=True,
 )
-
-# รายชื่อไพ่ 78 ใบ
-major_arcana = [
-    "0. The Fool",
-    "1. The Magician",
-    "2. The High Priestess",
-    "3. The Empress",
-    "4. The Emperor",
-    "5. The Hierophant",
-    "6. The Lovers",
-    "7. The Chariot",
-    "8. Strength",
-    "9. The Hermit",
-    "10. Wheel of Fortune",
-    "11. Justice",
-    "12. The Hanged Man",
-    "13. Death",
-    "14. Temperance",
-    "15. The Devil",
-    "16. The Tower",
-    "17. The Star",
-    "18. The Moon",
-    "19. The Sun",
-    "20. Judgement",
-    "21. The World",
-]
-
-suits = ["Wands", "Cups", "Swords", "Pentacles"]
-ranks = [
-    "Ace",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "Page",
-    "Knight",
-    "Queen",
-    "King",
-]
-minor_arcana = [f"{rank} of {suit}" for suit in suits for rank in ranks]
-full_deck = major_arcana + minor_arcana
 
 st.write("---")
 
@@ -174,7 +180,8 @@ if btn_3_cards:
     st.write("---")
     for i, card in enumerate(drawn, 1):
         st.markdown(f"### ใบที่ {i}: **{card}**")
-        render_tarot_card(card)
+        img_url = TAROT_IMAGES.get(card, TAROT_IMAGES["DEFAULT"])
+        st.image(img_url, caption=card, width=220)
         st.write("---")
 
 if btn_2_cards:
@@ -183,6 +190,7 @@ if btn_2_cards:
     st.write("---")
     for i, card in enumerate(drawn, 1):
         st.markdown(f"### ใบที่ขยายความเพิ่มเติม {i}: **{card}**")
-        render_tarot_card(card)
+        img_url = TAROT_IMAGES.get(card, TAROT_IMAGES["DEFAULT"])
+        st.image(img_url, caption=card, width=220)
         st.write("---")
         
