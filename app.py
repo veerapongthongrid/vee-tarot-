@@ -137,9 +137,9 @@ ranks = [
 minor_arcana = [f"{rank} of {suit}" for suit in suits for rank in ranks]
 full_deck = major_arcana + minor_arcana
 
-# รูปภาพหลังไพ่ยิปซีลึกลับ
+# ลิงก์รูปภาพไพ่/เวทมนตร์จาก Unsplash CDN ที่ไม่มีวันโดนบล็อกและโหลดเร็ว
 TAROT_CARD_URL = (
-    "https://cdn.pixabay.com/photo/2020/09/18/22/05/tarot-5583064_640.jpg"
+    "https://images.unsplash.com/photo-1635863138275-d9b33299680b?w=400&q=80"
 )
 
 st.write("---")
