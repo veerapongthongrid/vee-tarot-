@@ -65,31 +65,23 @@ st.markdown(
         background: rgba(44, 12, 62, 0.6);
         border: 1px solid #8A2BE2;
         border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 20px;
+        padding: 15px;
+        margin-bottom: 15px;
         text-align: center;
         box-shadow: 0 4px 20px rgba(138, 43, 226, 0.25);
-    }
-
-    .card-img {
-        width: 140px;
-        border-radius: 10px;
-        box-shadow: 0 0 15px rgba(138, 43, 226, 0.6);
-        border: 1px solid #BA68C8;
-        margin-top: 10px;
     }
 
     .card-title {
         font-size: 18px;
         font-weight: bold;
         color: #F3E5F5;
-        margin-bottom: 4px;
+        margin-bottom: 2px;
     }
 
     .card-sub {
-        font-size: 14px;
+        font-size: 15px;
         color: #BA68C8;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
     h3 {
@@ -101,7 +93,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ฐานข้อมูลรูปภาพไพ่ยิปซีมาตรฐาน ครบ 78 ใบ (ลิงก์ตรงเสถียร 100%)
+# ฐานข้อมูลรูปภาพไพ่ยิปซีมาตรฐาน ครบ 78 ใบ
 TAROT_IMAGES = {
     # Major Arcana (22 ใบ)
     "0. The Fool": (
@@ -380,10 +372,11 @@ if st.session_state.drawn_3:
             f'<div class="card-box">'
             f'<div class="card-title">ใบที่ {i+1}</div>'
             f'<div class="card-sub">{card}</div>'
-            f'<img src="{img_url}" class="card-img">'
             f"</div>",
             unsafe_allow_html=True,
         )
+        # ใช้คำสั่ง st.image ของ Streamlit โดยตรงเพื่อป้องกันภาพไม่ขึ้น
+        st.image(img_url, width=150)
 
     # ปุ่มเปิดไพ่เพิ่ม 2 ใบ จะแสดงต่อเมื่อเปิดไพ่ 3 ใบเรียบร้อยแล้วเท่านั้น
     st.write("---")
@@ -405,8 +398,8 @@ if st.session_state.drawn_2:
             f'<div class="card-box">'
             f'<div class="card-title">ใบเพิ่ม {i+1}</div>'
             f'<div class="card-sub">{card}</div>'
-            f'<img src="{img_url}" class="card-img">'
             f"</div>",
             unsafe_allow_html=True,
         )
+        st.image(img_url, width=150)
         
