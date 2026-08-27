@@ -65,8 +65,9 @@ st.markdown(
         border: 1px solid #6A1B9A;
     }
 
-    h3 {
+    h3, h4 {
         color: #E1BEE7 !important;
+        text-align: center;
     }
     p, span {
         color: #E0D5F5;
@@ -76,7 +77,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ฐานข้อมูลรูปภาพไพ่ยิปซีของแท้ ( Wikimedia / Static Image Server )
+# ฐานข้อมูลรูปภาพไพ่ยิปซี (Wikimedia)
 TAROT_IMAGES = {
     "0. The Fool": (
         "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg"
@@ -144,13 +145,11 @@ TAROT_IMAGES = {
     "21. The World": (
         "https://upload.wikimedia.org/wikipedia/commons/ff/ff/RWS_Tarot_21_World.jpg"
     ),
-    # สำหรับ Minor Arcana ถ้าไม่พบรูปเฉพาะใบจะใช้รูปหลังไพ่ยิปซีคลาสสิกที่แน่นอน
     "DEFAULT": (
         "https://upload.wikimedia.org/wikipedia/commons/5/54/Card_back_06.svg"
     ),
 }
 
-# รายชื่อไพ่ทั้งหมด
 full_deck = list(TAROT_IMAGES.keys())
 full_deck.remove("DEFAULT")
 
@@ -166,31 +165,39 @@ st.markdown(
 
 st.write("---")
 
-col1, col2 = st.columns(2)
+col_btn1, col_btn2 = st.columns(2)
 
-with col1:
+with col_btn1:
     btn_3_cards = st.button("🔮 เปิดไพ่ 3 ใบ", use_container_width=True)
 
-with col2:
+with col_btn2:
     btn_2_cards = st.button("✨ เปิดไพ่ทำนายเพิ่ม 2 ใบ", use_container_width=True)
 
 if btn_3_cards:
     drawn = random.sample(full_deck, 3)
     st.markdown("### 🎴 ผลการเปิดไพ่ของคุณ (3 ใบ)")
     st.write("---")
-    for i, card in enumerate(drawn, 1):
-        st.markdown(f"### ใบที่ {i}: **{card}**")
-        img_url = TAROT_IMAGES.get(card, TAROT_IMAGES["DEFAULT"])
-        st.image(img_url, caption=card, width=220)
-        st.write("---")
+
+    # สร้าง 3 คอลัมน์เรียงแถวเดียวกัน
+    cols = st.columns(3)
+    for i, card in enumerate(drawn):
+        with cols[i]:
+            st.markdown(f"**ใบที่ {i+1}**")
+            st.markdown(f"*{card}*")
+            img_url = TAROT_IMAGES.get(card, TAROT_IMAGES["DEFAULT"])
+            st.image(img_url, use_column_width=True)
 
 if btn_2_cards:
     drawn = random.sample(full_deck, 2)
     st.markdown("### ✨ ผลการเปิดไพ่ทำนายเพิ่ม (2 ใบ)")
     st.write("---")
-    for i, card in enumerate(drawn, 1):
-        st.markdown(f"### ใบที่ขยายความเพิ่มเติม {i}: **{card}**")
-        img_url = TAROT_IMAGES.get(card, TAROT_IMAGES["DEFAULT"])
-        st.image(img_url, caption=card, width=220)
-        st.write("---")
-        
+
+    # สร้าง 2 คอลัมน์เรียงแถวเดียวกัน
+    cols = st.columns(2)
+    for i, card in enumerate(drawn):
+        with cols[i]:
+            st.markdown(f"**ใบที่เพิ่ม {i+1}**")
+            st.markdown(f"*{card}*")
+            img_url = TAROT_IMAGES.get(card, TAROT_IMAGES["DEFAULT"])
+            st.image(img_url, use_column_width=True)
+            
