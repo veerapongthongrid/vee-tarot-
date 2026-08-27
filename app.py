@@ -8,20 +8,19 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ลิงก์ไฟล์เสียงมาตรฐาน
+# ลิงก์ไฟล์เสียง
 SOUND_SHUFFLE = "https://assets.mixkit.co/active_storage/sfx/2070/2070-preview.mp3"
 SOUND_REVEAL = (
     "https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"
 )
 
 
-# ฟังก์ชันสำหรับเล่นเสียงอัตโนมัติ
 def play_sound(sound_url):
     sound_html = f'<audio autoplay style="display:none;"><source src="{sound_url}" type="audio/mp3"></audio>'
     st.markdown(sound_html, unsafe_allow_html=True)
 
 
-# แต่งพื้นหลังธีมหมอดู ลึกลับ อวกาศ ดวงดาว
+# แต่ง CSS รวมถึงแอนิเมชันวงล้อหมุน (Wheel Animation)
 st.markdown(
     """
     <style>
@@ -67,11 +66,26 @@ st.markdown(
         margin-top: 10px;
         margin-bottom: 15px;
     }
-    
-    div.stButton > button:hover {
-        background: linear-gradient(135deg, #6A1B9A 0%, #4A0E4E 100%);
-        box-shadow: 0 0 20px rgba(186, 104, 200, 0.6);
-        border-color: #BA68C8 !important;
+
+    /* วงล้อหมุนเวทมนตร์ Magic Wheel CSS Animation */
+    .wheel-container {
+        text-align: center;
+        padding: 20px;
+    }
+    .magic-wheel {
+        font-size: 70px;
+        display: inline-block;
+        animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .wheel-text {
+        color: #BA68C8;
+        font-size: 16px;
+        margin-top: 10px;
+        font-weight: bold;
     }
 
     .card-box {
@@ -84,29 +98,14 @@ st.markdown(
         box-shadow: 0 4px 20px rgba(138, 43, 226, 0.25);
     }
 
-    .card-title {
-        font-size: 18px;
-        font-weight: bold;
-        color: #F3E5F5;
-        margin-bottom: 4px;
-    }
-
-    .card-sub {
-        font-size: 15px;
-        color: #BA68C8;
-        margin-bottom: 12px;
-    }
-
-    h3 {
-        color: #E1BEE7 !important;
-        text-align: center;
-    }
+    .card-title { font-size: 18px; font-weight: bold; color: #F3E5F5; margin-bottom: 4px; }
+    .card-sub { font-size: 15px; color: #BA68C8; margin-bottom: 12px; }
+    h3 { color: #E1BEE7 !important; text-align: center; }
     </style>
 """,
     unsafe_allow_html=True,
 )
 
-# ฐานข้อมูลรูปภาพไพ่ยิปซีมาตรฐาน ครบ 78 ใบ
 BASE_URL = "https://sacred-texts.com/tarot/pkt/img/"
 
 TAROT_IMAGES = {
@@ -133,7 +132,7 @@ TAROT_IMAGES = {
     "19. The Sun": BASE_URL + "ar19.jpg",
     "20. Judgement": BASE_URL + "ar20.jpg",
     "21. The World": BASE_URL + "ar21.jpg",
-    # Wands - ไม้เท้า (14 ใบ)
+    # Wands - ไม้เท้า
     "Ace of Wands": BASE_URL + "waac.jpg",
     "Two of Wands": BASE_URL + "wa02.jpg",
     "Three of Wands": BASE_URL + "wa03.jpg",
@@ -148,7 +147,7 @@ TAROT_IMAGES = {
     "Knight of Wands": BASE_URL + "wakn.jpg",
     "Queen of Wands": BASE_URL + "waqu.jpg",
     "King of Wands": BASE_URL + "waki.jpg",
-    # Cups - ถ้วย (14 ใบ)
+    # Cups - ถ้วย
     "Ace of Cups": BASE_URL + "cuac.jpg",
     "Two of Cups": BASE_URL + "cu02.jpg",
     "Three of Cups": BASE_URL + "cu03.jpg",
@@ -163,7 +162,7 @@ TAROT_IMAGES = {
     "Knight of Cups": BASE_URL + "cukn.jpg",
     "Queen of Cups": BASE_URL + "cuqu.jpg",
     "King of Cups": BASE_URL + "cuki.jpg",
-    # Swords - ดาบ (14 ใบ)
+    # Swords - ดาบ
     "Ace of Swords": BASE_URL + "swac.jpg",
     "Two of Swords": BASE_URL + "sw02.jpg",
     "Three of Swords": BASE_URL + "sw03.jpg",
@@ -178,7 +177,7 @@ TAROT_IMAGES = {
     "Knight of Swords": BASE_URL + "swkn.jpg",
     "Queen of Swords": BASE_URL + "swqu.jpg",
     "King of Swords": BASE_URL + "swki.jpg",
-    # Pentacles - เหรียญ (14 ใบ)
+    # Pentacles - เหรียญ
     "Ace of Pentacles": BASE_URL + "peac.jpg",
     "Two of Pentacles": BASE_URL + "pe02.jpg",
     "Three of Pentacles": BASE_URL + "pe03.jpg",
@@ -197,7 +196,6 @@ TAROT_IMAGES = {
 
 full_deck = list(TAROT_IMAGES.keys())
 
-# สร้าง Session State เก็บสถานะการสุ่มไพ่
 if "drawn_3" not in st.session_state:
     st.session_state.drawn_3 = None
 if "drawn_2" not in st.session_state:
@@ -205,7 +203,6 @@ if "drawn_2" not in st.session_state:
 if "play_reveal_sound" not in st.session_state:
     st.session_state.play_reveal_sound = False
 
-# หัวข้อหลัก
 st.markdown(
     '<div class="main-title">✨ 🔮 เปิดไพ่ทำนายดวง โดยพี่หมอวีร์ 🔮 ✨</div>',
     unsafe_allow_html=True,
@@ -217,14 +214,30 @@ st.markdown(
 
 st.write("---")
 
-# ปุ่มหลักสำหรับเปิดไพ่ 3 ใบ
+# กล่องสำหรับแสดงแอนิเมชันวงล้อ
+wheel_placeholder = st.empty()
+
+# ปุ่มหลักเปิดไพ่ 3 ใบ
 if st.button("🔮 เปิดไพ่ 3 ใบ", use_container_width=True):
     play_sound(SOUND_SHUFFLE)
-    with st.spinner("✨ กำลังสับไพ่และตั้งจิตอธิษฐานสื่อสารกับดวงดาว..."):
-        time.sleep(1.8)
-        st.session_state.drawn_3 = random.sample(full_deck, 3)
-        st.session_state.drawn_2 = None
-        st.session_state.play_reveal_sound = True
+
+    # แสดงวงล้อเวทมนตร์หมุนติ้วๆ
+    wheel_placeholder.markdown(
+        """
+        <div class="wheel-container">
+            <div class="magic-wheel">☸️</div>
+            <div class="wheel-text">✨ กงล้อแห่งชะตากำลังหมุนทำนายดวง... ✨</div>
+        </div>
+    """,
+        unsafe_allow_html=True,
+    )
+
+    time.sleep(2.0)  # หมุนวงล้อ 2 วินาที
+    wheel_placeholder.empty()  # ลบวงล้อออกเมื่อหมุนเสร็จ
+
+    st.session_state.drawn_3 = random.sample(full_deck, 3)
+    st.session_state.drawn_2 = None
+    st.session_state.play_reveal_sound = True
 
 # แสดงผลไพ่ 3 ใบ
 if st.session_state.drawn_3:
@@ -242,19 +255,31 @@ if st.session_state.drawn_3:
             unsafe_allow_html=True,
         )
 
-    # ปุ่มเปิดไพ่เพิ่ม 2 ใบ
     st.write("---")
     if st.button("✨ เปิดไพ่ทำนายเพิ่ม 2 ใบ", use_container_width=True):
         play_sound(SOUND_SHUFFLE)
-        with st.spinner("🌟 กำลังเปิดไพ่ทำนายเพิ่มเติม..."):
-            time.sleep(1.5)
-            remaining_deck = [
-                c for c in full_deck if c not in st.session_state.drawn_3
-            ]
-            st.session_state.drawn_2 = random.sample(remaining_deck, 2)
-            st.session_state.play_reveal_sound = True
 
-# แสดงผลไพ่เพิ่ม 2 ใบที่ด้านล่างสุด
+        # แสดงวงล้อหมุนเมื่อกดเปิดเพิ่ม
+        wheel_placeholder.markdown(
+            """
+            <div class="wheel-container">
+                <div class="magic-wheel">☸️</div>
+                <div class="wheel-text">🌟 กำลังหมุนกงล้อเปิดไพ่ทำนายเพิ่มเติม... 🌟</div>
+            </div>
+        """,
+            unsafe_allow_html=True,
+        )
+
+        time.sleep(1.8)
+        wheel_placeholder.empty()
+
+        remaining_deck = [
+            c for c in full_deck if c not in st.session_state.drawn_3
+        ]
+        st.session_state.drawn_2 = random.sample(remaining_deck, 2)
+        st.session_state.play_reveal_sound = True
+
+# แสดงผลไพ่เพิ่ม 2 ใบ
 if st.session_state.drawn_2:
     if st.session_state.play_reveal_sound:
         play_sound(SOUND_REVEAL)
