@@ -7,7 +7,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# แต่งพื้นหลังธีมหมอดู ลึกลับ อวกาศ ดวงดาว
+# แต่งพื้นหลังธีมหมอดู ลึกลับ อวกาศ ดวงดาว และบังคับ Columns บนมือถือไม่ให้ตกบรรทัด
 st.markdown(
     """
     <style>
@@ -59,30 +59,44 @@ st.markdown(
         border-color: #BA68C8 !important;
     }
 
-    /* สไตล์จำกัดกรอบภาพไพ่ */
+    /* ตกแต่งรูปภาพไพ่ */
     .card-img {
         width: 100%;
-        max-width: 110px;
+        max-width: 100px;
         border-radius: 8px;
-        box-shadow: 0 0 12px rgba(138, 43, 226, 0.6);
+        box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
         border: 1px solid #8A2BE2;
-        margin-top: 6px;
+        margin-top: 5px;
     }
 
-    /* CSS บังคับเรียงแนวนอน 3 ใบ */
-    .cards-container {
-        display: flex !important;
+    /* บังคับให้ Column ใน Streamlit เรียงแนวนอนเสมอแม้บนมือถือ */
+    div[data-testid="column"] {
+        flex: 1 1 0% !important;
+        min-width: 0px !important;
+        padding: 0 2px !important;
+    }
+
+    div[data-testid="stHorizontalBlock"] {
         flex-direction: row !important;
-        justify-content: space-around !important;
-        align-items: flex-start !important;
-        width: 100% !important;
-        gap: 5px;
+        flex-wrap: nowrap !important;
     }
 
-    .card-box {
-        flex: 1;
+    .card-title {
         text-align: center;
-        font-size: 12px;
+        font-size: 13px;
+        font-weight: bold;
+        color: #E1BEE7;
+        margin: 0;
+    }
+
+    .card-sub {
+        text-align: center;
+        font-size: 10px;
+        color: #C8B6E2;
+        margin: 0 0 5px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     h3 {
@@ -191,35 +205,24 @@ if btn_3_cards:
     st.markdown("### 🎴 ผลการเปิดไพ่ของคุณ (3 ใบ)")
     st.write("---")
 
-    # ใช้ Flexbox บังคับเรียง 3 ใบแนวนอนแม้จะอยู่บนมือถือ
-    html_content = '<div class="cards-container">'
-    for i, card in enumerate(drawn, 1):
+    cols = st.columns(3)
+    for i, card in enumerate(drawn):
         img_url = TAROT_IMAGES.get(card)
-        html_content += f"""
-        <div class="card-box">
-            <b>ใบที่ {i}</b><br>
-            <span style="font-size: 11px; color: #D8B4FE;">{card}</span><br>
-            <img src="{img_url}" class="card-img">
-        </div>
-        """
-    html_content += "</div>"
-    st.markdown(html_content, unsafe_allow_html=True)
+        with cols[i]:
+            st.markdown(f'<p class="card-title">ใบที่ {i+1}</p>', unsafe_allow_html=True)
+            st.markdown(f'<p class="card-sub">{card}</p>', unsafe_allow_html=True)
+            st.markdown(f'<div style="text-align:center;"><img src="{img_url}" class="card-img"></div>', unsafe_allow_html=True)
 
 if btn_2_cards:
     drawn = random.sample(full_deck, 2)
     st.markdown("### ✨ ผลการเปิดไพ่ทำนายเพิ่ม (2 ใบ)")
     st.write("---")
 
-    html_content = '<div class="cards-container">'
-    for i, card in enumerate(drawn, 1):
+    cols = st.columns(2)
+    for i, card in enumerate(drawn):
         img_url = TAROT_IMAGES.get(card)
-        html_content += f"""
-        <div class="card-box">
-            <b>ใบเพิ่มที่ {i}</b><br>
-            <span style="font-size: 11px; color: #D8B4FE;">{card}</span><br>
-            <img src="{img_url}" class="card-img">
-        </div>
-        """
-    html_content += "</div>"
-    st.markdown(html_content, unsafe_allow_html=True)
-        
+        with cols[i]:
+            st.markdown(f'<p class="card-title">ใบเพิ่ม {i+1}</p>', unsafe_allow_html=True)
+            st.markdown(f'<p class="card-sub">{card}</p>', unsafe_allow_html=True)
+            st.markdown(f'<div style="text-align:center;"><img src="{img_url}" class="card-img"></div>', unsafe_allow_html=True)
+            
