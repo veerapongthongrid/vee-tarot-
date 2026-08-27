@@ -8,19 +8,32 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ลิงก์ไฟล์เสียง
+# 📍 ส่วนกำหนดรูปภาพและข้อความ Preview เวลาแชร์ลิงก์ลง LINE / Facebook
+st.markdown(
+    """
+    <head>
+        <meta property="og:title" content="เปิดไพ่ทำนายดวง โดยพี่หมอวีร์ 🔮">
+        <meta property="og:description" content="ตั้งจิตอธิษฐานแล้วเปิดไพ่เช็กดวงชะตากับพี่หมอวีร์ได้เลยฟรี!">
+        <meta property="og:image" content="https://images.unsplash.com/photo-1518709268805-4e9042af9f23">
+    </head>
+""",
+    unsafe_allow_html=True,
+)
+
+# ลิงก์ไฟล์เสียงมาตรฐาน
 SOUND_SHUFFLE = "https://assets.mixkit.co/active_storage/sfx/2070/2070-preview.mp3"
 SOUND_REVEAL = (
     "https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"
 )
 
 
+# ฟังก์ชันสำหรับเล่นเสียงอัตโนมัติ
 def play_sound(sound_url):
     sound_html = f'<audio autoplay style="display:none;"><source src="{sound_url}" type="audio/mp3"></audio>'
     st.markdown(sound_html, unsafe_allow_html=True)
 
 
-# แต่ง CSS รวมถึงแอนิเมชันวงล้อหมุน (Wheel Animation)
+# แต่ง CSS รวมถึงแอนิเมชันวงล้อหมุน (Magic Wheel)
 st.markdown(
     """
     <style>
@@ -214,14 +227,12 @@ st.markdown(
 
 st.write("---")
 
-# กล่องสำหรับแสดงแอนิเมชันวงล้อ
 wheel_placeholder = st.empty()
 
 # ปุ่มหลักเปิดไพ่ 3 ใบ
 if st.button("🔮 เปิดไพ่ 3 ใบ", use_container_width=True):
     play_sound(SOUND_SHUFFLE)
 
-    # แสดงวงล้อเวทมนตร์หมุนติ้วๆ
     wheel_placeholder.markdown(
         """
         <div class="wheel-container">
@@ -232,8 +243,8 @@ if st.button("🔮 เปิดไพ่ 3 ใบ", use_container_width=True):
         unsafe_allow_html=True,
     )
 
-    time.sleep(2.0)  # หมุนวงล้อ 2 วินาที
-    wheel_placeholder.empty()  # ลบวงล้อออกเมื่อหมุนเสร็จ
+    time.sleep(2.0)
+    wheel_placeholder.empty()
 
     st.session_state.drawn_3 = random.sample(full_deck, 3)
     st.session_state.drawn_2 = None
@@ -259,7 +270,6 @@ if st.session_state.drawn_3:
     if st.button("✨ เปิดไพ่ทำนายเพิ่ม 2 ใบ", use_container_width=True):
         play_sound(SOUND_SHUFFLE)
 
-        # แสดงวงล้อหมุนเมื่อกดเปิดเพิ่ม
         wheel_placeholder.markdown(
             """
             <div class="wheel-container">
