@@ -2,28 +2,35 @@ import random
 import streamlit as st
 
 st.set_page_config(
-    page_title="ดูดวงไพ่ยิปซี", page_icon="🔮", initial_sidebar_state="collapsed"
+    page_title="เปิดไพ่ทำนายดวง โดยพี่หมอวีร์",
+    page_icon="🔮",
+    initial_sidebar_state="collapsed",
 )
 
-# สไตล์แต่งหน้าจอให้ดูสวยงามบนมือถือ
+# สไตล์แต่งปุ่มให้สวยงามบนมือถือ
 st.markdown(
     """
     <style>
-    .stButton>button {
+    div.stButton > button {
         width: 100%;
+        font-size: 18px;
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+    .btn-main {
         background-color: #4B0082;
         color: white;
-        font-size: 18px;
-        border-radius: 10px;
-        padding: 10px;
     }
     </style>
 """,
     unsafe_allow_html=True,
 )
 
-st.title("🔮 เปิดไพ่ยิปซีทำนายดวง")
-st.write("ตั้งจิตอธิษฐานนึกถึงเรื่องที่ต้องการถาม แล้วเลือกจำนวนไพ่ได้เลยครับ")
+# หัวข้อใหม่ตามต้องการ
+st.title("🔮 เปิดไพ่ทำนายดวง")
+st.subheader("โดยพี่หมอวีร์")
+st.write("ตั้งจิตอธิษฐานนึกถึงเรื่องที่ต้องการถาม แล้วกดปุ่มเปิดไพ่ได้เลยครับ")
 
 # รายชื่อไพ่ 78 ใบ
 major_arcana = [
@@ -71,26 +78,41 @@ ranks = [
 minor_arcana = [f"{rank} of {suit}" for suit in suits for rank in ranks]
 full_deck = major_arcana + minor_arcana
 
-# ปุ่มเลือกจำนวนไพ่
-num_cards = st.radio(
-    "เลือกจำนวนไพ่ที่ต้องการจับ:",
-    [1, 3, 4, 10],
-    format_func=lambda x: f"สุ่มไพ่ {x} ใบ",
-    horizontal=True,
-)
+st.write("---")
 
-if st.button("✨ ตั้งจิตอธิษฐาน แล้วเปิดไพ่"):
-    drawn = random.sample(full_deck, num_cards)
+# ปุ่มกดเลือกเปิดไพ่
+col1, col2 = st.columns(2)
 
-    st.subheader(f"🎴 ผลการเปิดไพ่ของคุณ ({num_cards} ใบ)")
+with col1:
+    btn_3_cards = st.button("🔮 เปิดไพ่ 3 ใบ", use_container_width=True)
+
+with col2:
+    btn_2_cards = st.button("✨ เปิดไพ่ทำนายเพิ่ม 2 ใบ", use_container_width=True)
+
+# การทำงานเมื่อกดปุ่มเปิดไพ่ 3 ใบ
+if btn_3_cards:
+    drawn = random.sample(full_deck, 3)
+    st.success("🎴 ผลการเปิดไพ่ของคุณ (3 ใบ)")
     st.write("---")
-
     for i, card in enumerate(drawn, 1):
         st.markdown(f"### ใบที่ {i}: **{card}**")
         st.image(
-            "https://upload.wikimedia.org/wikipedia/commons/9/90/Rider-Waite-Tarot_00_Fool.jpg",
+            "https://raw.githubusercontent.com/effata/tarot-cards/main/cards/c01.jpg",
             caption=card,
             width=220,
         )
         st.write("---")
-      
+
+# การทำงานเมื่อกดปุ่มเปิดไพ่ทำนายเพิ่ม 2 ใบ
+if btn_2_cards:
+    drawn = random.sample(full_deck, 2)
+    st.info("✨ ผลการเปิดไพ่ทำนายเพิ่ม (2 ใบ)")
+    st.write("---")
+    for i, card in enumerate(drawn, 1):
+        st.markdown(f"### ใบที่ขยายความเพิ่มเติม {i}: **{card}**")
+        st.image(
+            "https://raw.githubusercontent.com/effata/tarot-cards/main/cards/c01.jpg",
+            caption=card,
+            width=220,
+        )
+        st.write("---")
