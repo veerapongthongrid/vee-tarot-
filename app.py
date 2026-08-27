@@ -50,7 +50,8 @@ st.markdown(
         color: #F3E5F5 !important;
         border: 1px solid #8A2BE2 !important;
         box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
-        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-bottom: 15px;
     }
     
     div.stButton > button:hover {
@@ -172,6 +173,12 @@ TAROT_IMAGES = {
 
 full_deck = list(TAROT_IMAGES.keys())
 
+# สร้าง Session State เก็บสถานะการสุ่มไพ่
+if "drawn_3" not in st.session_state:
+    st.session_state.drawn_3 = None
+if "drawn_2" not in st.session_state:
+    st.session_state.drawn_2 = None
+
 # หัวข้อหลัก
 st.markdown(
     '<div class="main-title">✨ 🔮 เปิดไพ่ทำนายดวง โดยพี่หมอวีร์ 🔮 ✨</div>',
@@ -184,15 +191,17 @@ st.markdown(
 
 st.write("---")
 
-btn_3_cards = st.button("🔮 เปิดไพ่ 3 ใบ", use_container_width=True)
-btn_2_cards = st.button("✨ เปิดไพ่ทำนายเพิ่ม 2 ใบ", use_container_width=True)
+# ปุ่มหลักสำหรับเปิดไพ่ 3 ใบ
+if st.button("🔮 เปิดไพ่ 3 ใบ", use_container_width=True):
+    st.session_state.drawn_3 = random.sample(full_deck, 3)
+    st.session_state.drawn_2 = None  # ล้างค่าทำนายเพิ่มเก่าเมื่อสุ่ม 3 ใบใหม่
 
-if btn_3_cards:
-    drawn = random.sample(full_deck, 3)
+# แสดงผลไพ่ 3 ใบ
+if st.session_state.drawn_3:
     st.markdown("### 🎴 ผลการเปิดไพ่ของคุณ (3 ใบ)")
     st.write("---")
 
-    for i, card in enumerate(drawn):
+    for i, card in enumerate(st.session_state.drawn_3):
         img_url = TAROT_IMAGES.get(card)
         st.markdown(
             f'<div class="card-box">'
@@ -203,12 +212,21 @@ if btn_3_cards:
             unsafe_allow_html=True,
         )
 
-if btn_2_cards:
-    drawn = random.sample(full_deck, 2)
+    # ปุ่มเปิดไพ่เพิ่ม 2 ใบ จะแสดงต่อเมื่อเปิดไพ่ 3 ใบเรียบร้อยแล้วเท่านั้น
+    st.write("---")
+    if st.button("✨ เปิดไพ่ทำนายเพิ่ม 2 ใบ", use_container_width=True):
+        # สุ่มไพ่เพิ่ม 2 ใบโดยไม่ซ้ำกับ 3 ใบแรก
+        remaining_deck = [
+            c for c in full_deck if c not in st.session_state.drawn_3
+        ]
+        st.session_state.drawn_2 = random.sample(remaining_deck, 2)
+
+# แสดงผลไพ่เพิ่ม 2 ใบที่ด้านล่างสุด
+if st.session_state.drawn_2:
     st.markdown("### ✨ ผลการเปิดไพ่ทำนายเพิ่ม (2 ใบ)")
     st.write("---")
 
-    for i, card in enumerate(drawn):
+    for i, card in enumerate(st.session_state.drawn_2):
         img_url = TAROT_IMAGES.get(card)
         st.markdown(
             f'<div class="card-box">'
