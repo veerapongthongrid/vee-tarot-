@@ -59,18 +59,35 @@ st.markdown(
         border-color: #BA68C8 !important;
     }
 
-    [data-testid="stImage"] img {
-        border-radius: 10px;
-        box-shadow: 0 0 12px rgba(138, 43, 226, 0.5);
-        border: 1px solid #6A1B9A;
+    /* สไตล์จำกัดกรอบภาพไพ่ */
+    .card-img {
+        width: 100%;
+        max-width: 110px;
+        border-radius: 8px;
+        box-shadow: 0 0 12px rgba(138, 43, 226, 0.6);
+        border: 1px solid #8A2BE2;
+        margin-top: 6px;
     }
 
-    h3, h4 {
+    /* CSS บังคับเรียงแนวนอน 3 ใบ */
+    .cards-container {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-around !important;
+        align-items: flex-start !important;
+        width: 100% !important;
+        gap: 5px;
+    }
+
+    .card-box {
+        flex: 1;
+        text-align: center;
+        font-size: 12px;
+    }
+
+    h3 {
         color: #E1BEE7 !important;
         text-align: center;
-    }
-    p, span {
-        color: #E0D5F5;
     }
     </style>
 """,
@@ -174,24 +191,35 @@ if btn_3_cards:
     st.markdown("### 🎴 ผลการเปิดไพ่ของคุณ (3 ใบ)")
     st.write("---")
 
-    # สร้าง 3 คอลัมน์เรียงแถวเดียวกัน
-    cols = st.columns(3)
-    for i, card in enumerate(drawn):
-        with cols[i]:
-            st.markdown(f"<p style='text-align:center;'><b>ใบที่ {i+1}</b><br><i>{card}</i></p>", unsafe_allow_html=True)
-            img_url = TAROT_IMAGES.get(card)
-            st.image(img_url, width=120)
+    # ใช้ Flexbox บังคับเรียง 3 ใบแนวนอนแม้จะอยู่บนมือถือ
+    html_content = '<div class="cards-container">'
+    for i, card in enumerate(drawn, 1):
+        img_url = TAROT_IMAGES.get(card)
+        html_content += f"""
+        <div class="card-box">
+            <b>ใบที่ {i}</b><br>
+            <span style="font-size: 11px; color: #D8B4FE;">{card}</span><br>
+            <img src="{img_url}" class="card-img">
+        </div>
+        """
+    html_content += "</div>"
+    st.markdown(html_content, unsafe_allow_html=True)
 
 if btn_2_cards:
     drawn = random.sample(full_deck, 2)
     st.markdown("### ✨ ผลการเปิดไพ่ทำนายเพิ่ม (2 ใบ)")
     st.write("---")
 
-    # สร้าง 2 คอลัมน์เรียงแถวเดียวกัน
-    cols = st.columns(2)
-    for i, card in enumerate(drawn):
-        with cols[i]:
-            st.markdown(f"<p style='text-align:center;'><b>ใบที่เพิ่ม {i+1}</b><br><i>{card}</i></p>", unsafe_allow_html=True)
-            img_url = TAROT_IMAGES.get(card)
-            st.image(img_url, width=140)
-            
+    html_content = '<div class="cards-container">'
+    for i, card in enumerate(drawn, 1):
+        img_url = TAROT_IMAGES.get(card)
+        html_content += f"""
+        <div class="card-box">
+            <b>ใบเพิ่มที่ {i}</b><br>
+            <span style="font-size: 11px; color: #D8B4FE;">{card}</span><br>
+            <img src="{img_url}" class="card-img">
+        </div>
+        """
+    html_content += "</div>"
+    st.markdown(html_content, unsafe_allow_html=True)
+        
