@@ -60,13 +60,12 @@ st.markdown(
         border-color: #BA68C8 !important;
     }
 
-    /* กล่องการ์ดแต่ละใบ */
     .card-box {
         background: rgba(44, 12, 62, 0.6);
         border: 1px solid #8A2BE2;
         border-radius: 16px;
-        padding: 15px;
-        margin-bottom: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
         text-align: center;
         box-shadow: 0 4px 20px rgba(138, 43, 226, 0.25);
     }
@@ -75,13 +74,13 @@ st.markdown(
         font-size: 18px;
         font-weight: bold;
         color: #F3E5F5;
-        margin-bottom: 2px;
+        margin-bottom: 4px;
     }
 
     .card-sub {
         font-size: 15px;
         color: #BA68C8;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
     }
 
     h3 {
@@ -93,247 +92,93 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ฐานข้อมูลรูปภาพไพ่ยิปซีมาตรฐาน ครบ 78 ใบ
+# ฐานข้อมูลรูปภาพไพ่ยิปซีมาตรฐาน ครบ 78 ใบ (ใช้ลิงก์ CDN เสถียรสูง 100%)
+BASE_URL = "https://sacred-texts.com/tarot/pkt/img/"
+
 TAROT_IMAGES = {
     # Major Arcana (22 ใบ)
-    "0. The Fool": (
-        "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg"
-    ),
-    "1. The Magician": (
-        "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg"
-    ),
-    "2. The High Priestess": (
-        "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg"
-    ),
-    "3. The Empress": (
-        "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg"
-    ),
-    "4. The Emperor": (
-        "https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg"
-    ),
-    "5. The Hierophant": (
-        "https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg"
-    ),
-    "6. The Lovers": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg"
-    ),
-    "7. The Chariot": (
-        "https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg"
-    ),
-    "8. Strength": (
-        "https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg"
-    ),
-    "9. The Hermit": (
-        "https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg"
-    ),
-    "10. Wheel of Fortune": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg"
-    ),
-    "11. Justice": (
-        "https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_11_Justice.jpg"
-    ),
-    "12. The Hanged Man": (
-        "https://upload.wikimedia.org/wikipedia/commons/2/2b/RWS_Tarot_12_Hanged_Man.jpg"
-    ),
-    "13. Death": (
-        "https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg"
-    ),
-    "14. Temperance": (
-        "https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS_Tarot_14_Temperance.jpg"
-    ),
-    "15. The Devil": (
-        "https://upload.wikimedia.org/wikipedia/commons/5/55/RWS_Tarot_15_Devil.jpg"
-    ),
-    "16. The Tower": (
-        "https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg"
-    ),
-    "17. The Star": (
-        "https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg"
-    ),
-    "18. The Moon": (
-        "https://upload.wikimedia.org/wikipedia/commons/7/7f/RWS_Tarot_18_Moon.jpg"
-    ),
-    "19. The Sun": (
-        "https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg"
-    ),
-    "20. Judgement": (
-        "https://upload.wikimedia.org/wikipedia/commons/d/dd/RWS_Tarot_20_Judgement.jpg"
-    ),
-    "21. The World": (
-        "https://upload.wikimedia.org/wikipedia/commons/ff/ff/RWS_Tarot_21_World.jpg"
-    ),
+    "0. The Fool": BASE_URL + "ar00.jpg",
+    "1. The Magician": BASE_URL + "ar01.jpg",
+    "2. The High Priestess": BASE_URL + "ar02.jpg",
+    "3. The Empress": BASE_URL + "ar03.jpg",
+    "4. The Emperor": BASE_URL + "ar04.jpg",
+    "5. The Hierophant": BASE_URL + "ar05.jpg",
+    "6. The Lovers": BASE_URL + "ar06.jpg",
+    "7. The Chariot": BASE_URL + "ar07.jpg",
+    "8. Strength": BASE_URL + "ar08.jpg",
+    "9. The Hermit": BASE_URL + "ar09.jpg",
+    "10. Wheel of Fortune": BASE_URL + "ar10.jpg",
+    "11. Justice": BASE_URL + "ar11.jpg",
+    "12. The Hanged Man": BASE_URL + "ar12.jpg",
+    "13. Death": BASE_URL + "ar13.jpg",
+    "14. Temperance": BASE_URL + "ar14.jpg",
+    "15. The Devil": BASE_URL + "ar15.jpg",
+    "16. The Tower": BASE_URL + "ar16.jpg",
+    "17. The Star": BASE_URL + "ar17.jpg",
+    "18. The Moon": BASE_URL + "ar18.jpg",
+    "19. The Sun": BASE_URL + "ar19.jpg",
+    "20. Judgement": BASE_URL + "ar20.jpg",
+    "21. The World": BASE_URL + "ar21.jpg",
     # Wands - ไม้เท้า (14 ใบ)
-    "Ace of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/1/11/RWS1909_-_Wands_01.jpeg"
-    ),
-    "Two of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/0/0f/RWS1909_-_Wands_02.jpeg"
-    ),
-    "Three of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/f/ff/RWS1909_-_Wands_03.jpeg"
-    ),
-    "Four of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/a/a4/RWS1909_-_Wands_04.jpeg"
-    ),
-    "Five of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/9/9d/RWS1909_-_Wands_05.jpeg"
-    ),
-    "Six of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/3b/RWS1909_-_Wands_06.jpeg"
-    ),
-    "Seven of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/e/e4/RWS1909_-_Wands_07.jpeg"
-    ),
-    "Eight of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/6/6b/RWS1909_-_Wands_08.jpeg"
-    ),
-    "Nine of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS1909_-_Wands_09.jpeg"
-    ),
-    "Ten of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/0/0b/RWS1909_-_Wands_10.jpeg"
-    ),
-    "Page of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/6/6a/RWS1909_-_Wands_11.jpeg"
-    ),
-    "Knight of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/1/16/RWS1909_-_Wands_12.jpeg"
-    ),
-    "Queen of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/0/0d/RWS1909_-_Wands_13.jpeg"
-    ),
-    "King of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/c/ce/RWS1909_-_Wands_14.jpeg"
-    ),
+    "Ace of Wands": BASE_URL + "waac.jpg",
+    "Two of Wands": BASE_URL + "wa02.jpg",
+    "Three of Wands": BASE_URL + "wa03.jpg",
+    "Four of Wands": BASE_URL + "wa04.jpg",
+    "Five of Wands": BASE_URL + "wa05.jpg",
+    "Six of Wands": BASE_URL + "wa06.jpg",
+    "Seven of Wands": BASE_URL + "wa07.jpg",
+    "Eight of Wands": BASE_URL + "wa08.jpg",
+    "Nine of Wands": BASE_URL + "wa09.jpg",
+    "Ten of Wands": BASE_URL + "wa10.jpg",
+    "Page of Wands": BASE_URL + "wapa.jpg",
+    "Knight of Wands": BASE_URL + "wakn.jpg",
+    "Queen of Wands": BASE_URL + "waqu.jpg",
+    "King of Wands": BASE_URL + "waki.jpg",
     # Cups - ถ้วย (14 ใบ)
-    "Ace of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/36/RWS1909_-_Cups_01.jpeg"
-    ),
-    "Two of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS1909_-_Cups_02.jpeg"
-    ),
-    "Three of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/7/7a/RWS1909_-_Cups_03.jpeg"
-    ),
-    "Four of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/35/RWS1909_-_Cups_04.jpeg"
-    ),
-    "Five of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS1909_-_Cups_05.jpeg"
-    ),
-    "Six of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/1/17/RWS1909_-_Cups_06.jpeg"
-    ),
-    "Seven of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/a/ae/RWS1909_-_Cups_07.jpeg"
-    ),
-    "Eight of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/6/60/RWS1909_-_Cups_08.jpeg"
-    ),
-    "Nine of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/2/24/RWS1909_-_Cups_09.jpeg"
-    ),
-    "Ten of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/8/84/RWS1909_-_Cups_10.jpeg"
-    ),
-    "Page of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/a/ad/RWS1909_-_Cups_11.jpeg"
-    ),
-    "Knight of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/f/fa/RWS1909_-_Cups_12.jpeg"
-    ),
-    "Queen of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/6/62/RWS1909_-_Cups_13.jpeg"
-    ),
-    "King of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/0/04/RWS1909_-_Cups_14.jpeg"
-    ),
+    "Ace of Cups": BASE_URL + "cuac.jpg",
+    "Two of Cups": BASE_URL + "cu02.jpg",
+    "Three of Cups": BASE_URL + "cu03.jpg",
+    "Four of Cups": BASE_URL + "cu04.jpg",
+    "Five of Cups": BASE_URL + "cu05.jpg",
+    "Six of Cups": BASE_URL + "cu06.jpg",
+    "Seven of Cups": BASE_URL + "cu07.jpg",
+    "Eight of Cups": BASE_URL + "cu08.jpg",
+    "Nine of Cups": BASE_URL + "cu09.jpg",
+    "Ten of Cups": BASE_URL + "cu10.jpg",
+    "Page of Cups": BASE_URL + "cupa.jpg",
+    "Knight of Cups": BASE_URL + "cukn.jpg",
+    "Queen of Cups": BASE_URL + "cuqu.jpg",
+    "King of Cups": BASE_URL + "cuki.jpg",
     # Swords - ดาบ (14 ใบ)
-    "Ace of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/1/1a/RWS1909_-_Swords_01.jpeg"
-    ),
-    "Two of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/9/9e/RWS1909_-_Swords_02.jpeg"
-    ),
-    "Three of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/0/02/RWS1909_-_Swords_03.jpeg"
-    ),
-    "Four of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/b/bf/RWS1909_-_Swords_04.jpeg"
-    ),
-    "Five of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/2/23/RWS1909_-_Swords_05.jpeg"
-    ),
-    "Six of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/2/29/RWS1909_-_Swords_06.jpeg"
-    ),
-    "Seven of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/34/RWS1909_-_Swords_07.jpeg"
-    ),
-    "Eight of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/a/a7/RWS1909_-_Swords_08.jpeg"
-    ),
-    "Nine of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/2/2f/RWS1909_-_Swords_09.jpeg"
-    ),
-    "Ten of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/d/d4/RWS1909_-_Swords_10.jpeg"
-    ),
-    "Page of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/4/4c/RWS1909_-_Swords_11.jpeg"
-    ),
-    "Knight of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/b/b0/RWS1909_-_Swords_12.jpeg"
-    ),
-    "Queen of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/d/d4/RWS1909_-_Swords_13.jpeg"
-    ),
-    "King of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/33/RWS1909_-_Swords_14.jpeg"
-    ),
+    "Ace of Swords": BASE_URL + "swac.jpg",
+    "Two of Swords": BASE_URL + "sw02.jpg",
+    "Three of Swords": BASE_URL + "sw03.jpg",
+    "Four of Swords": BASE_URL + "sw04.jpg",
+    "Five of Swords": BASE_URL + "sw05.jpg",
+    "Six of Swords": BASE_URL + "sw06.jpg",
+    "Seven of Swords": BASE_URL + "sw07.jpg",
+    "Eight of Swords": BASE_URL + "sw08.jpg",
+    "Nine of Swords": BASE_URL + "sw09.jpg",
+    "Ten of Swords": BASE_URL + "sw10.jpg",
+    "Page of Swords": BASE_URL + "swpa.jpg",
+    "Knight of Swords": BASE_URL + "swkn.jpg",
+    "Queen of Swords": BASE_URL + "swqu.jpg",
+    "King of Swords": BASE_URL + "swki.jpg",
     # Pentacles - เหรียญ (14 ใบ)
-    "Ace of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/f/fd/RWS1909_-_Pentacles_01.jpeg"
-    ),
-    "Two of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/9/9f/RWS1909_-_Pentacles_02.jpeg"
-    ),
-    "Three of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/4/42/RWS1909_-_Pentacles_03.jpeg"
-    ),
-    "Four of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/35/RWS1909_-_Pentacles_04.jpeg"
-    ),
-    "Five of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/9/96/RWS1909_-_Pentacles_05.jpeg"
-    ),
-    "Six of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/a/a6/RWS1909_-_Pentacles_06.jpeg"
-    ),
-    "Seven of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/6/6a/RWS1909_-_Pentacles_07.jpeg"
-    ),
-    "Eight of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/4/49/RWS1909_-_Pentacles_08.jpeg"
-    ),
-    "Nine of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/f/f0/RWS1909_-_Pentacles_09.jpeg"
-    ),
-    "Ten of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/4/42/RWS1909_-_Pentacles_10.jpeg"
-    ),
-    "Page of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/e/ec/RWS1909_-_Pentacles_11.jpeg"
-    ),
-    "Knight of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/d/d5/RWS1909_-_Pentacles_12.jpeg"
-    ),
-    "Queen of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS1909_-_Pentacles_13.jpeg"
-    ),
-    "King of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/1/1c/RWS1909_-_Pentacles_14.jpeg"
-    ),
+    "Ace of Pentacles": BASE_URL + "peac.jpg",
+    "Two of Pentacles": BASE_URL + "pe02.jpg",
+    "Three of Pentacles": BASE_URL + "pe03.jpg",
+    "Four of Pentacles": BASE_URL + "pe04.jpg",
+    "Five of Pentacles": BASE_URL + "pe05.jpg",
+    "Six of Pentacles": BASE_URL + "pe06.jpg",
+    "Seven of Pentacles": BASE_URL + "pe07.jpg",
+    "Eight of Pentacles": BASE_URL + "pe08.jpg",
+    "Nine of Pentacles": BASE_URL + "pe09.jpg",
+    "Ten of Pentacles": BASE_URL + "pe10.jpg",
+    "Page of Pentacles": BASE_URL + "pepa.jpg",
+    "Knight of Pentacles": BASE_URL + "pekn.jpg",
+    "Queen of Pentacles": BASE_URL + "pequ.jpg",
+    "King of Pentacles": BASE_URL + "peki.jpg",
 }
 
 full_deck = list(TAROT_IMAGES.keys())
@@ -372,11 +217,10 @@ if st.session_state.drawn_3:
             f'<div class="card-box">'
             f'<div class="card-title">ใบที่ {i+1}</div>'
             f'<div class="card-sub">{card}</div>'
+            f'<img src="{img_url}" style="width:140px; border-radius:10px; border:1px solid #BA68C8; box-shadow:0 0 15px rgba(138,43,226,0.6);">'
             f"</div>",
             unsafe_allow_html=True,
         )
-        # ใช้คำสั่ง st.image ของ Streamlit โดยตรงเพื่อป้องกันภาพไม่ขึ้น
-        st.image(img_url, width=150)
 
     # ปุ่มเปิดไพ่เพิ่ม 2 ใบ จะแสดงต่อเมื่อเปิดไพ่ 3 ใบเรียบร้อยแล้วเท่านั้น
     st.write("---")
@@ -398,8 +242,8 @@ if st.session_state.drawn_2:
             f'<div class="card-box">'
             f'<div class="card-title">ใบเพิ่ม {i+1}</div>'
             f'<div class="card-sub">{card}</div>'
+            f'<img src="{img_url}" style="width:140px; border-radius:10px; border:1px solid #BA68C8; box-shadow:0 0 15px rgba(138,43,226,0.6);">'
             f"</div>",
             unsafe_allow_html=True,
         )
-        st.image(img_url, width=150)
         
