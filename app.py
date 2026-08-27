@@ -11,7 +11,6 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* พื้นหลังทั้งแอปเป็นโทนอวกาศ ลึกลับ */
     .stApp {
         background-color: #0D0814;
         background-image: 
@@ -24,7 +23,6 @@ st.markdown(
         color: #E0D5F5;
     }
     
-    /* แต่งหัวข้อหลักเรืองแสง */
     .main-title {
         text-align: center;
         font-size: 26px;
@@ -42,7 +40,6 @@ st.markdown(
         font-size: 15px;
     }
 
-    /* ปรับแต่งปุ่มกดสไตล์เวทมนตร์ */
     div.stButton > button {
         width: 100%;
         font-size: 18px;
@@ -62,14 +59,6 @@ st.markdown(
         border-color: #BA68C8 !important;
     }
 
-    /* ปรับแต่งการแสดงผลรูปภาพให้มีออร่า */
-    [data-testid="stImage"] img {
-        border-radius: 12px;
-        box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
-        border: 1px solid #6A1B9A;
-    }
-    
-    /* ปรับสีฟอนต์ส่วนอื่นๆ */
     h3 {
         color: #E1BEE7 !important;
     }
@@ -80,6 +69,38 @@ st.markdown(
 """,
     unsafe_allow_html=True,
 )
+
+# ฟังก์ชันสร้างการ์ดไพ่แบบเวทมนตร์ภายในแอป (ไม่เพิ่งเว็บภายนอก)
+def render_tarot_card(card_name):
+    svg_card = f"""
+    <div style="
+        width: 200px; 
+        height: 320px; 
+        background: linear-gradient(145deg, #2b1055, #7597de);
+        border: 3px solid #ffd700;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        margin: 10px 0;
+        text-align: center;
+        box-sizing: border-box;
+    ">
+        <div style="font-size: 24px;">✨ 🔮 ✨</div>
+        <div style="
+            font-size: 18px; 
+            font-weight: bold; 
+            color: #ffffff; 
+            text-shadow: 0 0 8px #000;
+            word-break: break-word;
+        ">{card_name}</div>
+        <div style="font-size: 24px;">🌙 ⭐ ☀️</div>
+    </div>
+    """
+    st.markdown(svg_card, unsafe_allow_html=True)
 
 # หัวข้อหลัก
 st.markdown(
@@ -137,11 +158,6 @@ ranks = [
 minor_arcana = [f"{rank} of {suit}" for suit in suits for rank in ranks]
 full_deck = major_arcana + minor_arcana
 
-# ลิงก์รูปภาพไพ่/เวทมนตร์จาก Unsplash CDN ที่ไม่มีวันโดนบล็อกและโหลดเร็ว
-TAROT_CARD_URL = (
-    "https://images.unsplash.com/photo-1635863138275-d9b33299680b?w=400&q=80"
-)
-
 st.write("---")
 
 col1, col2 = st.columns(2)
@@ -158,7 +174,7 @@ if btn_3_cards:
     st.write("---")
     for i, card in enumerate(drawn, 1):
         st.markdown(f"### ใบที่ {i}: **{card}**")
-        st.image(TAROT_CARD_URL, caption=card, width=220)
+        render_tarot_card(card)
         st.write("---")
 
 if btn_2_cards:
@@ -167,6 +183,6 @@ if btn_2_cards:
     st.write("---")
     for i, card in enumerate(drawn, 1):
         st.markdown(f"### ใบที่ขยายความเพิ่มเติม {i}: **{card}**")
-        st.image(TAROT_CARD_URL, caption=card, width=220)
+        render_tarot_card(card)
         st.write("---")
         
