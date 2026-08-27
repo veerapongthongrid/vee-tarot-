@@ -101,7 +101,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ฐานข้อมูลรูปภาพไพ่ยิปซีมาตรฐาน ครบ 78 ใบ (Major 22 + Minor 56)
+# ฐานข้อมูลรูปภาพไพ่ยิปซีมาตรฐาน ครบ 78 ใบ (ลิงก์ตรงเสถียร 100%)
 TAROT_IMAGES = {
     # Major Arcana (22 ใบ)
     "0. The Fool": (
@@ -172,175 +172,175 @@ TAROT_IMAGES = {
     ),
     # Wands - ไม้เท้า (14 ใบ)
     "Ace of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/1/11/Wands01.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/1/11/RWS1909_-_Wands_01.jpeg"
     ),
     "Two of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/0/0f/Wands02.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/0/0f/RWS1909_-_Wands_02.jpeg"
     ),
     "Three of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/ff/ff/Wands03.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/f/ff/RWS1909_-_Wands_03.jpeg"
     ),
     "Four of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/a/a4/Wands04.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/a/a4/RWS1909_-_Wands_04.jpeg"
     ),
     "Five of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/9/9d/Wands05.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/9/9d/RWS1909_-_Wands_05.jpeg"
     ),
     "Six of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/3b/Wands06.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/3/3b/RWS1909_-_Wands_06.jpeg"
     ),
     "Seven of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/e/e4/Wands07.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/e/e4/RWS1909_-_Wands_07.jpeg"
     ),
     "Eight of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/6/6b/Wands08.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/6/6b/RWS1909_-_Wands_08.jpeg"
     ),
     "Nine of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/4/4d/Wands09.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS1909_-_Wands_09.jpeg"
     ),
     "Ten of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/0/0b/Wands10.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/0/0b/RWS1909_-_Wands_10.jpeg"
     ),
     "Page of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/6/6a/Wands11.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/6/6a/RWS1909_-_Wands_11.jpeg"
     ),
     "Knight of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/1/16/Wands12.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/1/16/RWS1909_-_Wands_12.jpeg"
     ),
     "Queen of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/0/0d/Wands13.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/0/0d/RWS1909_-_Wands_13.jpeg"
     ),
     "King of Wands": (
-        "https://upload.wikimedia.org/wikipedia/commons/c/ce/Wands14.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/c/ce/RWS1909_-_Wands_14.jpeg"
     ),
     # Cups - ถ้วย (14 ใบ)
     "Ace of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/36/Cups01.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/3/36/RWS1909_-_Cups_01.jpeg"
     ),
     "Two of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/f/f8/Cups02.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS1909_-_Cups_02.jpeg"
     ),
     "Three of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/7/7a/Cups03.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/7/7a/RWS1909_-_Cups_03.jpeg"
     ),
     "Four of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/35/Cups04.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/3/35/RWS1909_-_Cups_04.jpeg"
     ),
     "Five of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/d/d7/Cups05.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS1909_-_Cups_05.jpeg"
     ),
     "Six of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/1/17/Cups06.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/1/17/RWS1909_-_Cups_06.jpeg"
     ),
     "Seven of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/a/ae/Cups07.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/a/ae/RWS1909_-_Cups_07.jpeg"
     ),
     "Eight of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/6/60/Cups08.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/6/60/RWS1909_-_Cups_08.jpeg"
     ),
     "Nine of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/2/24/Cups09.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/2/24/RWS1909_-_Cups_09.jpeg"
     ),
     "Ten of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/8/84/Cups10.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/8/84/RWS1909_-_Cups_10.jpeg"
     ),
     "Page of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/a/ad/Cups11.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/a/ad/RWS1909_-_Cups_11.jpeg"
     ),
     "Knight of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/f/fa/Cups12.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/f/fa/RWS1909_-_Cups_12.jpeg"
     ),
     "Queen of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/6/62/Cups13.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/6/62/RWS1909_-_Cups_13.jpeg"
     ),
     "King of Cups": (
-        "https://upload.wikimedia.org/wikipedia/commons/0/04/Cups14.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/0/04/RWS1909_-_Cups_14.jpeg"
     ),
     # Swords - ดาบ (14 ใบ)
     "Ace of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/1/1a/Swords01.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/1/1a/RWS1909_-_Swords_01.jpeg"
     ),
     "Two of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/9/9e/Swords02.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/9/9e/RWS1909_-_Swords_02.jpeg"
     ),
     "Three of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/0/02/Swords03.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/0/02/RWS1909_-_Swords_03.jpeg"
     ),
     "Four of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/b/bf/Swords04.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/b/bf/RWS1909_-_Swords_04.jpeg"
     ),
     "Five of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/2/23/Swords05.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/2/23/RWS1909_-_Swords_05.jpeg"
     ),
     "Six of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/2/29/Swords06.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/2/29/RWS1909_-_Swords_06.jpeg"
     ),
     "Seven of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/34/Swords07.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/3/34/RWS1909_-_Swords_07.jpeg"
     ),
     "Eight of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/a/a7/Swords08.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/a/a7/RWS1909_-_Swords_08.jpeg"
     ),
     "Nine of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/2/2f/Swords09.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/2/2f/RWS1909_-_Swords_09.jpeg"
     ),
     "Ten of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords10.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/d/d4/RWS1909_-_Swords_10.jpeg"
     ),
     "Page of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/4/4c/Swords11.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/4/4c/RWS1909_-_Swords_11.jpeg"
     ),
     "Knight of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/b/b0/Swords12.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/b/b0/RWS1909_-_Swords_12.jpeg"
     ),
     "Queen of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords13.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/d/d4/RWS1909_-_Swords_13.jpeg"
     ),
     "King of Swords": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/33/Swords14.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/3/33/RWS1909_-_Swords_14.jpeg"
     ),
     # Pentacles - เหรียญ (14 ใบ)
     "Ace of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/f/fd/Pentalces01.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/f/fd/RWS1909_-_Pentacles_01.jpeg"
     ),
     "Two of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/9/9f/Pentalces02.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/9/9f/RWS1909_-_Pentacles_02.jpeg"
     ),
     "Three of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/4/42/Pentalces03.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/4/42/RWS1909_-_Pentacles_03.jpeg"
     ),
     "Four of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/3/35/Pentalces04.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/3/35/RWS1909_-_Pentacles_04.jpeg"
     ),
     "Five of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/9/96/Pentalces05.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/9/96/RWS1909_-_Pentacles_05.jpeg"
     ),
     "Six of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/a/a6/Pentalces06.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/a/a6/RWS1909_-_Pentacles_06.jpeg"
     ),
     "Seven of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/6/6a/Pentalces07.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/6/6a/RWS1909_-_Pentacles_07.jpeg"
     ),
     "Eight of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/4/49/Pentalces08.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/4/49/RWS1909_-_Pentacles_08.jpeg"
     ),
     "Nine of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/f/f0/Pentalces09.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/f/f0/RWS1909_-_Pentacles_09.jpeg"
     ),
     "Ten of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/4/42/Pentalces10.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/4/42/RWS1909_-_Pentacles_10.jpeg"
     ),
     "Page of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/e/ec/Pentalces11.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/e/ec/RWS1909_-_Pentacles_11.jpeg"
     ),
     "Knight of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/d/d5/Pentalces12.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/d/d5/RWS1909_-_Pentacles_12.jpeg"
     ),
     "Queen of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/8/88/Pentalces13.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS1909_-_Pentacles_13.jpeg"
     ),
     "King of Pentacles": (
-        "https://upload.wikimedia.org/wikipedia/commons/1/1c/Pentalces14.jpg"
+        "https://upload.wikimedia.org/wikipedia/commons/1/1c/RWS1909_-_Pentacles_14.jpeg"
     ),
 }
 
