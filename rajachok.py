@@ -67,6 +67,45 @@ st.markdown(
         padding: 0 2px !important;
     }
 
+    /* 🎴 สไตล์การ์ดไพ่ออราเคิลทองคำ */
+    .oracle-card-box {
+        background: linear-gradient(145deg, #1F0833, #0D021A);
+        border: 2px solid #FFD700;
+        border-radius: 12px;
+        padding: 8px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3), inset 0 0 10px rgba(255, 215, 0, 0.15);
+        margin-bottom: 10px;
+    }
+    .card-header {
+        font-size: 11px;
+        font-weight: bold;
+        color: #FFD700;
+        border-bottom: 1px dashed #FFD700;
+        padding-bottom: 4px;
+        margin-bottom: 6px;
+    }
+    .card-img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 215, 0, 0.5);
+    }
+    .card-title {
+        font-size: 11px;
+        font-weight: bold;
+        color: #FFFFFF;
+        margin-top: 6px;
+        text-shadow: 0 0 5px #8A2BE2;
+    }
+    .card-meaning {
+        font-size: 9px;
+        color: #E1BEE7;
+        margin-top: 4px;
+        line-height: 1.2;
+    }
+
     .wheel-container { text-align: center; padding: 15px; }
     .magic-wheel { font-size: 60px; display: inline-block; animation: spin 0.8s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -76,29 +115,29 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 📍 ฐานข้อมูลไพ่ออราเคิลมงคลสไตล์ไทย-จีน (ภาพออกแบบพิเศษ ลิขสิทธิ์ 100%)
+# 📍 ฐานข้อมูลไพ่ออราเคิลมงคล
 RAJA_CHOK_CARDS = {
-    "มังกรทองบารมี (Golden Dragon)": {
+    "มังกรทองบารมี": {
         "image": "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&q=80",
         "meaning": "อำนาจ วาสนา สูงส่งด้วยยศถาบรรดาศักดิ์ ผู้ใหญ่เมตตาอุปถัมภ์",
     },
-    "ปี่เซียะคาบทรัพย์ (Pixiu Fortune)": {
+    "ปี่เซียะคาบทรัพย์": {
         "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80",
         "meaning": "โชคลาภการเงินหมุนเวียนดี กักเก็บทรัพย์สิน เงินทองไม่รั่วไหล",
     },
-    "เทพเจ้าไฉ่ซิ้งเอี๊ย (God of Wealth)": {
+    "เทพไฉ่ซิ้งเอี๊ย": {
         "image": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&q=80",
         "meaning": "ลาภลอยส้มหล่น ได้รับเงินก้อนโต การค้าขายเจริญรุ่งเรืองมั่งคั่ง",
     },
-    "ดอกบัวปัญญามงคล (Sacred Lotus)": {
+    "ดอกบัวปัญญามงคล": {
         "image": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&q=80",
         "meaning": "จิตใจสงบร่มเย็น เกิดปัญญาญาณ หลุดพ้นอุปสรรคปัญหาทั้งปวง",
     },
-    "พญานาคโชคโภคทรัพย์ (Naga Blessing)": {
+    "พญานาคโภคทรัพย์": {
         "image": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80",
         "meaning": "สายญาณบารมีหนุนนำ โชคลาภจากสายน้ำและสิ่งศักดิ์สิทธิ์ให้พร",
     },
-    "ดวงจันทร์กวักเสน่ห์ (Golden Moon)": {
+    "ดวงจันทร์กวักเสน่ห์": {
         "image": "https://images.unsplash.com/photo-1532693322450-2cb5c511067d?w=400&q=80",
         "meaning": "เมตตามหานิยม คนรักใคร่เอ็นดู ติดต่อเจรจาสิ่งใดก็สำเร็จสมปรารถนา",
     },
@@ -164,22 +203,14 @@ if st.session_state.drawn_raja:
         info = RAJA_CHOK_CARDS[name]
 
         with cols[i]:
+            # แสดงผลแบบกรอบไพ่ออราเคิลสีทองสำเร็จรูป
             st.markdown(
                 f"""
-                <div style="text-align: center; background: rgba(42, 8, 92, 0.7); padding: 4px; border-radius: 8px; border: 1px solid #FFD700; margin-bottom: 5px;">
-                    <div style="font-size: 11px; font-weight: bold; color: #FFD700;">ใบที่ {i+1}</div>
-                </div>
-            """,
-                unsafe_allow_html=True,
-            )
-
-            st.image(info["image"], use_container_width=True)
-
-            st.markdown(
-                f"""
-                <div style="text-align: center; background: rgba(42, 8, 92, 0.7); padding: 4px; border-radius: 8px; border: 1px solid #FFD700; margin-top: 5px;">
-                    <div style="font-size: 10px; font-weight: bold; color: #F3E5F5;">{name}</div>
-                    <div style="font-size: 9px; color: #E1BEE7; margin-top: 3px; line-height: 1.2;">{info['meaning']}</div>
+                <div class="oracle-card-box">
+                    <div class="card-header">ใบที่ {i+1}</div>
+                    <img src="{info['image']}" class="card-img">
+                    <div class="card-title">{name}</div>
+                    <div class="card-meaning">{info['meaning']}</div>
                 </div>
             """,
                 unsafe_allow_html=True,
