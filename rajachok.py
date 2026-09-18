@@ -3,7 +3,7 @@ import time
 import streamlit as st
 
 st.set_page_config(
-    page_title="เปิดไพ่พยากรณ์ โดยพี่หมอวีร์",
+    page_title="เปิดไพ่ออราเคิลพยากรณ์ โดยพี่หมอวีร์",
     page_icon="🔮",
     initial_sidebar_state="collapsed",
 )
@@ -11,8 +11,8 @@ st.set_page_config(
 st.markdown(
     """
     <head>
-        <meta property="og:title" content="เปิดไพ่พยากรณ์ โดยพี่หมอวีร์ 🔮✨">
-        <meta property="og:description" content="สุ่มเปิดไพ่รับคำทำนายและพลังบวกประจำวัน">
+        <meta property="og:title" content="เปิดไพ่ออราเคิลพยากรณ์ โดยพี่หมอวีร์ 🔮✨">
+        <meta property="og:description" content="สุ่มเปิดไพ่ออราเคิล รับคำทำนายและพลังมหาโชค">
     </head>
 """,
     unsafe_allow_html=True,
@@ -24,7 +24,7 @@ SOUND_REVEAL = (
 )
 
 
-# ฟังก์ชันเล่นเสียงรองรับ Android Chrome
+# ฟังก์ชันเล่นเสียงรองรับ Android / iOS
 def play_sound(sound_url):
     sound_html = f"""
         <script>
@@ -77,45 +77,45 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 📍 ฐานข้อมูลไพ่ภาพฟรี 100% (Wikimedia Commons - Public Domain)
-FREE_CARDS = {
-    "The Sun (ความสำเร็จสว่างไสว)": {
-        "image": "https://upload.wikimedia.org/wikipedia/commons/9/91/RWS_Tarot_19_Sun.jpg",
-        "meaning": "ความสำเร็จ ความสุข โชคลาภ และพลังบวกมหาศาล",
+# 📍 ฐานข้อมูลไพ่ออราเคิลโบราณ (Lenormand Oracle Cards - Public Domain 100%)
+ORACLE_CARDS = {
+    "The Sun (ไพ่ออราเคิลพระอาทิตย์)": {
+        "image": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Dondorf_Lenormand_31_Sun.jpg",
+        "meaning": "ความโชคดี ความสำเร็จ ความสว่างไสว และชัยชนะในทุกด้าน",
     },
-    "The World (สมบูรณ์พูนสุข)": {
-        "image": "https://upload.wikimedia.org/wikipedia/commons/ff/ff/RWS_Tarot_21_World.jpg",
-        "meaning": "ความสมบูรณ์แบบ การบรรลุเป้าหมาย โชคลาภครบทุกด้าน",
+    "The Clover (ไพ่ออราเคิลใบคลอเวอร์)": {
+        "image": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Dondorf_Lenormand_02_Clover.jpg",
+        "meaning": "โชคลาภฟลุกๆ ส้มหล่น โอกาสดี และความสุขเล็กๆ ที่ไม่คาดฝัน",
     },
-    "Wheel of Fortune (กงล้อแห่งโชค)": {
-        "image": "https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg",
-        "meaning": "โชคลาภส้มหล่น จังหวะชีวิตเปลี่ยนไปในทางที่ดีขึ้น",
+    "The Ring (ไพ่ออราเคิลแหวนมงคล)": {
+        "image": "https://upload.wikimedia.org/wikipedia/commons/7/75/Dondorf_Lenormand_25_Ring.jpg",
+        "meaning": "สัญญา พันธมิตร การลงเอย ความมั่นคง และข้อตกลงที่ประสบผลสำเร็จ",
     },
-    "The Star (ความหวังและวาสนา)": {
-        "image": "https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_17_Star.jpg",
-        "meaning": "ความสงบ ร่มเย็น ได้รับโอกาสใหม่ๆ มีโชคดีเข้ามา",
+    "The Star (ไพ่ออราเคิลดวงดาวนำโชค)": {
+        "image": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Dondorf_Lenormand_16_Stars.jpg",
+        "meaning": "ความหวัง ความราบรื่น การได้รับการสนับสนุน และเส้นทางชีวิตที่สดใส",
     },
-    "The Empress (โภคทรัพย์บารมี)": {
-        "image": "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg",
-        "meaning": "ความอุดมสมบูรณ์ ทรัพย์สินเงินทอง และความเจริญรุ่งเรือง",
+    "The Key (ไพ่ออราเคิลลูกกุญแจ)": {
+        "image": "https://upload.wikimedia.org/wikipedia/commons/7/78/Dondorf_Lenormand_33_Key.jpg",
+        "meaning": "การไขทางออก ทางสว่าง ความสำเร็จที่แน่นอน และการเปิดประตูสู่โชคลาภ",
     },
-    "The Magician (ปัญญาปาฏิหาริย์)": {
-        "image": "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg",
-        "meaning": "ความฉลาดหลักแหลม มีพรสวรรค์ สร้างโชคด้วยตัวเอง",
+    "The Tree (ไพ่ออราเคิลต้นไม้แห่งชีวิต)": {
+        "image": "https://upload.wikimedia.org/wikipedia/commons/2/23/Dondorf_Lenormand_05_Tree.jpg",
+        "meaning": "ความงอกงาม สุขภาพที่แข็งแรง ความมั่นคง และการเติบโตอย่างยั่งยืน",
     },
 }
 
-card_names = list(FREE_CARDS.keys())
+card_names = list(ORACLE_CARDS.keys())
 
 if "drawn_cards" not in st.session_state:
     st.session_state.drawn_cards = None
 
 st.markdown(
-    '<div class="main-title">🔮 ✨ เปิดไพ่พยากรณ์ โดยพี่หมอวีร์ ✨ 🔮</div>',
+    '<div class="main-title">🔮 ✨ เปิดไพ่ออราเคิล โดยพี่หมอวีร์ ✨ 🔮</div>',
     unsafe_allow_html=True,
 )
 st.markdown(
-    '<div class="sub-text">🌌 ตั้งจิตอธิษฐาน เลือกเปิดไพ่รับคำทำนาย 🌌</div>',
+    '<div class="sub-text">🌌 ตั้งจิตอธิษฐาน เลือกเปิดไพ่ออราเคิลรับคำทำนาย 🌌</div>',
     unsafe_allow_html=True,
 )
 
@@ -143,7 +143,7 @@ if num_to_draw > 0:
         """
         <div class="wheel-container">
             <div class="magic-wheel">☸️</div>
-            <div class="wheel-text">🔮 กำลังสุ่มเปิดไพ่... 🔮</div>
+            <div class="wheel-text">🔮 กำลังสุ่มเปิดไพ่ออราเคิล... 🔮</div>
         </div>
     """,
         unsafe_allow_html=True,
@@ -156,13 +156,13 @@ if num_to_draw > 0:
     play_sound(SOUND_REVEAL)
 
 if st.session_state.drawn_cards:
-    st.markdown("##### 🎴 ผลการเปิดไพ่ของคุณ")
+    st.markdown("##### 🎴 ผลการเปิดไพ่ออราเคิลของคุณ")
 
     card_count = len(st.session_state.drawn_cards)
     cols = st.columns(card_count)
 
     for i, name in enumerate(st.session_state.drawn_cards):
-        info = FREE_CARDS[name]
+        info = ORACLE_CARDS[name]
 
         with cols[i]:
             st.markdown(
