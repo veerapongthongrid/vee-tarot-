@@ -3,16 +3,16 @@ import time
 import streamlit as st
 
 st.set_page_config(
-    page_title="เปิดไพ่ออราเคิลราชาโชค โดยพี่หมอวีร์",
-    page_icon="👑",
+    page_title="ไพ่ออราเคิลสาส์นศักดิ์สิทธิ์ โดยพี่หมอวีร์",
+    page_icon="🔮",
     initial_sidebar_state="collapsed",
 )
 
 st.markdown(
     """
     <head>
-        <meta property="og:title" content="เปิดไพ่ออราเคิลราชาโชค โดยพี่หมอวีร์ 👑✨">
-        <meta property="og:description" content="สุ่มเปิดไพ่ออราเคิลมงคล รับพลังมหาโชค มหาลาภ และบารมี">
+        <meta property="og:title" content="ไพ่ออราเคิลสาส์นศักดิ์สิทธิ์ โดยพี่หมอวีร์ 🔮✨">
+        <meta property="og:description" content="สุ่มเปิดไพ่ออราเคิลรับสาส์นจากสิ่งศักดิ์สิทธิ์ เสริมพลังคำทำนายไพ่ทาโรต์">
     </head>
 """,
     unsafe_allow_html=True,
@@ -99,7 +99,7 @@ st.markdown(
         font-size: 8px;
         color: #E1BEE7;
         margin-top: 2px;
-        line-height: 1.1;
+        line-height: 1.2;
     }
 
     .wheel-container { text-align: center; padding: 15px; }
@@ -111,45 +111,69 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 📍 ฐานข้อมูลรูปภาพที่ใช้ CDN เสถียรสูง ดึงภาพขึ้นแน่นอน 100%
-RAJA_CHOK_CARDS = {
-    "มังกรทองบารมี": {
+# 📍 ฐานข้อมูล 12 สาส์นศักดิ์สิทธิ์ (สุ่มเปิดเสริมคู่กับไพ่ทาโรต์)
+DIVINE_ORACLE_CARDS = {
+    "1. สาส์นแห่งการรอคอย": {
         "image": "https://picsum.photos/id/1059/300/450",
-        "meaning": "อำนาจ วาสนา สูงส่งด้วยยศถาบรรดาศักดิ์ ผู้ใหญ่เมตตาอุปถัมภ์",
+        "meaning": "ทุกอย่างมีเวลาของมัน ช้าหน่อยแต่ชัวร์ อย่าเพิ่งใจร้อน สิ่งดีๆ กำลังจัดสรร",
     },
-    "ปี่เซียะคาบทรัพย์": {
+    "2. สาส์นแห่งการปล่อยวาง": {
         "image": "https://picsum.photos/id/1062/300/450",
-        "meaning": "โชคลาภการเงินหมุนเวียนดี กักเก็บทรัพย์สิน เงินทองไม่รั่วไหล",
+        "meaning": "ปล่อยความกังวลออกไป ถอยออกมาหนึ่งก้าว ยิ่งยึดติดยิ่งเหนื่อย ให้จักรวาลดูแล",
     },
-    "เทพไฉ่ซิ้งเอี๊ย": {
+    "3. สาส์นแห่งการปกป้อง": {
         "image": "https://picsum.photos/id/1069/300/450",
-        "meaning": "ลาภลอยส้มหล่น ได้รับเงินก้อนโต การค้าขายเจริญรุ่งเรืองมั่งคั่ง",
+        "meaning": "สิ่งศักดิ์สิทธิ์กำลังคุ้มครองคุณ ปลอดภัยจากภยันตรายและคนคิดร้าย แน่นอน",
     },
-    "ดอกบัวปัญญามงคล": {
+    "4. สาส์นแห่งปัญญาญาณ": {
         "image": "https://picsum.photos/id/1074/300/450",
-        "meaning": "จิตใจสงบร่มเย็น เกิดปัญญาญาณ หลุดพ้นอุปสรรคปัญหาทั้งปวง",
+        "meaning": "เชื่อในสัญชาตญาณและเสียงข้างในจิตใจ คำตอบที่คุณตามหาอยู่ในตัวคุณเอง",
     },
-    "พญานาคโภคทรัพย์": {
+    "5. สาส์นแห่งโชคอุปถัมภ์": {
         "image": "https://picsum.photos/id/1084/300/450",
-        "meaning": "สายญาณบารมีหนุนนำ โชคลาภจากสายน้ำและสิ่งศักดิ์สิทธิ์ให้พร",
+        "meaning": "เทวดาพร้อมอวยพร เปิดรับโชคลาภและการช่วยเหลือจากผู้ใหญ่/สิ่งศักดิ์สิทธิ์",
     },
-    "ดวงจันทร์กวักเสน่ห์": {
-        "image": "https://images.unsplash.com/photo-1532693322450-2cb5c511067d?w=400&q=80",
-        "meaning": "เมตตามหานิยม คนรักใคร่เอ็นดู ติดต่อเจรจาสิ่งใดก็สำเร็จสมปรารถนา",
+    "6. สาส์นแห่งการเยียวยา": {
+        "image": "https://picsum.photos/id/1067/300/450",
+        "meaning": "พักผ่อนใจและกาย บาดแผลในอดีตกำลังได้รับการฟื้นฟู ชาร์จพลังแล้วเริ่มใหม่",
+    },
+    "7. สาส์นแห่งทางสว่าง": {
+        "image": "https://picsum.photos/id/1058/300/450",
+        "meaning": "อุปสรรคหมอกควันกำลังจะหายไป ทางออกที่ชัดเจนกำลังเปิดให้คุณเดินต่อ",
+    },
+    "8. สาส์นแห่งผลบุญ": {
+        "image": "https://picsum.photos/id/1039/300/450",
+        "meaning": "ความดีและบุญกุศลที่เคยทำไว้นานแล้ว กำลังส่งผลเป็นโชคลาภและความสำเร็จ",
+    },
+    "9. สาส์นแห่งความกล้าหาญ": {
+        "image": "https://picsum.photos/id/1043/300/450",
+        "meaning": "อย่ากล้ว จงก้าวข้ามความขี้กลัว คุณมีความแข็งแกร่งและพลังชนะทุกอุปสรรค",
+    },
+    "10. สาส์นแห่งความสมดุล": {
+        "image": "https://picsum.photos/id/1048/300/450",
+        "meaning": "ปรับสมดุลชีวิต งาน ความรัก และการพักผ่อน ตึงไปก็ขาด หย่อนไปก็ไม่โต",
+    },
+    "11. สาส์นแห่งโอกาสใหม่": {
+        "image": "https://picsum.photos/id/1050/300/450",
+        "meaning": "ประตูบานเก่าปิด ประตูบานใหม่ใหญ่กว่ากำลังเปิด เตรียมพร้อมรับสิ่งใหม่",
+    },
+    "12. สาส์นแห่งความสงบสุข": {
+        "image": "https://picsum.photos/id/1053/300/450",
+        "meaning": "ความอุ่นใจ ชัยชนะที่นุ่มนวล ชีวิตกำลังเข้าสู่ช่วงแห่งความสงบและเปี่ยมสุข",
     },
 }
 
-card_names = list(RAJA_CHOK_CARDS.keys())
+card_names = list(DIVINE_ORACLE_CARDS.keys())
 
-if "drawn_raja" not in st.session_state:
-    st.session_state.drawn_raja = None
+if "drawn_divine" not in st.session_state:
+    st.session_state.drawn_divine = None
 
 st.markdown(
-    '<div class="main-title">👑 ✨ เปิดไพ่ออราเคิลราชาโชค โดยพี่หมอวีร์ ✨ 👑</div>',
+    '<div class="main-title">🔮 ✨ สาส์นศักดิ์สิทธิ์ โดยพี่หมอวีร์ ✨ 🔮</div>',
     unsafe_allow_html=True,
 )
 st.markdown(
-    '<div class="sub-text">🌌 ตั้งจิตอธิษฐาน เลือกเปิดไพ่ออราเคิลรับพลังมหาโชค 🌌</div>',
+    '<div class="sub-text">🌌 สิ่งศักดิ์สิทธิ์อยากบอกอะไรกับคุณในวันนี้? 🌌</div>',
     unsafe_allow_html=True,
 )
 
@@ -161,13 +185,13 @@ col_b1, col_b2, col_b3 = st.columns(3)
 
 num_to_draw = 0
 with col_b1:
-    if st.button("🔮 เปิด 1 ใบ", use_container_width=True):
+    if st.button("🔮 รับ 1 สาส์น", use_container_width=True):
         num_to_draw = 1
 with col_b2:
-    if st.button("✨ เปิด 2 ใบ", use_container_width=True):
+    if st.button("✨ รับ 2 สาส์น", use_container_width=True):
         num_to_draw = 2
 with col_b3:
-    if st.button("👑 เปิด 3 ใบ", use_container_width=True):
+    if st.button("👑 รับ 3 สาส์น", use_container_width=True):
         num_to_draw = 3
 
 if num_to_draw > 0:
@@ -177,7 +201,7 @@ if num_to_draw > 0:
         """
         <div class="wheel-container">
             <div class="magic-wheel">☸️</div>
-            <div class="wheel-text">👑 กำลังสุ่มเปิดไพ่ออราเคิลมงคล... 👑</div>
+            <div class="wheel-text">🔮 กำลังเชื่อมต่อสาส์นศักดิ์สิทธิ์... 🔮</div>
         </div>
     """,
         unsafe_allow_html=True,
@@ -186,29 +210,26 @@ if num_to_draw > 0:
     time.sleep(1.8)
     wheel_placeholder.empty()
 
-    st.session_state.drawn_raja = random.sample(card_names, num_to_draw)
+    st.session_state.drawn_divine = random.sample(card_names, num_to_draw)
     play_sound(SOUND_REVEAL)
 
-if st.session_state.drawn_raja:
-    st.markdown("##### 🎴 ผลการเปิดไพ่ออราเคิลของคุณ")
+if st.session_state.drawn_divine:
+    st.markdown("##### 🎴 สาส์นที่สิ่งศักดิ์สิทธิ์ประทานให้คุณ")
 
-    card_count = len(st.session_state.drawn_raja)
+    card_count = len(st.session_state.drawn_divine)
     cols = st.columns(card_count)
 
-    for i, name in enumerate(st.session_state.drawn_raja):
-        info = RAJA_CHOK_CARDS[name]
+    for i, name in enumerate(st.session_state.drawn_divine):
+        info = DIVINE_ORACLE_CARDS[name]
 
         with cols[i]:
-            # ส่วนหัวการ์ด
             st.markdown(
                 f'<div class="card-top">ใบที่ {i+1}</div>',
                 unsafe_allow_html=True,
             )
 
-            # แสดงผลรูปภาพผ่าน st.image ของ Streamlit โดยตรง
             st.image(info["image"], use_container_width=True)
 
-            # ส่วนท้ายการ์ดพร้อมคำทำนาย
             st.markdown(
                 f"""
                 <div class="card-bottom">
@@ -220,4 +241,5 @@ if st.session_state.drawn_raja:
             )
 
     st.write("---")
+
     
