@@ -174,8 +174,8 @@ if st.session_state.drawn_cards:
                 unsafe_allow_html=True,
             )
 
-            # ใช้คำสั่ง st.image ของ Streamlit โดยตรงเพื่อป้องกันภาพไม่ขึ้น
-            st.image(info["image"], use_column_width=True)
+            # แก้ไขใช้ use_container_width=True ให้รองรับ Streamlit เวอร์ชันปัจจุบัน
+            st.image(info["image"], use_container_width=True)
 
             st.markdown(
                 f"""
@@ -188,4 +188,3 @@ if st.session_state.drawn_cards:
             )
 
     st.write("---")
-    
