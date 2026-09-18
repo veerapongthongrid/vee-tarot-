@@ -77,30 +77,30 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 📍 ฐานข้อมูลไพ่ออราเคิลโบราณ (Lenormand Oracle Cards - Public Domain 100%)
+# 📍 ฐานข้อมูลไพ่ออราเคิลโบราณ (ดึงผ่าน CDN ที่เสถียร ไร้ปัญหาภาพเสีย)
 ORACLE_CARDS = {
     "The Sun (ไพ่ออราเคิลพระอาทิตย์)": {
-        "image": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Dondorf_Lenormand_31_Sun.jpg",
+        "image": "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&q=80",
         "meaning": "ความโชคดี ความสำเร็จ ความสว่างไสว และชัยชนะในทุกด้าน",
     },
     "The Clover (ไพ่ออราเคิลใบคลอเวอร์)": {
-        "image": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Dondorf_Lenormand_02_Clover.jpg",
+        "image": "https://images.unsplash.com/photo-1592417817098-8f3d6ef23a85?w=400&q=80",
         "meaning": "โชคลาภฟลุกๆ ส้มหล่น โอกาสดี และความสุขเล็กๆ ที่ไม่คาดฝัน",
     },
     "The Ring (ไพ่ออราเคิลแหวนมงคล)": {
-        "image": "https://upload.wikimedia.org/wikipedia/commons/7/75/Dondorf_Lenormand_25_Ring.jpg",
+        "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80",
         "meaning": "สัญญา พันธมิตร การลงเอย ความมั่นคง และข้อตกลงที่ประสบผลสำเร็จ",
     },
     "The Star (ไพ่ออราเคิลดวงดาวนำโชค)": {
-        "image": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Dondorf_Lenormand_16_Stars.jpg",
+        "image": "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=400&q=80",
         "meaning": "ความหวัง ความราบรื่น การได้รับการสนับสนุน และเส้นทางชีวิตที่สดใส",
     },
     "The Key (ไพ่ออราเคิลลูกกุญแจ)": {
-        "image": "https://upload.wikimedia.org/wikipedia/commons/7/78/Dondorf_Lenormand_33_Key.jpg",
+        "image": "https://images.unsplash.com/photo-1582139329536-e7284fece509?w=400&q=80",
         "meaning": "การไขทางออก ทางสว่าง ความสำเร็จที่แน่นอน และการเปิดประตูสู่โชคลาภ",
     },
     "The Tree (ไพ่ออราเคิลต้นไม้แห่งชีวิต)": {
-        "image": "https://upload.wikimedia.org/wikipedia/commons/2/23/Dondorf_Lenormand_05_Tree.jpg",
+        "image": "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=400&q=80",
         "meaning": "ความงอกงาม สุขภาพที่แข็งแรง ความมั่นคง และการเติบโตอย่างยั่งยืน",
     },
 }
@@ -167,10 +167,20 @@ if st.session_state.drawn_cards:
         with cols[i]:
             st.markdown(
                 f"""
-                <div style="text-align: center; background: rgba(42, 8, 92, 0.7); padding: 6px; border-radius: 8px; border: 1px solid #FFD700;">
+                <div style="text-align: center; background: rgba(42, 8, 92, 0.7); padding: 4px; border-radius: 8px; border: 1px solid #FFD700; margin-bottom: 5px;">
                     <div style="font-size: 11px; font-weight: bold; color: #FFD700; margin-bottom: 3px;">ใบที่ {i+1}</div>
-                    <img src="{info['image']}" style="width: 100%; border-radius: 6px; border: 1px solid #FFD700;">
-                    <div style="font-size: 10px; font-weight: bold; color: #F3E5F5; margin-top: 5px;">{name}</div>
+                </div>
+            """,
+                unsafe_allow_html=True,
+            )
+
+            # ใช้คำสั่ง st.image ของ Streamlit โดยตรงเพื่อป้องกันภาพไม่ขึ้น
+            st.image(info["image"], use_column_width=True)
+
+            st.markdown(
+                f"""
+                <div style="text-align: center; background: rgba(42, 8, 92, 0.7); padding: 4px; border-radius: 8px; border: 1px solid #FFD700; margin-top: 5px;">
+                    <div style="font-size: 10px; font-weight: bold; color: #F3E5F5;">{name}</div>
                     <div style="font-size: 9px; color: #E1BEE7; margin-top: 3px; line-height: 1.2;">{info['meaning']}</div>
                 </div>
             """,
