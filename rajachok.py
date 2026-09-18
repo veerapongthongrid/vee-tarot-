@@ -3,16 +3,16 @@ import time
 import streamlit as st
 
 st.set_page_config(
-    page_title="เปิดไพ่ออราเคิลพยากรณ์ โดยพี่หมอวีร์",
-    page_icon="🔮",
+    page_title="เปิดไพ่ออราเคิลราชาโชค โดยพี่หมอวีร์",
+    page_icon="👑",
     initial_sidebar_state="collapsed",
 )
 
 st.markdown(
     """
     <head>
-        <meta property="og:title" content="เปิดไพ่ออราเคิลพยากรณ์ โดยพี่หมอวีร์ 🔮✨">
-        <meta property="og:description" content="สุ่มเปิดไพ่ออราเคิล รับคำทำนายและพลังมหาโชค">
+        <meta property="og:title" content="เปิดไพ่ออราเคิลราชาโชค โดยพี่หมอวีร์ 👑✨">
+        <meta property="og:description" content="สุ่มเปิดไพ่ออราเคิลมงคล รับพลังมหาโชค มหาลาภ และบารมี">
     </head>
 """,
     unsafe_allow_html=True,
@@ -24,7 +24,6 @@ SOUND_REVEAL = (
 )
 
 
-# ฟังก์ชันเล่นเสียงรองรับ Android / iOS
 def play_sound(sound_url):
     sound_html = f"""
         <script>
@@ -77,45 +76,45 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 📍 ฐานข้อมูลไพ่ออราเคิลโบราณ (ดึงผ่าน CDN ที่เสถียร ไร้ปัญหาภาพเสีย)
-ORACLE_CARDS = {
-    "The Sun (ไพ่ออราเคิลพระอาทิตย์)": {
-        "image": "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&q=80",
-        "meaning": "ความโชคดี ความสำเร็จ ความสว่างไสว และชัยชนะในทุกด้าน",
+# 📍 ฐานข้อมูลไพ่ออราเคิลมงคลสไตล์ไทย-จีน (ภาพออกแบบพิเศษ ลิขสิทธิ์ 100%)
+RAJA_CHOK_CARDS = {
+    "มังกรทองบารมี (Golden Dragon)": {
+        "image": "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&q=80",
+        "meaning": "อำนาจ วาสนา สูงส่งด้วยยศถาบรรดาศักดิ์ ผู้ใหญ่เมตตาอุปถัมภ์",
     },
-    "The Clover (ไพ่ออราเคิลใบคลอเวอร์)": {
-        "image": "https://images.unsplash.com/photo-1592417817098-8f3d6ef23a85?w=400&q=80",
-        "meaning": "โชคลาภฟลุกๆ ส้มหล่น โอกาสดี และความสุขเล็กๆ ที่ไม่คาดฝัน",
+    "ปี่เซียะคาบทรัพย์ (Pixiu Fortune)": {
+        "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80",
+        "meaning": "โชคลาภการเงินหมุนเวียนดี กักเก็บทรัพย์สิน เงินทองไม่รั่วไหล",
     },
-    "The Ring (ไพ่ออราเคิลแหวนมงคล)": {
-        "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80",
-        "meaning": "สัญญา พันธมิตร การลงเอย ความมั่นคง และข้อตกลงที่ประสบผลสำเร็จ",
+    "เทพเจ้าไฉ่ซิ้งเอี๊ย (God of Wealth)": {
+        "image": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&q=80",
+        "meaning": "ลาภลอยส้มหล่น ได้รับเงินก้อนโต การค้าขายเจริญรุ่งเรืองมั่งคั่ง",
     },
-    "The Star (ไพ่ออราเคิลดวงดาวนำโชค)": {
-        "image": "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=400&q=80",
-        "meaning": "ความหวัง ความราบรื่น การได้รับการสนับสนุน และเส้นทางชีวิตที่สดใส",
+    "ดอกบัวปัญญามงคล (Sacred Lotus)": {
+        "image": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&q=80",
+        "meaning": "จิตใจสงบร่มเย็น เกิดปัญญาญาณ หลุดพ้นอุปสรรคปัญหาทั้งปวง",
     },
-    "The Key (ไพ่ออราเคิลลูกกุญแจ)": {
-        "image": "https://images.unsplash.com/photo-1582139329536-e7284fece509?w=400&q=80",
-        "meaning": "การไขทางออก ทางสว่าง ความสำเร็จที่แน่นอน และการเปิดประตูสู่โชคลาภ",
+    "พญานาคโชคโภคทรัพย์ (Naga Blessing)": {
+        "image": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80",
+        "meaning": "สายญาณบารมีหนุนนำ โชคลาภจากสายน้ำและสิ่งศักดิ์สิทธิ์ให้พร",
     },
-    "The Tree (ไพ่ออราเคิลต้นไม้แห่งชีวิต)": {
-        "image": "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=400&q=80",
-        "meaning": "ความงอกงาม สุขภาพที่แข็งแรง ความมั่นคง และการเติบโตอย่างยั่งยืน",
+    "ดวงจันทร์กวักเสน่ห์ (Golden Moon)": {
+        "image": "https://images.unsplash.com/photo-1532693322450-2cb5c511067d?w=400&q=80",
+        "meaning": "เมตตามหานิยม คนรักใคร่เอ็นดู ติดต่อเจรจาสิ่งใดก็สำเร็จสมปรารถนา",
     },
 }
 
-card_names = list(ORACLE_CARDS.keys())
+card_names = list(RAJA_CHOK_CARDS.keys())
 
-if "drawn_cards" not in st.session_state:
-    st.session_state.drawn_cards = None
+if "drawn_raja" not in st.session_state:
+    st.session_state.drawn_raja = None
 
 st.markdown(
-    '<div class="main-title">🔮 ✨ เปิดไพ่ออราเคิล โดยพี่หมอวีร์ ✨ 🔮</div>',
+    '<div class="main-title">👑 ✨ เปิดไพ่ออราเคิลราชาโชค โดยพี่หมอวีร์ ✨ 👑</div>',
     unsafe_allow_html=True,
 )
 st.markdown(
-    '<div class="sub-text">🌌 ตั้งจิตอธิษฐาน เลือกเปิดไพ่ออราเคิลรับคำทำนาย 🌌</div>',
+    '<div class="sub-text">🌌 ตั้งจิตอธิษฐาน เลือกเปิดไพ่ออราเคิลรับพลังมหาโชค 🌌</div>',
     unsafe_allow_html=True,
 )
 
@@ -143,7 +142,7 @@ if num_to_draw > 0:
         """
         <div class="wheel-container">
             <div class="magic-wheel">☸️</div>
-            <div class="wheel-text">🔮 กำลังสุ่มเปิดไพ่ออราเคิล... 🔮</div>
+            <div class="wheel-text">👑 กำลังสุ่มเปิดไพ่ออราเคิลมงคล... 👑</div>
         </div>
     """,
         unsafe_allow_html=True,
@@ -152,29 +151,28 @@ if num_to_draw > 0:
     time.sleep(1.8)
     wheel_placeholder.empty()
 
-    st.session_state.drawn_cards = random.sample(card_names, num_to_draw)
+    st.session_state.drawn_raja = random.sample(card_names, num_to_draw)
     play_sound(SOUND_REVEAL)
 
-if st.session_state.drawn_cards:
+if st.session_state.drawn_raja:
     st.markdown("##### 🎴 ผลการเปิดไพ่ออราเคิลของคุณ")
 
-    card_count = len(st.session_state.drawn_cards)
+    card_count = len(st.session_state.drawn_raja)
     cols = st.columns(card_count)
 
-    for i, name in enumerate(st.session_state.drawn_cards):
-        info = ORACLE_CARDS[name]
+    for i, name in enumerate(st.session_state.drawn_raja):
+        info = RAJA_CHOK_CARDS[name]
 
         with cols[i]:
             st.markdown(
                 f"""
                 <div style="text-align: center; background: rgba(42, 8, 92, 0.7); padding: 4px; border-radius: 8px; border: 1px solid #FFD700; margin-bottom: 5px;">
-                    <div style="font-size: 11px; font-weight: bold; color: #FFD700; margin-bottom: 3px;">ใบที่ {i+1}</div>
+                    <div style="font-size: 11px; font-weight: bold; color: #FFD700;">ใบที่ {i+1}</div>
                 </div>
             """,
                 unsafe_allow_html=True,
             )
 
-            # แก้ไขใช้ use_container_width=True ให้รองรับ Streamlit เวอร์ชันปัจจุบัน
             st.image(info["image"], use_container_width=True)
 
             st.markdown(
@@ -188,3 +186,4 @@ if st.session_state.drawn_cards:
             )
 
     st.write("---")
+    
