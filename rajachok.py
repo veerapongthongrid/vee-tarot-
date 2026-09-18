@@ -67,43 +67,39 @@ st.markdown(
         padding: 0 2px !important;
     }
 
-    /* 🎴 สไตล์การ์ดไพ่ออราเคิลทองคำ */
-    .oracle-card-box {
-        background: linear-gradient(145deg, #1F0833, #0D021A);
+    .card-top {
+        background: #1F0833;
         border: 2px solid #FFD700;
-        border-radius: 12px;
-        padding: 8px;
+        border-bottom: none;
+        border-radius: 10px 10px 0 0;
+        padding: 4px;
         text-align: center;
-        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3), inset 0 0 10px rgba(255, 215, 0, 0.15);
-        margin-bottom: 10px;
-    }
-    .card-header {
         font-size: 11px;
         font-weight: bold;
         color: #FFD700;
-        border-bottom: 1px dashed #FFD700;
-        padding-bottom: 4px;
-        margin-bottom: 6px;
     }
-    .card-img {
-        width: 100%;
-        height: 140px;
-        object-fit: cover;
-        border-radius: 6px;
-        border: 1px solid rgba(255, 215, 0, 0.5);
+    
+    .card-bottom {
+        background: #1F0833;
+        border: 2px solid #FFD700;
+        border-top: none;
+        border-radius: 0 0 10px 10px;
+        padding: 6px 4px;
+        text-align: center;
+        margin-bottom: 10px;
     }
+    
     .card-title {
-        font-size: 11px;
+        font-size: 10px;
         font-weight: bold;
         color: #FFFFFF;
-        margin-top: 6px;
-        text-shadow: 0 0 5px #8A2BE2;
     }
+    
     .card-meaning {
-        font-size: 9px;
+        font-size: 8px;
         color: #E1BEE7;
-        margin-top: 4px;
-        line-height: 1.2;
+        margin-top: 2px;
+        line-height: 1.1;
     }
 
     .wheel-container { text-align: center; padding: 15px; }
@@ -115,26 +111,26 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 📍 ฐานข้อมูลไพ่ออราเคิลมงคล
+# 📍 ฐานข้อมูลรูปภาพที่ใช้ CDN เสถียรสูง ดึงภาพขึ้นแน่นอน 100%
 RAJA_CHOK_CARDS = {
     "มังกรทองบารมี": {
-        "image": "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&q=80",
+        "image": "https://picsum.photos/id/1059/300/450",
         "meaning": "อำนาจ วาสนา สูงส่งด้วยยศถาบรรดาศักดิ์ ผู้ใหญ่เมตตาอุปถัมภ์",
     },
     "ปี่เซียะคาบทรัพย์": {
-        "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80",
+        "image": "https://picsum.photos/id/1062/300/450",
         "meaning": "โชคลาภการเงินหมุนเวียนดี กักเก็บทรัพย์สิน เงินทองไม่รั่วไหล",
     },
     "เทพไฉ่ซิ้งเอี๊ย": {
-        "image": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&q=80",
+        "image": "https://picsum.photos/id/1069/300/450",
         "meaning": "ลาภลอยส้มหล่น ได้รับเงินก้อนโต การค้าขายเจริญรุ่งเรืองมั่งคั่ง",
     },
     "ดอกบัวปัญญามงคล": {
-        "image": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&q=80",
+        "image": "https://picsum.photos/id/1074/300/450",
         "meaning": "จิตใจสงบร่มเย็น เกิดปัญญาญาณ หลุดพ้นอุปสรรคปัญหาทั้งปวง",
     },
     "พญานาคโภคทรัพย์": {
-        "image": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80",
+        "image": "https://picsum.photos/id/1084/300/450",
         "meaning": "สายญาณบารมีหนุนนำ โชคลาภจากสายน้ำและสิ่งศักดิ์สิทธิ์ให้พร",
     },
     "ดวงจันทร์กวักเสน่ห์": {
@@ -203,12 +199,19 @@ if st.session_state.drawn_raja:
         info = RAJA_CHOK_CARDS[name]
 
         with cols[i]:
-            # แสดงผลแบบกรอบไพ่ออราเคิลสีทองสำเร็จรูป
+            # ส่วนหัวการ์ด
+            st.markdown(
+                f'<div class="card-top">ใบที่ {i+1}</div>',
+                unsafe_allow_html=True,
+            )
+
+            # แสดงผลรูปภาพผ่าน st.image ของ Streamlit โดยตรง
+            st.image(info["image"], use_container_width=True)
+
+            # ส่วนท้ายการ์ดพร้อมคำทำนาย
             st.markdown(
                 f"""
-                <div class="oracle-card-box">
-                    <div class="card-header">ใบที่ {i+1}</div>
-                    <img src="{info['image']}" class="card-img">
+                <div class="card-bottom">
                     <div class="card-title">{name}</div>
                     <div class="card-meaning">{info['meaning']}</div>
                 </div>
