@@ -25,7 +25,6 @@ SOUND_REVEAL = (
 )
 
 
-# ฟังก์ชันเล่นเสียงที่รองรับ Android Chrome
 def play_sound(sound_url):
     sound_html = f"""
         <script>
@@ -78,30 +77,30 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 📍 ฐานข้อมูลไพ่ราชาโชค
+# 📍 ฐานข้อมูลไพ่ราชาโชค (ปรับรูปเป็นหน้าไพ่ออราเคิล/ทาโร่แนวเวทมนตร์โดยเฉพาะ)
 RAJA_CHOK_CARDS = {
     "ราชาโชคโภคทรัพย์": {
-        "image": "https://picsum.photos/id/1059/300/480",
+        "image": "https://images.unsplash.com/photo-1635514569146-9a9607ecf303?w=400&q=80",
         "meaning": "การเงินหมุนเวียนดี มีทรัพย์สินเงินทองไหลมาเทมา",
     },
     "ราชาโชคเสน่หา": {
-        "image": "https://picsum.photos/id/1062/300/480",
+        "image": "https://images.unsplash.com/photo-1572949645841-094f3a9c4c94?w=400&q=80",
         "meaning": "ผู้คนรักใคร่เอ็นดู มีเมตตามหานิยม ติดต่อสิ่งใดก็สำเร็จ",
     },
     "ราชาโชคยศถา": {
-        "image": "https://picsum.photos/id/1069/300/480",
+        "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80",
         "meaning": "ได้รับการเลื่อนขั้น ปรับตำแหน่ง มีเกียรติยศและบารมีสูงขึ้น",
     },
     "ราชาโชคปัญญา": {
-        "image": "https://picsum.photos/id/1074/300/480",
+        "image": "https://images.unsplash.com/photo-1514539079130-25950c84af65?w=400&q=80",
         "meaning": "รอบรู้ ฉลาดหลักแหลม แก้ไขปัญหาหาทางออกได้อย่างอัศจรรย์",
     },
     "ราชาโชคชนะศึก": {
-        "image": "https://picsum.photos/id/1084/300/480",
+        "image": "https://images.unsplash.com/photo-1563089145-599997674d42?w=400&q=80",
         "meaning": "ชนะอุปสรรคและคู่แข่ง สิ่งเลวร้ายแพ้พ่าย หลุดพ้นจากปัญหา",
     },
     "ราชาโชคฟลุก": {
-        "image": "https://picsum.photos/id/1080/300/480",
+        "image": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&q=80",
         "meaning": "ได้โชคลาภแบบไม่คาดฝัน ส้มหล่น ได้รับของขวัญหรือเงินก้อนโต",
     },
 }
@@ -124,7 +123,6 @@ st.write("---")
 
 wheel_placeholder = st.empty()
 
-# 📍 ปุ่มกดเปิดไพ่ 3 ตัวเลือก (1 ใบ, 2 ใบ, 3 ใบ)
 col_b1, col_b2, col_b3 = st.columns(3)
 
 num_to_draw = 0
@@ -157,7 +155,6 @@ if num_to_draw > 0:
     st.session_state.drawn_raja = random.sample(card_names, num_to_draw)
     play_sound(SOUND_REVEAL)
 
-# แสดงผลเรียงขนานกันบนหน้าจอมือถือตามจำนวนไพ่ที่สุ่มได้
 if st.session_state.drawn_raja:
     st.markdown("##### 🎴 ผลการเปิดไพ่ราชาโชค")
 
@@ -172,7 +169,7 @@ if st.session_state.drawn_raja:
                 f"""
                 <div style="text-align: center; background: rgba(42, 8, 92, 0.7); padding: 6px; border-radius: 8px; border: 1px solid #FFD700;">
                     <div style="font-size: 11px; font-weight: bold; color: #FFD700; margin-bottom: 3px;">ใบที่ {i+1}</div>
-                    <img src="{info['image']}" style="width: 100%; border-radius: 6px; border: 1px solid #FFD700;">
+                    <img src="{info['image']}" style="width: 100%; border-radius: 6px; border: 1px solid #FFD700; aspect-ratio: 2/3; object-fit: cover;">
                     <div style="font-size: 11px; font-weight: bold; color: #F3E5F5; margin-top: 5px;">{name}</div>
                     <div style="font-size: 9px; color: #E1BEE7; margin-top: 3px; line-height: 1.2;">{info['meaning']}</div>
                 </div>
