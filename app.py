@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 
-# ฟังก์ชันดึงรูปไพ่ยิปซีจริงและแปลงเป็น Base64 เพื่อแก้ปัญหารูปดับ/โดนบล็อกบน Streamlit 100%
+# ฟังก์ชันดึงรูปไพ่ยิปซีจริงและแปลงเป็น Base64
 @st.cache_data(show_spinner=False)
 def load_card_image_base64(url):
     try:
@@ -73,7 +73,7 @@ TAROT_CARDS_RAW = {
     },
 }
 
-# 3. CSS สไตล์เทพมงคลจีน + ปรับรูปไพ่ยิปซีให้เล็กลง และเรียง 3 คอลัมน์แนวนอนบนมือถือ
+# 3. CSS สไตล์เทพมงคลจีน + ปรับปุ่มเมนู Sidebar ให้ใหญ่และกดง่ายบนมือถือ
 st.markdown(
     """
     <style>
@@ -86,6 +86,41 @@ st.markdown(
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #faf5ff 0%, #f3e8ff 100%);
         border-right: 2px solid #fde047;
+    }
+
+    /* ตกแต่งเมนูตัวเลือกใน Sidebar ให้ใหญ่ขึ้น กดง่ายบนมือถือ */
+    div[data-testid="stRadio"] > label {
+        font-size: 1.1rem !important;
+        font-weight: bold !important;
+        color: #7e22ce !important;
+        margin-bottom: 8px !important;
+    }
+
+    div[data-testid="stRadio"] div[role="radiogroup"] > label {
+        background-color: rgba(255, 255, 255, 0.9) !important;
+        border: 2px solid #e9d5ff !important;
+        border-radius: 12px !important;
+        padding: 14px 16px !important;
+        margin-bottom: 12px !important;
+        box-shadow: 0px 3px 10px rgba(168, 85, 247, 0.1) !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease-in-out !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    /* ปรับขนาดตัวหนังสือคำในตัวเลือก */
+    div[data-testid="stRadio"] div[role="radiogroup"] > label p {
+        font-size: 1.05rem !important;
+        font-weight: 600 !important;
+        color: #3b0764 !important;
+    }
+
+    /* เมื่อปุ่มถูกเลือก */
+    div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) {
+        border-color: #a855f7 !important;
+        background: linear-gradient(135deg, #ffffff 0%, #f3e8ff 100%) !important;
+        box-shadow: 0px 4px 12px rgba(168, 85, 247, 0.25) !important;
     }
 
     .main-title {
@@ -117,7 +152,6 @@ st.markdown(
         min-width: 0 !important;
     }
 
-    /* บังคับขนาดภาพหน้าไพ่ยิปซีจริงให้เล็กกะทัดรัด พอดีเห็นครบ 3 ใบในจอเดียว */
     div[data-testid="stImage"] {
         text-align: center;
     }
@@ -363,7 +397,7 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
                 <hr style="border-top: 1px dashed #facc15;">
                 <p class="pred-header">💼 การงาน & การเงิน:</p>
                 <p style="color: #3b0764; font-size: 0.95rem;">{card_info['work_money']}</p>
-                <p class="pred-header">❤️️ ความรัก:</p>
+                <p class="pred-header">❤️ ความรัก:</p>
                 <p style="color: #3b0764; font-size: 0.95rem;">{card_info['love']}</p>
                 <p class="pred-header">💡 ข้อคิดสติปัญญา:</p>
                 <p style="color: #3b0764; font-size: 0.95rem; font-style: italic;">{card_info['advice']}</p>
