@@ -1,6 +1,5 @@
 import random
 import time
-import base64
 import streamlit as st
 
 # 1. ตั้งค่าหน้าเพจ Streamlit
@@ -10,33 +9,6 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="expanded",
 )
-
-# ฟังก์ชันสร้างรูปไพ่ยิปซีมงคลความละเอียดสูง (SVG) ฝังในโค้ดโดยตรง เพื่อป้องกันรูปภาพดับบนมือถือ 100%
-def generate_card_svg(title_en, title_th, symbol, bg_color="#4c1d95"):
-    svg_code = f"""
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 480" width="100%" height="100%">
-        <defs>
-            <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="{bg_color}" />
-                <stop offset="100%" stop-color="#1e1b4b" />
-            </linearGradient>
-            <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#fef08a" />
-                <stop offset="50%" stop-color="#eab308" />
-                <stop offset="100%" stop-color="#ca8a04" />
-            </linearGradient>
-        </defs>
-        <rect x="5" y="5" width="290" height="470" rx="15" fill="url(#cardBg)" stroke="url(#goldBorder)" stroke-width="6"/>
-        <rect x="18" y="18" width="264" height="444" rx="10" fill="none" stroke="url(#goldBorder)" stroke-width="2" stroke-dasharray="6,4"/>
-        <circle cx="150" cy="200" r="70" fill="rgba(255,255,255,0.05)" stroke="url(#goldBorder)" stroke-width="2"/>
-        <text x="150" y="215" font-family="'Sarabun', sans-serif" font-size="65" text-anchor="middle" fill="#fef08a">{symbol}</text>
-        <text x="150" y="340" font-family="'Sarabun', sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#ffffff">{title_en}</text>
-        <text x="150" y="375" font-family="'Sarabun', sans-serif" font-size="18" text-anchor="middle" fill="#fef08a">{title_th}</text>
-        <text x="150" y="420" font-family="'Sarabun', sans-serif" font-size="13" text-anchor="middle" fill="#cbd5e1">🔮 สำรับไพ่ยิปซีมงคล</text>
-    </svg>
-    """
-    b64 = base64.b64encode(svg_code.encode('utf-8')).decode('utf-8')
-    return f"data:image/svg+xml;base64,{b64}"
 
 # 2. ตกแต่ง CSS โทนเทพมงคลจีน
 st.markdown(
@@ -112,11 +84,11 @@ st.markdown(
 st.sidebar.title("☯️ เมนูดูดวงเทพมงคล")
 selected_menu = st.sidebar.radio(
     "กรุณาเลือกประเภทการทำนาย:",
-    ["🃏 เปิดไพ่ยิปซีทำนายดวง", "☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ"],
+    ["🃏 เปิดไพ่ยิปซีทำนายดวง", "☯️️ เซียมซีเทพเซียนห้องสิน 49 ใบ"],
 )
 
 # ==========================================
-# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (รูปขึ้น 100% แน่นอน)
+# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (ภาพหน้าไพ่ยิปซีจริง 100%)
 # ==========================================
 if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายดวง":
     st.markdown(
@@ -128,46 +100,47 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
         unsafe_allow_html=True,
     )
 
+    # ใช้ weserv.nl Proxy เพื่อปลดล็อกรูปภาพไพ่ยิปซีจริง ไม่ให้โดนบล็อกบนมือถือ
     TAROT_CARDS = {
         1: {
             "name": "The Fool (ผู้เริ่มต้น)",
             "meaning": "การเริ่มต้นใหม่ การเดินทางครั้งใหม่ ความเป็นอิสระ มีโชคจากการกล้าเสี่ยง ให้ทำตามหัวใจ",
-            "img": generate_card_svg("THE FOOL", "ผู้เริ่มต้น", "🃏", "#581c87")
+            "img": "https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg",
         },
         2: {
             "name": "The Magician (นักมายากล)",
-            "meaning": "ความสามารถรอบด้าน การติดต่อสื่อสารสำเร็จ ไอเดียสร้างสรรค์ เงินทองมาจากความสามารถ",
-            "img": generate_card_svg("THE MAGICIAN", "นักมายากล", "🪄", "#6b21a8")
+            "meaning": "ความสามารถรอบด้าน การติดต่อสื่อสารสำเร็จ ไอเดียสร้างสรรค์ เงินทองและความก้าวหน้ามาจากความสามารถ",
+            "img": "https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg",
         },
         3: {
             "name": "The High Priestess (นักบวชหญิง)",
             "meaning": "สัญชาตญาณแม่นยำ เสน่ห์ดึงดูด ความลึกลับ มีโชคด้านลางสังหรณ์ ให้เชื่อมั่นในความคิดแรก",
-            "img": generate_card_svg("HIGH PRIESTESS", "นักบวชหญิง", "🌙", "#4c1d95")
+            "img": "https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg",
         },
         4: {
             "name": "The Empress (จักรพรรดินี)",
             "meaning": "ความอุดมสมบูรณ์ ความรักอบอุ่น การเติบโต มั่งคั่ง มีเกณฑ์ได้รับข่าวดีเรื่องเงินทองและครอบครัว",
-            "img": generate_card_svg("THE EMPRESS", "จักรพรรดินี", "👑", "#701a75")
+            "img": "https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg",
         },
         5: {
             "name": "The Emperor (จักรพรรดิ)",
             "meaning": "อำนาจบารมี ความมั่นคง การได้รับการสนับสนุนจากผู้ใหญ่ งานใหญ่ประสบความสำเร็จ",
-            "img": generate_card_svg("THE EMPEROR", "จักรพรรดิ", "⚔️️", "#831843")
+            "img": "https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg",
         },
         6: {
             "name": "The Lovers (คนรัก)",
             "meaning": "ความรักสมหวัง การตัดสินใจครั้งสำคัญ พันธมิตรที่ดี ความสัมพันธ์ก้าวหน้าหวานชื่น",
-            "img": generate_card_svg("THE LOVERS", "คนรัก", "💖", "#9d174d")
+            "img": "https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg",
         },
         7: {
             "name": "The Sun (ดวงอาทิตย์)",
             "meaning": "ความสำเร็จสูงสุด ข่าวดี ชื่อเสียง ความสุขความสดใส ปัญหาหมดไป ได้รับโชคลาภใหญ่",
-            "img": generate_card_svg("THE SUN", "ดวงอาทิตย์", "☀️", "#a16207")
+            "img": "https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/9/91/RWS_Tarot_19_Sun.jpg",
         },
         8: {
-            "name": "Wheel of Fortune (กงล้อโชคชะตา)",
+            "name": "Wheel of Fortune (กงล้อแห่งโชคชะตา)",
             "meaning": "โชคชะตาเปลี่ยนไปในทางที่ดี จังหวะชีวิตเปิด ได้รับโอกาสทอง โชคลาภฟลุ๊กๆ ไหลมา",
-            "img": generate_card_svg("WHEEL OF FORTUNE", "กงล้อโชคชะตา", "☸️", "#15803d")
+            "img": "https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg",
         },
     }
 
@@ -176,7 +149,7 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
     # ปุ่มสุ่มหลัก 3 ใบ
     if st.button("✨ กดเพื่อสุ่มเปิดไพ่ยิปซี (3 ใบ)"):
         with st.spinner("🔮 กำลังตั้งจิตอธิษฐานและสุ่มจับไพ่ยิปซี 3 ใบ..."):
-            time.sleep(1)
+            time.sleep(1.2)
             st.session_state["tarot_main_cards"] = random.sample(
                 list(TAROT_CARDS.keys()), 3
             )
@@ -192,25 +165,46 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
         )
 
         main_list = st.session_state["tarot_main_cards"]
-        
+
         # แถวที่ 1: แสดง 2 ใบแรกคู่กัน
         col1, col2 = st.columns(2)
         with col1:
             card = TAROT_CARDS[main_list[0]]
-            st.image(card["img"], caption=f"ใบที่ 1: {card['name']}", use_container_width=True)
-            st.markdown(f'<div class="result-box"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
-            
+            st.image(
+                card["img"],
+                caption=f"ใบที่ 1: {card['name']}",
+                use_container_width=True,
+            )
+            st.markdown(
+                f'<div class="result-box"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>',
+                unsafe_allow_html=True,
+            )
+
         with col2:
             card = TAROT_CARDS[main_list[1]]
-            st.image(card["img"], caption=f"ใบที่ 2: {card['name']}", use_container_width=True)
-            st.markdown(f'<div class="result-box"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
+            st.image(
+                card["img"],
+                caption=f"ใบที่ 2: {card['name']}",
+                use_container_width=True,
+            )
+            st.markdown(
+                f'<div class="result-box"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>',
+                unsafe_allow_html=True,
+            )
 
         # แถวที่ 2: แสดงใบที่ 3
         col3, _ = st.columns(2)
         with col3:
             card = TAROT_CARDS[main_list[2]]
-            st.image(card["img"], caption=f"ใบที่ 3: {card['name']}", use_container_width=True)
-            st.markdown(f'<div class="result-box"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
+            st.image(
+                card["img"],
+                caption=f"ใบที่ 3: {card['name']}",
+                use_container_width=True,
+            )
+            st.markdown(
+                f'<div class="result-box"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>',
+                unsafe_allow_html=True,
+            )
 
         st.write("")
 
@@ -237,16 +231,30 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
 
         extra_list = st.session_state["tarot_extra_cards"]
         col_ex1, col_ex2 = st.columns(2)
-        
+
         with col_ex1:
             card = TAROT_CARDS[extra_list[0]]
-            st.image(card["img"], caption=f"ใบเพิ่มที่ 1: {card['name']}", use_container_width=True)
-            st.markdown(f'<div class="result-box" style="border-color:#d946ef;"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
-            
+            st.image(
+                card["img"],
+                caption=f"ใบเพิ่มที่ 1: {card['name']}",
+                use_container_width=True,
+            )
+            st.markdown(
+                f'<div class="result-box" style="border-color:#d946ef;"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>',
+                unsafe_allow_html=True,
+            )
+
         with col_ex2:
             card = TAROT_CARDS[extra_list[1]]
-            st.image(card["img"], caption=f"ใบเพิ่มที่ 2: {card['name']}", use_container_width=True)
-            st.markdown(f'<div class="result-box" style="border-color:#d946ef;"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
+            st.image(
+                card["img"],
+                caption=f"ใบเพิ่มที่ 2: {card['name']}",
+                use_container_width=True,
+            )
+            st.markdown(
+                f'<div class="result-box" style="border-color:#d946ef;"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>',
+                unsafe_allow_html=True,
+            )
 
 
 # ==========================================
@@ -322,7 +330,7 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
         card_info = SIAMSI_49[result_num]
 
         st.markdown("---")
-        img_url = generate_card_svg(f"SIAMSI NO. {result_num}", card_info['title'], "☯️", "#7e22ce")
+        img_url = "https://images.weserv.nl/?url=upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg"
 
         col1, col2 = st.columns([1, 1.2])
 
@@ -353,4 +361,4 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
             """,
                 unsafe_allow_html=True,
             )
-    
+            
