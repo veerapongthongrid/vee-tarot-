@@ -81,14 +81,14 @@ st.markdown(
 )
 
 # 3. แถบเมนูด้านข้าง
-st.sidebar.title("☯️ เมนูดูดวงเทพมงคล")
+st.sidebar.title("☯️️ เมนูดูดวงเทพมงคล")
 selected_menu = st.sidebar.radio(
     "กรุณาเลือกประเภทการทำนาย:",
     ["🃏 เปิดไพ่ยิปซีทำนายดวง", "☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ"],
 )
 
 # ==========================================
-# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (รูปไพ่ยิปซีจริง 100%)
+# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (แก้รูปขึ้น 100%)
 # ==========================================
 if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายดวง":
     st.markdown(
@@ -100,47 +100,47 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
         unsafe_allow_html=True,
     )
 
-    # ฐานข้อมูลไพ่ยิปซี Rider-Waite ตัวจริงทุกรูป
+    # ใช้ URL รูปไพ่ยิปซีมาตรฐานสถิตจาก Wikipedia / Wikimedia Commons โดยตรง
     TAROT_CARDS = {
         1: {
             "name": "The Fool (ผู้เริ่มต้น)",
             "meaning": "การเริ่มต้นใหม่ การเดินทางครั้งใหม่ ความเป็นอิสระ มีโชคจากการกล้าเสี่ยง ให้ทำตามหัวใจ",
-            "img": "https://raw.githubusercontent.com/sacramentojay/tarot-api/main/static/cards/m00.jpg",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg",
         },
         2: {
             "name": "The Magician (นักมายากล)",
             "meaning": "ความสามารถรอบด้าน การติดต่อสื่อสารสำเร็จ ไอเดียสร้างสรรค์ เงินทองและความก้าวหน้ามาจากความสามารถ",
-            "img": "https://raw.githubusercontent.com/sacramentojay/tarot-api/main/static/cards/m01.jpg",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg",
         },
         3: {
             "name": "The High Priestess (นักบวชหญิง)",
             "meaning": "สัญชาตญาณแม่นยำ เสน่ห์ดึงดูด ความลึกลับ มีโชคด้านลางสังหรณ์ ให้เชื่อมั่นในความคิดแรก",
-            "img": "https://raw.githubusercontent.com/sacramentojay/tarot-api/main/static/cards/m02.jpg",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg",
         },
         4: {
             "name": "The Empress (จักรพรรดินี)",
             "meaning": "ความอุดมสมบูรณ์ ความรักอบอุ่น การเติบโต มั่งคั่ง มีเกณฑ์ได้รับข่าวดีเรื่องเงินทองและครอบครัว",
-            "img": "https://raw.githubusercontent.com/sacramentojay/tarot-api/main/static/cards/m03.jpg",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg",
         },
         5: {
             "name": "The Emperor (จักรพรรดิ)",
             "meaning": "อำนาจบารมี ความมั่นคง การได้รับการสนับสนุนจากผู้ใหญ่ งานใหญ่ประสบความสำเร็จ",
-            "img": "https://raw.githubusercontent.com/sacramentojay/tarot-api/main/static/cards/m04.jpg",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg",
         },
         6: {
             "name": "The Lovers (คนรัก)",
             "meaning": "ความรักสมหวัง การตัดสินใจครั้งสำคัญ พันธมิตรที่ดี ความสัมพันธ์ก้าวหน้าหวานชื่น",
-            "img": "https://raw.githubusercontent.com/sacramentojay/tarot-api/main/static/cards/m06.jpg",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg",
         },
         7: {
             "name": "The Sun (ดวงอาทิตย์)",
             "meaning": "ความสำเร็จสูงสุด ข่าวดี ชื่อเสียง ความสุขความสดใส ปัญหาหมดไป ได้รับโชคลาภใหญ่",
-            "img": "https://raw.githubusercontent.com/sacramentojay/tarot-api/main/static/cards/m19.jpg",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/9/91/RWS_Tarot_19_Sun.jpg",
         },
         8: {
             "name": "Wheel of Fortune (กงล้อแห่งโชคชะตา)",
             "meaning": "โชคชะตาเปลี่ยนไปในทางที่ดี จังหวะชีวิตเปิด ได้รับโอกาสทอง โชคลาภฟลุ๊กๆ ไหลมา",
-            "img": "https://raw.githubusercontent.com/sacramentojay/tarot-api/main/static/cards/m10.jpg",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg",
         },
     }
 
@@ -156,7 +156,7 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
             if "tarot_extra_cards" in st.session_state:
                 del st.session_state["tarot_extra_cards"]
 
-    # แสดงผลไพ่หลัก 3 ใบ (จัดลง Layout 2 ช่องแนวนอน)
+    # แสดงผลไพ่หลัก 3 ใบ
     if "tarot_main_cards" in st.session_state:
         st.markdown("---")
         st.markdown(
@@ -166,23 +166,23 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
 
         main_list = st.session_state["tarot_main_cards"]
         
-        # แถวที่ 1: แสดง 2 ใบแรก
+        # แถวที่ 1: แสดง 2 ใบแรกคู่กัน
         col1, col2 = st.columns(2)
         with col1:
             card = TAROT_CARDS[main_list[0]]
-            st.image(card["img"], caption=f"ใบที่ 1: {card['name']}", use_column_width=True)
+            st.image(card["img"], caption=f"ใบที่ 1: {card['name']}", use_container_width=True)
             st.markdown(f'<div class="result-box"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
             
         with col2:
             card = TAROT_CARDS[main_list[1]]
-            st.image(card["img"], caption=f"ใบที่ 2: {card['name']}", use_column_width=True)
+            st.image(card["img"], caption=f"ใบที่ 2: {card['name']}", use_container_width=True)
             st.markdown(f'<div class="result-box"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
 
         # แถวที่ 2: แสดงใบที่ 3
         col3, _ = st.columns(2)
         with col3:
             card = TAROT_CARDS[main_list[2]]
-            st.image(card["img"], caption=f"ใบที่ 3: {card['name']}", use_column_width=True)
+            st.image(card["img"], caption=f"ใบที่ 3: {card['name']}", use_container_width=True)
             st.markdown(f'<div class="result-box"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
 
         st.write("")
@@ -200,7 +200,7 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
                     available_cards, 2
                 )
 
-    # แสดงผลไพ่เพิ่ม 2 ใบ (เรียงคู่กันแนวนอน)
+    # แสดงผลไพ่เพิ่ม 2 ใบ
     if "tarot_extra_cards" in st.session_state:
         st.markdown("---")
         st.markdown(
@@ -213,12 +213,12 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
         
         with col_ex1:
             card = TAROT_CARDS[extra_list[0]]
-            st.image(card["img"], caption=f"ใบเพิ่มที่ 1: {card['name']}", use_column_width=True)
+            st.image(card["img"], caption=f"ใบเพิ่มที่ 1: {card['name']}", use_container_width=True)
             st.markdown(f'<div class="result-box" style="border-color:#d946ef;"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
             
         with col_ex2:
             card = TAROT_CARDS[extra_list[1]]
-            st.image(card["img"], caption=f"ใบเพิ่มที่ 2: {card['name']}", use_column_width=True)
+            st.image(card["img"], caption=f"ใบเพิ่มที่ 2: {card['name']}", use_container_width=True)
             st.markdown(f'<div class="result-box" style="border-color:#d946ef;"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
 
 
@@ -295,7 +295,7 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
         card_info = SIAMSI_49[result_num]
 
         st.markdown("---")
-        img_url = f"https://raw.githubusercontent.com/sacramentojay/tarot-api/main/static/cards/m{(result_num % 22):02d}.jpg"
+        img_url = f"https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg"
 
         col1, col2 = st.columns([1, 1.2])
 
@@ -303,7 +303,7 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
             st.image(
                 img_url,
                 caption=f"ใบที่ {result_num}: {card_info['title']}",
-                use_column_width=True,
+                use_container_width=True,
             )
 
         with col2:
