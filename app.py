@@ -32,22 +32,22 @@ def get_image_base64(url):
     return url
 
 
-# 2. CSS ตกแต่งหน้าเว็บ
+# 2. CSS ตกแต่งหน้าเว็บ (ปรับพื้นหลังกล่องข้อความให้รองรับรูปภาพด้านหลังและอ่านง่ายขึ้น)
 st.markdown(
-    """
+    f"""
     <style>
-    .stApp {
+    .stApp {{
         background: linear-gradient(135deg, #fefce8 0%, #fae8ff 40%, #fce7f3 70%, #ffffff 100%);
         color: #3b0764;
         font-family: 'Sarabun', sans-serif;
-    }
+    }}
     
-    [data-testid="stSidebar"] {
+    [data-testid="stSidebar"] {{
         background: linear-gradient(180deg, #faf5ff 0%, #f3e8ff 100%);
         border-right: 2px solid #fde047;
-    }
+    }}
 
-    div[data-testid="stRadio"] div[role="radiogroup"] > label {
+    div[data-testid="stRadio"] div[role="radiogroup"] > label {{
         background-color: #ffffff !important;
         border: 2px solid #fde047 !important;
         border-radius: 12px !important;
@@ -57,27 +57,27 @@ st.markdown(
         font-size: 1.05rem !important;
         font-weight: bold !important;
         cursor: pointer !important;
-    }
+    }}
 
-    .main-title {
+    .main-title {{
         text-align: center;
         color: #7e22ce;
         font-size: 1.8rem;
         font-weight: bold;
         text-shadow: 0px 2px 10px rgba(234, 179, 8, 0.4);
         margin-bottom: 2px;
-    }
+    }}
     
-    .sub-title {
+    .sub-title {{
         text-align: center;
         color: #a855f7;
         font-size: 0.95rem;
         margin-bottom: 15px;
-    }
+    }}
 
-    .siamsi-bg-box {
-        background: linear-gradient(rgba(255, 255, 255, 0.92), rgba(254, 243, 199, 0.92)), 
-                    url('https://images.unsplash.com/photo-1544717305-2782549b5136?w=800&auto=format&fit=crop&q=80');
+    .siamsi-bg-box {{
+        background: linear-gradient(rgba(255, 255, 255, 0.88), rgba(254, 243, 199, 0.88)), 
+                    url('{ERLANG_IMG_URL}');
         background-size: cover;
         background-position: center;
         border: 2.5px solid #ca8a04;
@@ -86,9 +86,9 @@ st.markdown(
         box-shadow: 0px 8px 25px rgba(168, 85, 247, 0.25);
         margin-top: 10px;
         margin-bottom: 15px;
-    }
+    }}
 
-    .result-box-small {
+    .result-box-small {{
         background-color: rgba(255, 255, 255, 0.95);
         border: 1.5px solid #facc15;
         border-radius: 8px;
@@ -98,17 +98,17 @@ st.markdown(
         font-size: 0.8rem;
         line-height: 1.3;
         text-align: center;
-    }
+    }}
 
-    .pred-header {
+    .pred-header {{
         color: #7e22ce;
         font-weight: bold;
         margin-top: 10px;
         margin-bottom: 3px;
         font-size: 0.95rem;
-    }
+    }}
 
-    div.stButton > button {
+    div.stButton > button {{
         background: linear-gradient(90deg, #a855f7 0%, #d946ef 100%);
         color: white;
         font-size: 1.05rem;
@@ -118,7 +118,7 @@ st.markdown(
         box-shadow: 0px 4px 12px rgba(168, 85, 247, 0.25);
         width: 100%;
         transition: all 0.3s ease;
-    }
+    }}
     </style>
     """,
     unsafe_allow_html=True,
@@ -410,35 +410,25 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
         card_info = SIAMSI_49[result_num]
 
         st.markdown("---")
-        col1, col2 = st.columns([1, 1.2])
 
-        with col1:
-            # ใช้รูปภาพเทพเอ้อหลางเสินที่พี่หมออัปโหลดมาแสดงผลตรงนี้
-            erlang_b64 = get_image_base64(ERLANG_IMG_URL)
-            st.image(
-                erlang_b64,
-                caption=f"ใบที่ {result_num}: {card_info['title']}",
-                use_container_width=True,
-            )
-
-        with col2:
-            st.markdown(
-                f"""
-            <div class="siamsi-bg-box">
-                <h4 style="color: #7e22ce; margin-bottom: 2px; text-shadow: 0px 1px 2px rgba(255,255,255,0.8);">ใบที่ {result_num} / 49</h4>
-                <h3 style="color: #6b21a8; margin-top: 0; font-size: 1.15rem; text-shadow: 0px 1px 2px rgba(255,255,255,0.8);">{card_info['title']}</h3>
-                <p style="font-size: 0.95rem; font-weight: bold; color: #b45309; margin-top: 5px; text-align: center; text-shadow: 0px 1px 2px rgba(255,255,255,0.8);">
-                    ✨ {card_info['summary']} ✨
-                </p>
-                <hr style="border-top: 1px dashed #ca8a04;">
-                <p class="pred-header">💼 การงาน & การเงิน:</p>
-                <p style="color: #3b0764; font-size: 0.9rem; font-weight: 500;">{card_info['work_money']}</p>
-                <p class="pred-header">❤️ ความรัก:</p>
-                <p style="color: #3b0764; font-size: 0.9rem; font-weight: 500;">{card_info['love']}</p>
-                <p class="pred-header">💡 ข้อคิดสติปัญญา:</p>
-                <p style="color: #3b0764; font-size: 0.9rem; font-style: italic; font-weight: 500;">{card_info['advice']}</p>
-            </div>
-            """,
-                unsafe_allow_html=True,
-            )
-            
+        # แสดงกล่องข้อความคำทำนายที่มีรูปเทพเอ้อหลางเสินเป็นพื้นหลัง
+        st.markdown(
+            f"""
+        <div class="siamsi-bg-box">
+            <h4 style="color: #7e22ce; margin-bottom: 2px; text-shadow: 0px 1px 2px rgba(255,255,255,0.9);">ใบที่ {result_num} / 49</h4>
+            <h3 style="color: #6b21a8; margin-top: 0; font-size: 1.15rem; text-shadow: 0px 1px 2px rgba(255,255,255,0.9);">{card_info['title']}</h3>
+            <p style="font-size: 0.95rem; font-weight: bold; color: #b45309; margin-top: 5px; text-align: center; text-shadow: 0px 1px 2px rgba(255,255,255,0.9);">
+                ✨ {card_info['summary']} ✨
+            </p>
+            <hr style="border-top: 1px dashed #ca8a04;">
+            <p class="pred-header">💼 การงาน & การเงิน:</p>
+            <p style="color: #3b0764; font-size: 0.9rem; font-weight: bold;">{card_info['work_money']}</p>
+            <p class="pred-header">❤️ ความรัก:</p>
+            <p style="color: #3b0764; font-size: 0.9rem; font-weight: bold;">{card_info['love']}</p>
+            <p class="pred-header">💡 ข้อคิดสติปัญญา:</p>
+            <p style="color: #3b0764; font-size: 0.9rem; font-style: italic; font-weight: bold;">{card_info['advice']}</p>
+        </div>
+        """,
+            unsafe_allow_html=True,
+        )
+        
