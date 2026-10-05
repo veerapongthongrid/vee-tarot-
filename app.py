@@ -29,7 +29,7 @@ def get_image_base64(url):
     return url
 
 
-# ฟังก์ชันสร้างการ์ดรูปภาพเซียมซีเทพเซียนห้องสินเฉพาะใบ (แก้ปัญหารูปซ้ำกับไพ่ยิปซี 100%)
+# ฟังก์ชันสร้างการ์ดรูปภาพเซียมซีเทพเซียนห้องสินเฉพาะใบ
 def generate_siamsi_card_svg(title_th, number, symbol="☯️"):
     svg_code = f"""
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 380" width="100%" height="100%">
@@ -63,7 +63,7 @@ def generate_siamsi_card_svg(title_th, number, symbol="☯️"):
     return f"data:image/svg+xml;base64,{b64}"
 
 
-# 2. CSS ตกแต่งหน้าเว็บและกรอบเซียมซีพื้นหลังเทพเจ้า
+# 2. CSS ตกแต่งหน้าเว็บ
 st.markdown(
     """
     <style>
@@ -161,7 +161,7 @@ st.markdown(
         transition: all 0.3s ease;
     }
     </style>
-""",
+    """,
     unsafe_allow_html=True,
 )
 
@@ -303,7 +303,7 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
 
 
 # ==========================================
-# 🟣 เมนูที่ 2: เซียมซีเทพเซียนห้องสิน 49 ใบ (พร้อมการ์ดเซียมซีเทพเซียนห้องสินเฉพาะใบ)
+# 🟣 เมนูที่ 2: เซียมซีเทพเซียนห้องสิน 49 ใบ
 # ==========================================
 elif selected_menu == "☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ":
 
@@ -435,4 +435,52 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
         unsafe_allow_html=True,
     )
     st.markdown(
-        '<div class="sub-t
+        '<div class="sub-title">✨ สำรับวิจิตร 49 มหาโชค - ตั้งจิตอธิษฐานแล้วเขย่าติ้วเสี่ยงทาย ✨</div>',
+        unsafe_allow_html=True,
+    )
+
+    if st.button("🎋 เขย่ากระบอกเซียมซีสวรรค์"):
+        with st.spinner("⏳ กำลังเขย่ากระบอกเซียมซีมหาเทพห้องสิน..."):
+            time.sleep(0.8)
+            num = random.randint(1, 49)
+            st.session_state["siamsi_result"] = num
+
+    if "siamsi_result" in st.session_state:
+        result_num = st.session_state["siamsi_result"]
+        card_info = SIAMSI_49[result_num]
+
+        st.markdown("---")
+        siamsi_card_img = generate_siamsi_card_svg(
+            card_info["title"], result_num, card_info["symbol"]
+        )
+
+        col1, col2 = st.columns([1, 1.2])
+
+        with col1:
+            st.image(
+                siamsi_card_img,
+                caption=f"ใบที่ {result_num}: {card_info['title']}",
+                use_container_width=True,
+            )
+
+        with col2:
+            st.markdown(
+                f"""
+            <div class="siamsi-bg-box">
+                <h4 style="color: #7e22ce; margin-bottom: 2px; text-shadow: 0px 1px 2px rgba(255,255,255,0.8);">ใบที่ {result_num} / 49</h4>
+                <h3 style="color: #6b21a8; margin-top: 0; font-size: 1.15rem; text-shadow: 0px 1px 2px rgba(255,255,255,0.8);">{card_info['title']}</h3>
+                <p style="font-size: 0.95rem; font-weight: bold; color: #b45309; margin-top: 5px; text-align: center; text-shadow: 0px 1px 2px rgba(255,255,255,0.8);">
+                    ✨ {card_info['summary']} ✨
+                </p>
+                <hr style="border-top: 1px dashed #ca8a04;">
+                <p class="pred-header">💼 การงาน & การเงิน:</p>
+                <p style="color: #3b0764; font-size: 0.9rem; font-weight: 500;">{card_info['work_money']}</p>
+                <p class="pred-header">❤️ ความรัก:</p>
+                <p style="color: #3b0764; font-size: 0.9rem; font-weight: 500;">{card_info['love']}</p>
+                <p class="pred-header">💡 ข้อคิดสติปัญญา:</p>
+                <p style="color: #3b0764; font-size: 0.9rem; font-style: italic; font-weight: 500;">{card_info['advice']}</p>
+            </div>
+            """,
+                unsafe_allow_html=True,
+            )
+
