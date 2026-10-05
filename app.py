@@ -81,14 +81,14 @@ st.markdown(
 )
 
 # 3. แถบเมนูด้านข้าง
-st.sidebar.title("☯️️ เมนูดูดวงเทพมงคล")
+st.sidebar.title("☯️ เมนูดูดวงเทพมงคล")
 selected_menu = st.sidebar.radio(
     "กรุณาเลือกประเภทการทำนาย:",
     ["🃏 เปิดไพ่ยิปซีทำนายดวง", "☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ"],
 )
 
 # ==========================================
-# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (แก้รูปขึ้น 100%)
+# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (ใช้ CDN สถิต รูปขึ้น 100%)
 # ==========================================
 if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายดวง":
     st.markdown(
@@ -100,47 +100,47 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
         unsafe_allow_html=True,
     )
 
-    # ใช้ URL รูปไพ่ยิปซีมาตรฐานสถิตจาก Wikipedia / Wikimedia Commons โดยตรง
+    # ใช้ URL รูปไพ่ยิปซีจาก CDN ความเร็วสูงที่ไม่โดนบล็อกแน่นอน
     TAROT_CARDS = {
         1: {
             "name": "The Fool (ผู้เริ่มต้น)",
             "meaning": "การเริ่มต้นใหม่ การเดินทางครั้งใหม่ ความเป็นอิสระ มีโชคจากการกล้าเสี่ยง ให้ทำตามหัวใจ",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg",
+            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m00.jpg",
         },
         2: {
             "name": "The Magician (นักมายากล)",
             "meaning": "ความสามารถรอบด้าน การติดต่อสื่อสารสำเร็จ ไอเดียสร้างสรรค์ เงินทองและความก้าวหน้ามาจากความสามารถ",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg",
+            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m01.jpg",
         },
         3: {
             "name": "The High Priestess (นักบวชหญิง)",
             "meaning": "สัญชาตญาณแม่นยำ เสน่ห์ดึงดูด ความลึกลับ มีโชคด้านลางสังหรณ์ ให้เชื่อมั่นในความคิดแรก",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg",
+            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m02.jpg",
         },
         4: {
             "name": "The Empress (จักรพรรดินี)",
             "meaning": "ความอุดมสมบูรณ์ ความรักอบอุ่น การเติบโต มั่งคั่ง มีเกณฑ์ได้รับข่าวดีเรื่องเงินทองและครอบครัว",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg",
+            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m03.jpg",
         },
         5: {
             "name": "The Emperor (จักรพรรดิ)",
             "meaning": "อำนาจบารมี ความมั่นคง การได้รับการสนับสนุนจากผู้ใหญ่ งานใหญ่ประสบความสำเร็จ",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg",
+            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m04.jpg",
         },
         6: {
             "name": "The Lovers (คนรัก)",
             "meaning": "ความรักสมหวัง การตัดสินใจครั้งสำคัญ พันธมิตรที่ดี ความสัมพันธ์ก้าวหน้าหวานชื่น",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg",
+            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m06.jpg",
         },
         7: {
             "name": "The Sun (ดวงอาทิตย์)",
             "meaning": "ความสำเร็จสูงสุด ข่าวดี ชื่อเสียง ความสุขความสดใส ปัญหาหมดไป ได้รับโชคลาภใหญ่",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/9/91/RWS_Tarot_19_Sun.jpg",
+            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m19.jpg",
         },
         8: {
             "name": "Wheel of Fortune (กงล้อแห่งโชคชะตา)",
             "meaning": "โชคชะตาเปลี่ยนไปในทางที่ดี จังหวะชีวิตเปิด ได้รับโอกาสทอง โชคลาภฟลุ๊กๆ ไหลมา",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg",
+            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m10.jpg",
         },
     }
 
@@ -295,7 +295,7 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
         card_info = SIAMSI_49[result_num]
 
         st.markdown("---")
-        img_url = f"https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg"
+        img_url = f"https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m{(result_num % 22):02d}.jpg"
 
         col1, col2 = st.columns([1, 1.2])
 
@@ -326,4 +326,3 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
             """,
                 unsafe_allow_html=True,
             )
-            
