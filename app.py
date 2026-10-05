@@ -1,5 +1,6 @@
 import random
 import time
+import base64
 import streamlit as st
 
 # 1. ตั้งค่าหน้าเพจ Streamlit
@@ -9,6 +10,33 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="expanded",
 )
+
+# ฟังก์ชันสร้างรูปไพ่ยิปซีมงคลความละเอียดสูง (SVG) ฝังในโค้ดโดยตรง เพื่อป้องกันรูปภาพดับบนมือถือ 100%
+def generate_card_svg(title_en, title_th, symbol, bg_color="#4c1d95"):
+    svg_code = f"""
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 480" width="100%" height="100%">
+        <defs>
+            <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="{bg_color}" />
+                <stop offset="100%" stop-color="#1e1b4b" />
+            </linearGradient>
+            <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fef08a" />
+                <stop offset="50%" stop-color="#eab308" />
+                <stop offset="100%" stop-color="#ca8a04" />
+            </linearGradient>
+        </defs>
+        <rect x="5" y="5" width="290" height="470" rx="15" fill="url(#cardBg)" stroke="url(#goldBorder)" stroke-width="6"/>
+        <rect x="18" y="18" width="264" height="444" rx="10" fill="none" stroke="url(#goldBorder)" stroke-width="2" stroke-dasharray="6,4"/>
+        <circle cx="150" cy="200" r="70" fill="rgba(255,255,255,0.05)" stroke="url(#goldBorder)" stroke-width="2"/>
+        <text x="150" y="215" font-family="'Sarabun', sans-serif" font-size="65" text-anchor="middle" fill="#fef08a">{symbol}</text>
+        <text x="150" y="340" font-family="'Sarabun', sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#ffffff">{title_en}</text>
+        <text x="150" y="375" font-family="'Sarabun', sans-serif" font-size="18" text-anchor="middle" fill="#fef08a">{title_th}</text>
+        <text x="150" y="420" font-family="'Sarabun', sans-serif" font-size="13" text-anchor="middle" fill="#cbd5e1">🔮 สำรับไพ่ยิปซีมงคล</text>
+    </svg>
+    """
+    b64 = base64.b64encode(svg_code.encode('utf-8')).decode('utf-8')
+    return f"data:image/svg+xml;base64,{b64}"
 
 # 2. ตกแต่ง CSS โทนเทพมงคลจีน
 st.markdown(
@@ -88,7 +116,7 @@ selected_menu = st.sidebar.radio(
 )
 
 # ==========================================
-# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (ใช้ CDN สถิต รูปขึ้น 100%)
+# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (รูปขึ้น 100% แน่นอน)
 # ==========================================
 if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายดวง":
     st.markdown(
@@ -100,47 +128,46 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
         unsafe_allow_html=True,
     )
 
-    # ใช้ URL รูปไพ่ยิปซีจาก CDN ความเร็วสูงที่ไม่โดนบล็อกแน่นอน
     TAROT_CARDS = {
         1: {
             "name": "The Fool (ผู้เริ่มต้น)",
             "meaning": "การเริ่มต้นใหม่ การเดินทางครั้งใหม่ ความเป็นอิสระ มีโชคจากการกล้าเสี่ยง ให้ทำตามหัวใจ",
-            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m00.jpg",
+            "img": generate_card_svg("THE FOOL", "ผู้เริ่มต้น", "🃏", "#581c87")
         },
         2: {
             "name": "The Magician (นักมายากล)",
-            "meaning": "ความสามารถรอบด้าน การติดต่อสื่อสารสำเร็จ ไอเดียสร้างสรรค์ เงินทองและความก้าวหน้ามาจากความสามารถ",
-            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m01.jpg",
+            "meaning": "ความสามารถรอบด้าน การติดต่อสื่อสารสำเร็จ ไอเดียสร้างสรรค์ เงินทองมาจากความสามารถ",
+            "img": generate_card_svg("THE MAGICIAN", "นักมายากล", "🪄", "#6b21a8")
         },
         3: {
             "name": "The High Priestess (นักบวชหญิง)",
             "meaning": "สัญชาตญาณแม่นยำ เสน่ห์ดึงดูด ความลึกลับ มีโชคด้านลางสังหรณ์ ให้เชื่อมั่นในความคิดแรก",
-            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m02.jpg",
+            "img": generate_card_svg("HIGH PRIESTESS", "นักบวชหญิง", "🌙", "#4c1d95")
         },
         4: {
             "name": "The Empress (จักรพรรดินี)",
             "meaning": "ความอุดมสมบูรณ์ ความรักอบอุ่น การเติบโต มั่งคั่ง มีเกณฑ์ได้รับข่าวดีเรื่องเงินทองและครอบครัว",
-            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m03.jpg",
+            "img": generate_card_svg("THE EMPRESS", "จักรพรรดินี", "👑", "#701a75")
         },
         5: {
             "name": "The Emperor (จักรพรรดิ)",
             "meaning": "อำนาจบารมี ความมั่นคง การได้รับการสนับสนุนจากผู้ใหญ่ งานใหญ่ประสบความสำเร็จ",
-            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m04.jpg",
+            "img": generate_card_svg("THE EMPEROR", "จักรพรรดิ", "⚔️️", "#831843")
         },
         6: {
             "name": "The Lovers (คนรัก)",
             "meaning": "ความรักสมหวัง การตัดสินใจครั้งสำคัญ พันธมิตรที่ดี ความสัมพันธ์ก้าวหน้าหวานชื่น",
-            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m06.jpg",
+            "img": generate_card_svg("THE LOVERS", "คนรัก", "💖", "#9d174d")
         },
         7: {
             "name": "The Sun (ดวงอาทิตย์)",
             "meaning": "ความสำเร็จสูงสุด ข่าวดี ชื่อเสียง ความสุขความสดใส ปัญหาหมดไป ได้รับโชคลาภใหญ่",
-            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m19.jpg",
+            "img": generate_card_svg("THE SUN", "ดวงอาทิตย์", "☀️", "#a16207")
         },
         8: {
-            "name": "Wheel of Fortune (กงล้อแห่งโชคชะตา)",
+            "name": "Wheel of Fortune (กงล้อโชคชะตา)",
             "meaning": "โชคชะตาเปลี่ยนไปในทางที่ดี จังหวะชีวิตเปิด ได้รับโอกาสทอง โชคลาภฟลุ๊กๆ ไหลมา",
-            "img": "https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m10.jpg",
+            "img": generate_card_svg("WHEEL OF FORTUNE", "กงล้อโชคชะตา", "☸️", "#15803d")
         },
     }
 
@@ -149,7 +176,7 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
     # ปุ่มสุ่มหลัก 3 ใบ
     if st.button("✨ กดเพื่อสุ่มเปิดไพ่ยิปซี (3 ใบ)"):
         with st.spinner("🔮 กำลังตั้งจิตอธิษฐานและสุ่มจับไพ่ยิปซี 3 ใบ..."):
-            time.sleep(1.2)
+            time.sleep(1)
             st.session_state["tarot_main_cards"] = random.sample(
                 list(TAROT_CARDS.keys()), 3
             )
@@ -295,7 +322,7 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
         card_info = SIAMSI_49[result_num]
 
         st.markdown("---")
-        img_url = f"https://cdn.jsdelivr.net/gh/ekelen/tarot-api@master/static/cards/m{(result_num % 22):02d}.jpg"
+        img_url = generate_card_svg(f"SIAMSI NO. {result_num}", card_info['title'], "☯️", "#7e22ce")
 
         col1, col2 = st.columns([1, 1.2])
 
@@ -326,3 +353,4 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
             """,
                 unsafe_allow_html=True,
             )
+    
