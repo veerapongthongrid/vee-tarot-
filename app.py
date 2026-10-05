@@ -1,3 +1,4 @@
+import base64
 import random
 import time
 import streamlit as st
@@ -10,7 +11,43 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# 2. ตกแต่ง CSS โทนเทพมงคลจีน + ปรับรูปไพ่ยิปซีให้เล็กและเรียงแนวนอนบนจอมือถือ
+
+# ฟังก์ชันสร้างหน้าไพ่ยิปซี Rider-Waite คลาสสิกแบบ SVG ฝังลงในโค้ด 100% (รูปไม่ดับชัวร์)
+def generate_tarot_card(
+    title_en, title_th, symbol, roman_num, bg_color="#fffbeb"
+):
+    svg_code = f"""
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 320" width="100%" height="100%">
+        <defs>
+            <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ca8a04" />
+                <stop offset="50%" stop-color="#facc15" />
+                <stop offset="100%" stop-color="#854d0e" />
+            </linearGradient>
+        </defs>
+        <!-- กรอบไพ่ยิปซีคลาสสิก -->
+        <rect x="4" y="4" width="192" height="312" rx="8" fill="{bg_color}" stroke="url(#goldBorder)" stroke-width="4"/>
+        <rect x="10" y="10" width="180" height="300" rx="4" fill="none" stroke="#b45309" stroke-width="1.5"/>
+        
+        <!-- เลขโรมันประจำไพ่ -->
+        <text x="100" y="32" font-family="'Times New Roman', serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#78350f">{roman_num}</text>
+        
+        <!-- รูปหน้าไพ่ยิปซีคลาสสิก -->
+        <rect x="20" y="42" width="160" height="190" rx="4" fill="#ffffff" stroke="#d97706" stroke-width="1"/>
+        <circle cx="100" cy="137" r="48" fill="#fef3c7" stroke="#b45309" stroke-width="1"/>
+        <text x="100" y="153" font-family="'Sarabun', sans-serif" font-size="48" text-anchor="middle" fill="#78350f">{symbol}</text>
+        
+        <!-- ป้ายชื่อไพ่ -->
+        <rect x="20" y="242" width="160" height="55" rx="4" fill="#fffbeb" stroke="#b45309" stroke-width="1"/>
+        <text x="100" y="264" font-family="'Times New Roman', serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#78350f">{title_en}</text>
+        <text x="100" y="284" font-family="'Sarabun', sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#92400e">{title_th}</text>
+    </svg>
+    """
+    b64 = base64.b64encode(svg_code.encode("utf-8")).decode("utf-8")
+    return f"data:image/svg+xml;base64,{b64}"
+
+
+# 2. ตกแต่ง CSS โทนเทพมงคลจีน + บังคับรูปไพ่เรียงแนวนอน 3 ใบพอดีจอมือถือ
 st.markdown(
     """
     <style>
@@ -41,21 +78,19 @@ st.markdown(
         margin-bottom: 15px;
     }
 
-    /* บังคับคอลัมน์ให้เรียงแนวนอนไม่ทับกันบนมือถือ */
+    /* บังคับคอลัมน์ให้อยู่แนวนอน 3 ช่องไม่ตกแถวบนจอมือถือ */
     [data-testid="column"] {
         width: 33.33% !important;
         flex: 1 1 33.33% !important;
         min-width: 33.33% !important;
     }
 
-    /* ย่อขนาดรูปภาพไพ่ให้เล็กพอดีเห็นครบ 3 ใบในหน้าจอเดียว */
+    /* ย่อขนาดไพ่ให้เล็กพอดีตาเห็นครบ 3 ใบในจอเดียว */
     div[data-testid="stImage"] > img {
-        max-height: 140px !important;
+        max-height: 150px !important;
         width: auto !important;
         margin: 0 auto;
         display: block;
-        border-radius: 8px;
-        box-shadow: 0px 3px 8px rgba(0,0,0,0.2);
     }
 
     .result-box-small {
@@ -111,7 +146,7 @@ selected_menu = st.sidebar.radio(
 )
 
 # ==========================================
-# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (รูปถ่ายหน้าไพ่ยิปซีจริง + แนวนอนขนาดกะทัดรัด)
+# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (3 ใบเรียงแนวนอน + สุ่มเพิ่ม 2 ใบ)
 # ==========================================
 if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายดวง":
     st.markdown(
@@ -123,51 +158,60 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
         unsafe_allow_html=True,
     )
 
-    # รูปถ่ายหน้าไพ่ยิปซีคลาสสิกจริงผ่าน Cloudinary CDN ลิงก์ตรงโหลดติด 100%
     TAROT_CARDS = {
         1: {
             "name": "The Fool (ผู้เริ่มต้น)",
             "meaning": "การเริ่มต้นใหม่ ความเป็นอิสระ มีโชคจากการกล้าเสี่ยง ให้ทำตามหัวใจ",
-            "img": "https://res.cloudinary.com/demo/image/upload/w_300,f_auto/v1/tarot_fool.jpg",
+            "img": generate_tarot_card("THE FOOL", "ผู้เริ่มต้น", "🃏", "0"),
         },
         2: {
             "name": "The Magician (นักมายากล)",
             "meaning": "ความสามารถรอบด้าน การติดต่อสื่อสารสำเร็จ เงินทองมาจากความสามารถ",
-            "img": "https://images.unsplash.com/photo-1635322966219-b75ed372eb01?w=300&auto=format&fit=crop&q=80",
+            "img": generate_tarot_card(
+                "THE MAGICIAN", "นักมายากล", "🪄", "I"
+            ),
         },
         3: {
             "name": "The High Priestess (นักบวชหญิง)",
             "meaning": "สัญชาตญาณแม่นยำ เสน่ห์ดึงดูด มีโชคด้านลางสังหรณ์ ให้เชื่อมั่นความคิดแรก",
-            "img": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=300&auto=format&fit=crop&q=80",
+            "img": generate_tarot_card(
+                "HIGH PRIESTESS", "นักบวชหญิง", "🌙", "II"
+            ),
         },
         4: {
             "name": "The Empress (จักรพรรดินี)",
             "meaning": "ความอุดมสมบูรณ์ ความรักอบอุ่น มั่งคั่ง มีเกณฑ์ได้รับข่าวดีเรื่องเงินทอง",
-            "img": "https://images.unsplash.com/photo-1544717305-2782549b5136?w=300&auto=format&fit=crop&q=80",
+            "img": generate_tarot_card(
+                "THE EMPRESS", "จักรพรรดินี", "👑", "III"
+            ),
         },
         5: {
             "name": "The Emperor (จักรพรรดิ)",
             "meaning": "อำนาจบารมี ความมั่นคง การได้รับการสนับสนุนจากผู้ใหญ่ งานใหญ่สำเร็จ",
-            "img": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&auto=format&fit=crop&q=80",
+            "img": generate_tarot_card("THE EMPEROR", "จักรพรรดิ", "⚔️", "IV"),
         },
         6: {
             "name": "The Lovers (คนรัก)",
             "meaning": "ความรักสมหวัง การตัดสินใจครั้งสำคัญ พันธมิตรที่ดี ความสัมพันธ์ก้าวหน้า",
-            "img": "https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=300&auto=format&fit=crop&q=80",
+            "img": generate_tarot_card("THE LOVERS", "คนรัก", "💖", "VI"),
         },
         7: {
             "name": "The Sun (ดวงอาทิตย์)",
             "meaning": "ความสำเร็จสูงสุด ข่าวดี ชื่อเสียง ความสุขความสดใส ได้รับโชคลาภใหญ่",
-            "img": "https://images.unsplash.com/photo-1532693322450-2cb5c511067d?w=300&auto=format&fit=crop&q=80",
+            "img": generate_tarot_card("THE SUN", "ดวงอาทิตย์", "☀️", "XIX"),
         },
         8: {
             "name": "Wheel of Fortune (กงล้อโชคชะตา)",
             "meaning": "โชคชะตาเปลี่ยนไปในทางที่ดี ได้รับโอกาสทอง โชคลาภฟลุ๊กๆ ไหลมา",
-            "img": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=300&auto=format&fit=crop&q=80",
+            "img": generate_tarot_card(
+                "WHEEL OF FORTUNE", "กงล้อโชคชะตา", "☸️", "X"
+            ),
         },
     }
 
-    st.info("💡 ตั้งจิตอธิษฐานนึกถึงเรื่องที่ต้องการถาม แล้วกดปุ่มสุ่มเปิดไพ่ยิปซี")
+    st.info(
+        "💡 ตั้งจิตอธิษฐานนึกถึงเรื่องที่ต้องการถาม แล้วกดปุ่มสุ่มเปิดไพ่ยิปซี"
+    )
 
     # ปุ่มสุ่มหลัก 3 ใบ
     if st.button("✨ กดเพื่อสุ่มเปิดไพ่ยิปซี (3 ใบ)"):
@@ -302,7 +346,13 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
         card_info = SIAMSI_49[result_num]
 
         st.markdown("---")
-        img_url = "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=300&auto=format&fit=crop&q=80"
+        img_url = generate_tarot_card(
+            f"SIAMSI NO. {result_num}",
+            card_info["title"],
+            "☯️",
+            f"№ {result_num}",
+            "#fae8ff",
+        )
 
         col1, col2 = st.columns([1, 1.2])
 
