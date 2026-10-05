@@ -5,121 +5,232 @@ import streamlit as st
 # 1. ตั้งค่าหน้าเพจ Streamlit
 st.set_page_config(
     page_title="ระบบดูดวงพี่หมอวี - ไพ่ยิปซี & เซียมซีห้องสิน",
-    page_icon="🔮",
+    page_icon="☯️",
     layout="centered",
     initial_sidebar_state="expanded",
 )
 
-# 2. แถบเมนูด้านข้างสำหรับเลือกประเภทการทำนาย
-st.sidebar.title("🔮 เมนูเลือกบริการดูดวง")
+# 2. ตกแต่ง CSS รวม โทนเทพมงคลจีน (ขาว-ทอง-ม่วงอ่อน-ชมพูดอกท้อ)
+st.markdown(
+    """
+    <style>
+    /* พื้นหลังนุ่มนวลแบบเทพจีนมงคล */
+    .stApp {
+        background: linear-gradient(135deg, #fefce8 0%, #fae8ff 40%, #fce7f3 70%, #ffffff 100%);
+        color: #3b0764;
+        font-family: 'Sarabun', sans-serif;
+    }
+    
+    /* ตกแต่ง Sidebar เมนูด้านข้าง */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #faf5ff 0%, #f3e8ff 100%);
+        border-right: 2px solid #fde047;
+    }
+
+    /* หัวข้อหลักสไตล์มหาเทพ */
+    .main-title {
+        text-align: center;
+        color: #7e22ce;
+        font-size: 2.2rem;
+        font-weight: bold;
+        text-shadow: 0px 2px 10px rgba(234, 179, 8, 0.4);
+        margin-bottom: 5px;
+    }
+    
+    /* หัวข้อรอง */
+    .sub-title {
+        text-align: center;
+        color: #a855f7;
+        font-size: 1.05rem;
+        margin-bottom: 25px;
+    }
+
+    /* กล่องคำทำนายวิจิตร */
+    .result-box {
+        background-color: rgba(255, 255, 255, 0.92);
+        border: 2px solid #facc15;
+        border-radius: 20px;
+        padding: 22px;
+        box-shadow: 0px 10px 25px rgba(168, 85, 247, 0.2);
+    }
+    
+    .pred-header {
+        color: #7e22ce;
+        font-weight: bold;
+        margin-top: 12px;
+        margin-bottom: 3px;
+        font-size: 1.05rem;
+    }
+
+    /* ปุ่มกดมงคลแบบไล่สี */
+    div.stButton > button {
+        background: linear-gradient(90deg, #a855f7 0%, #d946ef 100%);
+        color: white;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 25px;
+        border: 2px solid #fef08a;
+        box-shadow: 0px 4px 15px rgba(168, 85, 247, 0.3);
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+    
+    div.stButton > button:hover {
+        transform: scale(1.02);
+        box-shadow: 0px 6px 20px rgba(217, 70, 239, 0.5);
+        color: #fef08a;
+    }
+    </style>
+""",
+    unsafe_allow_html=True,
+)
+
+# 3. แถบเมนูด้านข้างสำหรับเลือกประเภทการทำนาย
+st.sidebar.title("☯️ เมนูดูดวงเทพมงคล")
 selected_menu = st.sidebar.radio(
     "กรุณาเลือกประเภทการทำนาย:",
     ["🃏 เปิดไพ่ยิปซีทำนายดวง", "☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ"],
 )
 
 # ==========================================
-# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (ระบบเดิม)
+# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (ธีมเทพจีน)
 # ==========================================
 if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายดวง":
     st.markdown(
-        "<h1 style='text-align: center; color: #6b21a8;'>🔮 เปิดไพ่ยิปซีทำนายดวง โดยพี่หมอวี</h1>",
+        '<div class="main-title">🔮 เปิดไพ่ยิปซีทำนายดวง โดยพี่หมอวี 🔮</div>',
         unsafe_allow_html=True,
     )
-    st.write("---")
+    st.markdown(
+        '<div class="sub-title">✨ มงคลทายทาย ส่องดวงชะตาชี้ทางสว่าง ✨</div>',
+        unsafe_allow_html=True,
+    )
+
+    # ฐานข้อมูลไพ่ยิปซี
+    TAROT_CARDS = {
+        1: {
+            "name": "The Fool (ผู้เริ่มต้น)",
+            "meaning": "การเริ่มต้นใหม่ การเดินทางครั้งใหม่ ความเป็นอิสระ มีโชคจากการกล้าเสี่ยง ให้ทำตามหัวใจ",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg",
+        },
+        2: {
+            "name": "The Magician (นักมายากล)",
+            "meaning": "ความสามารถรอบด้าน การติดต่อสื่อสารสำเร็จ ไอเดียสร้างสรรค์ เงินทองและความก้าวหน้ามาจากความสามารถ",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg",
+        },
+        3: {
+            "name": "The High Priestess (นักบวชหญิง)",
+            "meaning": "สัญชาตญาณแม่นยำ เสน่ห์ดึงดูด ความลึกลับ มีโชคด้านลางสังหรณ์ ให้เชื่อมั่นในความคิดแรก",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg",
+        },
+        4: {
+            "name": "The Empress (จักรพรรดินี)",
+            "meaning": "ความอุดมสมบูรณ์ ความรักอบอุ่น การเติบโต มั่งคั่ง มีเกณฑ์ได้รับข่าวดีเรื่องเงินทองและครอบครัว",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg",
+        },
+        5: {
+            "name": "The Emperor (จักรพรรดิ)",
+            "meaning": "อำนาจบารมี ความมั่นคง การได้รับการสนับสนุนจากผู้ใหญ่ งานใหญ่ประสบความสำเร็จ",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg",
+        },
+        6: {
+            "name": "The Lovers (คนรัก)",
+            "meaning": "ความรักสมหวัง การตัดสินใจครั้งสำคัญ พันธมิตรที่ดี ความสัมพันธ์ก้าวหน้าหวานชื่น",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg",
+        },
+        7: {
+            "name": "The Sun (ดวงอาทิตย์)",
+            "meaning": "ความสำเร็จสูงสุด ข่าวดี ชื่อเสียง ความสุขความสดใส ปัญหาหมดไป ได้รับโชคลาภใหญ่",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/9/91/RWS_Tarot_19_Sun.jpg",
+        },
+        8: {
+            "name": "Wheel of Fortune (กงล้อแห่งโชคชะตา)",
+            "meaning": "โชคชะตาเปลี่ยนไปในทางที่ดี จังหวะชีวิตเปิด ได้รับโอกาสทอง โชคลาภฟลุ๊กๆ ไหลมา",
+            "img": "https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg",
+        },
+    }
+
     st.info("💡 ตั้งจิตอธิษฐานนึกถึงเรื่องที่ต้องการถาม แล้วกดปุ่มสุ่มเปิดไพ่ยิปซี")
 
-    # ปุ่มเปิดไพ่ยิปซี
-    if st.button("✨ กดเพื่อเปิดไพ่ยิปซีทำนายดวง"):
-        with st.spinner("กำลังตั้งจิตอธิษฐานและจับไพ่..."):
-            time.sleep(1)
-            st.success("🔮 ผลการทำนายดวงชะตาด้วยไพ่ยิปซีของคุณปรากฏแล้ว")
+    if st.button("✨ กดเพื่อสุ่มเปิดไพ่ยิปซีทำนายดวง"):
+        with st.spinner("🔮 กำลังตั้งจิตอธิษฐานและจับไพ่ยิปซี..."):
+            time.sleep(1.2)
+            card_id = random.randint(1, len(TAROT_CARDS))
+            st.session_state["tarot_result"] = card_id
+
+    if "tarot_result" in st.session_state:
+        card = TAROT_CARDS[st.session_state["tarot_result"]]
+        st.markdown("---")
+
+        col1, col2 = st.columns([1, 1.2])
+        with col1:
+            st.image(card["img"], caption=card["name"], use_column_width=True)
+        with col2:
+            st.markdown(
+                f"""
+            <div class="result-box">
+                <h3 style="color: #6b21a8; margin-top:0;">✨ {card['name']}</h3>
+                <hr style="border-top: 1px dashed #facc15;">
+                <p class="pred-header">🔮 คำทำนายดวงชะตา:</p>
+                <p style="color: #3b0764; font-size: 1.05rem; line-height: 1.6;">{card['meaning']}</p>
+            </div>
+            """,
+                unsafe_allow_html=True,
+            )
 
 
 # ==========================================
-# 🟣 เมนูที่ 2: เซียมซีเทพเซียนห้องสิน 49 ใบ (ระบบใหม่)
+# 🟣 เมนูที่ 2: เซียมซีเทพเซียนห้องสิน 49 ใบ (ธีมเทพจีน)
 # ==========================================
 elif selected_menu == "☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ":
 
-    # ตกแต่งสไตล์วิจิตรห้องสิน
-    st.markdown(
-        """
-        <style>
-        .stApp {
-            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #fff0f5 100%);
-            color: #3b0764;
-        }
-        .main-title {
-            text-align: center;
-            color: #6b21a8;
-            font-size: 2.2rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .sub-title {
-            text-align: center;
-            color: #9333ea;
-            font-size: 1rem;
-            margin-bottom: 25px;
-        }
-        .result-box {
-            background-color: rgba(255, 255, 255, 0.95);
-            border: 2px solid #facc15;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0px 8px 20px rgba(168, 85, 247, 0.18);
-        }
-        .pred-header {
-            color: #7e22ce;
-            font-weight: bold;
-            margin-top: 12px;
-            margin-bottom: 3px;
-            font-size: 1.05rem;
-        }
-        div.stButton > button {
-            background: linear-gradient(90deg, #9333ea 0%, #c026d3 100%);
-            color: white;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: 25px;
-            border: 2px solid #fef08a;
-            width: 100%;
-        }
-        </style>
-    """,
-        unsafe_allow_html=True,
-    )
-
-    # ฐานข้อมูลคำทำนายเซียมซี 49 ใบ
     SIAMSI_49 = {
         1: {
             "title": "อากงเทพสามตาเอ้อหลางเสิน (ปราบมารประทานพร)",
             "summary": "ดวงตามหาเทพส่องสว่าง อุปสรรคพ่ายแพ้ภัย",
-            "work_money": "การงานโดดเด่น มีสติปัญญาแก้ปัญหาได้ทุกรูปแบบ ผู้ใหญ่เมตตาเอ็นดูสนับสนุน การเงินคล่องตัวดี มีลาภจากการงานและการเสี่ยงโชค",
-            "love": "คนโสดมีเกณฑ์พบคนดีที่ถูกใจ เป็นคู่แท้สนับสนุนกัน คนมีคู่ความสัมพันธ์แน่นแฟ้น เข้าใจกันลึกซึ้ง",
-            "advice": "จงเชื่อมั่นในสติปัญญาและสัญชาตญาณของตัวเอง มารไม่มี บารมีไม่เกิด ความเพียรจะนำมาซึ่งความสำเร็จอันยิ่งใหญ่",
+            "work_money": "การงานโดดเด่น มีสติปัญญาแก้ปัญหาได้ทุกรูปแบบ ผู้ใหญ่เมตตาเอ็นดูสนับสนุน การเงินคล่องตัวดี มีลาภจากการงานและโชคลาภ",
+            "love": "คนโสดพบคนดีที่ถูกใจ เป็นคู่แท้สนับสนุนกัน คนมีคู่ความสัมพันธ์แน่นแฟ้น เข้าใจกันลึกซึ้ง",
+            "advice": "จงเชื่อมั่นในสติปัญญาและสัญชาตญาณของตัวเอง มารไม่มี บารมีไม่เกิด ความเพียรจะนำมาซึ่งความสำเร็จ",
         },
         2: {
             "title": "นาจาเหยียบกงล้อเพลิง (ชัยชนะอันว่องไว)",
             "summary": "ความสำเร็จรวดเร็วปานกามนิต ชนะอุปสรรคเด็ดขาด",
-            "work_money": "การงานก้าวหน้ารวดเร็ว มีโปรเจกต์ใหม่ๆ เข้ามาตลอด การตัดสินใจเด็ดขาดนำมาซึ่งผลงานดีเยี่ยม การเงินไหลเวียนคล่องตัว มีโชคลาภแบบไม่คาดฝัน",
-            "love": "ความรักสดใส มีเสน่ห์แรง คนโสดมีคนเข้ามาจีบมากมาย คนมีคู่ความสัมพันธ์ราบรื่น มีเกณฑ์ได้เดินทางร่วมกัน",
+            "work_money": "การงานก้าวหน้ารวดเร็ว มีโปรเจกต์ใหม่เข้ามาตลอด การตัดสินใจเด็ดขาดนำผลงานดีเยี่ยม การเงินไหลเวียนดี มีลาภฟลุ๊กๆ",
+            "love": "ความรักสดใส มีเสน่ห์แรง คนโสดมีคนเข้ามาจีบมากมาย คนมีคู่ราบรื่น เกณฑ์เดินทางร่วมกัน",
             "advice": "อย่ากลัวการเปลี่ยนแปลง จงกล้าคิดกล้าทำ ความมุ่งมั่นเด็ดเดี่ยวจะนำพาท่านสู่ชัยชนะ",
         },
         3: {
             "title": "มหาเทพเจียงจื่อหยาบัญชาทัพ (ความสำเร็จแห่งปัญญา)",
             "summary": "สติปัญญาชนะงานใหญ่ ได้รับเกียรติยศชื่อเสียง",
-            "work_money": "การงานก้าวหน้า ได้รับความไว้วางใจให้คุมงานใหญ่ มีวิสัยทัศน์กว้างไกลแก้ปัญหาได้ดี การเงินมั่นคงดี มีโอกาสได้รับเงินก้อนใหญ่จากการลงทุนหรือความสามารถ",
-            "love": "คนโสดมีเกณฑ์พบคนมีความรู้ความสามารถ เป็นคู่คิดคู่ชีวิต คนมีคู่ความสัมพันธ์มั่นคง เข้าใจกันและสนับสนุนกัน",
-            "advice": "จงใช้สติปัญญาและวิสัยทัศน์ในการดำเนินชีวิต ความเพียรพยายามจะนำมาซึ่งความสำเร็จที่ยั่งยืน",
+            "work_money": "การงานก้าวหน้า ได้รับความไว้วางใจให้คุมงานใหญ่ มีวิสัยทัศน์กว้างไกล การเงินมั่นคง มีเกณฑ์ได้เงินก้อนใหญ่",
+            "love": "คนโสดพบคนมีความรู้ความสามารถ เป็นคู่คิดคู่ชีวิต คนมีคู่มั่นคง สนับสนุนกัน",
+            "advice": "จงใช้สติปัญญาและวิสัยทัศน์ในการดำเนินชีวิต ความเพียรพยายามจะนำพาความสำเร็จที่ยั่งยืน",
+        },
+        4: {
+            "title": "เจ้าแม่หนี่วาประทานพร (เยียวยาและฟื้นฟู)",
+            "summary": "สุขภาพแข็งแรง ฟื้นฟูจิตใจ ความสัมพันธ์สดใส",
+            "work_money": "การงานเริ่มราบรื่น ปัญหาเก่าได้รับการแก้ไข ได้รับความช่วยเหลือจากเพื่อนร่วมงาน การเงินฟื้นตัวดีขึ้นเรื่อยๆ",
+            "love": "ความรักสมหวัง คนโสดพบคนเมตตาจิตใจดี คนมีคู่กลับมาเข้าใจกันลึกซึ้งผูกพันกว่าเดิม",
+            "advice": "จงรักษาจิตใจให้ผ่องใสและมีเมตตา พลังงานบวกจะดึงดูดสิ่งดีๆ เข้ามาในชีวิต",
+        },
+        5: {
+            "title": "ศาลามหาเทพแต่งตั้งเซียน (เกียรติยศชื่อเสียง)",
+            "summary": "ผลงานได้รับการยอมรับ เลื่อนขั้นยศตำแหน่ง",
+            "work_money": "การงานโดดเด่น ผลงานประจักษ์ ได้โปรโมตหรือรับหน้าที่สำคัญ การเงินดีเยี่ยม รายได้เพิ่มตามความสามารถ",
+            "love": "คนโสดมีคนโปรไฟล์ดีเข้ามาจีบ คนมีคู่สนับสนุนกันและกันจนก้าวหน้าในสังคม",
+            "advice": "จงมุ่งมั่นสร้างผลงานด้วยความซื่อสัตย์ ความสำเร็จและเกียรติยศจะเป็นของท่านอย่างแน่นอน",
         },
     }
 
-    # รองรับกรณีสุ่มได้ใบอื่นๆ (4-49)
-    for i in range(4, 50):
+    for i in range(6, 50):
         if i not in SIAMSI_49:
-            SIAMSI_49[i] = SIAMSI_49[1]
+            SIAMSI_49[i] = {
+                "title": f"สาส์นสวรรค์มงคล ใบที่ {i}",
+                "summary": "สิ่งศักดิ์สิทธิ์อำนวยพร ความเจริญรุ่งเรืองบังเกิด",
+                "work_money": "การงานก้าวหน้าตามลำดับ มีผู้ใหญ่คอยหนุนหลัง การเงินมั่นคง มีรายได้เข้ามาไม่ขาดสาย",
+                "love": "ความรักราบรื่น เข้าใจกันดี คนโสดมีเกณฑ์พบมิตรสหายนำพารักแท้มาให้",
+                "advice": "หมั่นทำบุญทานกุศล สะสมบารมี แล้วโชคลาภและความสำเร็จจะสถิตอยู่กับท่าน",
+            }
 
-    # หน้าตาแอปเซียมซี
     st.markdown(
         '<div class="main-title">☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ ☯️</div>',
         unsafe_allow_html=True,
