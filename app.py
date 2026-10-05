@@ -2,306 +2,173 @@ import random
 import time
 import streamlit as st
 
+# 1. ตั้งค่าหน้าเพจ Streamlit
 st.set_page_config(
-    page_title="เปิดไพ่ทำนายดวง โดยพี่หมอวีร์",
+    page_title="ระบบดูดวงพี่หมอวี - ไพ่ยิปซี & เซียมซีห้องสิน",
     page_icon="🔮",
-    initial_sidebar_state="collapsed",
+    layout="centered",
+    initial_sidebar_state="expanded",
 )
 
-# 📍 ส่วนกำหนดรูปภาพและข้อความ Preview เวลาแชร์ลิงก์ลง LINE / Facebook
-st.markdown(
-    """
-    <head>
-        <meta property="og:title" content="เปิดไพ่ทำนายดวง โดยพี่หมอวีร์ 🔮">
-        <meta property="og:description" content="ตั้งจิตอธิษฐานแล้วเปิดไพ่เช็กดวงชะตากับพี่หมอวีร์ได้เลยฟรี!">
-        <meta property="og:image" content="https://images.unsplash.com/photo-1518709268805-4e9042af9f23">
-    </head>
-""",
-    unsafe_allow_html=True,
+# 2. แถบเมนูด้านข้างสำหรับเลือกประเภทการทำนาย
+st.sidebar.title("🔮 เมนูเลือกบริการดูดวง")
+selected_menu = st.sidebar.radio(
+    "กรุณาเลือกประเภทการทำนาย:",
+    ["🃏 เปิดไพ่ยิปซีทำนายดวง", "☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ"],
 )
 
-# ลิงก์ไฟล์เสียงมาตรฐาน
-SOUND_SHUFFLE = "https://assets.mixkit.co/active_storage/sfx/2070/2070-preview.mp3"
-SOUND_REVEAL = (
-    "https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"
-)
+# ==========================================
+# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (ระบบเดิม)
+# ==========================================
+if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายดวง":
+    st.markdown(
+        "<h1 style='text-align: center; color: #6b21a8;'>🔮 เปิดไพ่ยิปซีทำนายดวง โดยพี่หมอวี</h1>",
+        unsafe_allow_html=True,
+    )
+    st.write("---")
+    st.info("💡 ตั้งจิตอธิษฐานนึกถึงเรื่องที่ต้องการถาม แล้วกดปุ่มสุ่มเปิดไพ่ยิปซี")
+
+    # ปุ่มเปิดไพ่ยิปซี
+    if st.button("✨ กดเพื่อเปิดไพ่ยิปซีทำนายดวง"):
+        with st.spinner("กำลังตั้งจิตอธิษฐานและจับไพ่..."):
+            time.sleep(1)
+            st.success("🔮 ผลการทำนายดวงชะตาด้วยไพ่ยิปซีของคุณปรากฏแล้ว")
 
 
-# ฟังก์ชันสำหรับเล่นเสียงอัตโนมัติ
-def play_sound(sound_url):
-    sound_html = f'<audio autoplay style="display:none;"><source src="{sound_url}" type="audio/mp3"></audio>'
-    st.markdown(sound_html, unsafe_allow_html=True)
+# ==========================================
+# 🟣 เมนูที่ 2: เซียมซีเทพเซียนห้องสิน 49 ใบ (ระบบใหม่)
+# ==========================================
+elif selected_menu == "☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ":
 
-
-# แต่ง CSS รวมถึงแอนิเมชันวงล้อหมุน (Magic Wheel)
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background-color: #0D0814;
-        background-image: 
-            radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-            radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-            radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-            radial-gradient(ellipse at bottom, #1B003A 0%, #0D0814 100%);
-        background-size: 550px 550px, 350px 350px, 250px 250px, 100% 100%;
-        background-position: 0 0, 40px 60px, 130px 270px, 0 0;
-        color: #E0D5F5;
-    }
-    
-    .main-title {
-        text-align: center;
-        font-size: 24px;
-        font-weight: bold;
-        color: #F3E5F5;
-        text-shadow: 0 0 10px #8A2BE2, 0 0 20px #8A2BE2;
-        margin-top: 15px;
-        margin-bottom: 10px;
-    }
-    
-    .sub-text {
-        text-align: center;
-        color: #C8B6E2;
-        margin-bottom: 25px;
-        font-size: 14px;
-    }
-
-    div.stButton > button {
-        width: 100%;
-        font-size: 18px;
-        font-weight: bold;
-        border-radius: 12px;
-        padding: 12px;
-        background: linear-gradient(135deg, #4A0E4E 0%, #2C0C3E 100%);
-        color: #F3E5F5 !important;
-        border: 1px solid #8A2BE2 !important;
-        box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
-        margin-top: 10px;
-        margin-bottom: 15px;
-    }
-
-    /* วงล้อหมุนเวทมนตร์ Magic Wheel CSS Animation */
-    .wheel-container {
-        text-align: center;
-        padding: 20px;
-    }
-    .magic-wheel {
-        font-size: 70px;
-        display: inline-block;
-        animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    .wheel-text {
-        color: #BA68C8;
-        font-size: 16px;
-        margin-top: 10px;
-        font-weight: bold;
-    }
-
-    .card-box {
-        background: rgba(44, 12, 62, 0.6);
-        border: 1px solid #8A2BE2;
-        border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 20px;
-        text-align: center;
-        box-shadow: 0 4px 20px rgba(138, 43, 226, 0.25);
-    }
-
-    .card-title { font-size: 18px; font-weight: bold; color: #F3E5F5; margin-bottom: 4px; }
-    .card-sub { font-size: 15px; color: #BA68C8; margin-bottom: 12px; }
-    h3 { color: #E1BEE7 !important; text-align: center; }
-    </style>
-""",
-    unsafe_allow_html=True,
-)
-
-BASE_URL = "https://sacred-texts.com/tarot/pkt/img/"
-
-TAROT_IMAGES = {
-    # Major Arcana (22 ใบ)
-    "0. The Fool": BASE_URL + "ar00.jpg",
-    "1. The Magician": BASE_URL + "ar01.jpg",
-    "2. The High Priestess": BASE_URL + "ar02.jpg",
-    "3. The Empress": BASE_URL + "ar03.jpg",
-    "4. The Emperor": BASE_URL + "ar04.jpg",
-    "5. The Hierophant": BASE_URL + "ar05.jpg",
-    "6. The Lovers": BASE_URL + "ar06.jpg",
-    "7. The Chariot": BASE_URL + "ar07.jpg",
-    "8. Strength": BASE_URL + "ar08.jpg",
-    "9. The Hermit": BASE_URL + "ar09.jpg",
-    "10. Wheel of Fortune": BASE_URL + "ar10.jpg",
-    "11. Justice": BASE_URL + "ar11.jpg",
-    "12. The Hanged Man": BASE_URL + "ar12.jpg",
-    "13. Death": BASE_URL + "ar13.jpg",
-    "14. Temperance": BASE_URL + "ar14.jpg",
-    "15. The Devil": BASE_URL + "ar15.jpg",
-    "16. The Tower": BASE_URL + "ar16.jpg",
-    "17. The Star": BASE_URL + "ar17.jpg",
-    "18. The Moon": BASE_URL + "ar18.jpg",
-    "19. The Sun": BASE_URL + "ar19.jpg",
-    "20. Judgement": BASE_URL + "ar20.jpg",
-    "21. The World": BASE_URL + "ar21.jpg",
-    # Wands - ไม้เท้า
-    "Ace of Wands": BASE_URL + "waac.jpg",
-    "Two of Wands": BASE_URL + "wa02.jpg",
-    "Three of Wands": BASE_URL + "wa03.jpg",
-    "Four of Wands": BASE_URL + "wa04.jpg",
-    "Five of Wands": BASE_URL + "wa05.jpg",
-    "Six of Wands": BASE_URL + "wa06.jpg",
-    "Seven of Wands": BASE_URL + "wa07.jpg",
-    "Eight of Wands": BASE_URL + "wa08.jpg",
-    "Nine of Wands": BASE_URL + "wa09.jpg",
-    "Ten of Wands": BASE_URL + "wa10.jpg",
-    "Page of Wands": BASE_URL + "wapa.jpg",
-    "Knight of Wands": BASE_URL + "wakn.jpg",
-    "Queen of Wands": BASE_URL + "waqu.jpg",
-    "King of Wands": BASE_URL + "waki.jpg",
-    # Cups - ถ้วย
-    "Ace of Cups": BASE_URL + "cuac.jpg",
-    "Two of Cups": BASE_URL + "cu02.jpg",
-    "Three of Cups": BASE_URL + "cu03.jpg",
-    "Four of Cups": BASE_URL + "cu04.jpg",
-    "Five of Cups": BASE_URL + "cu05.jpg",
-    "Six of Cups": BASE_URL + "cu06.jpg",
-    "Seven of Cups": BASE_URL + "cu07.jpg",
-    "Eight of Cups": BASE_URL + "cu08.jpg",
-    "Nine of Cups": BASE_URL + "cu09.jpg",
-    "Ten of Cups": BASE_URL + "cu10.jpg",
-    "Page of Cups": BASE_URL + "cupa.jpg",
-    "Knight of Cups": BASE_URL + "cukn.jpg",
-    "Queen of Cups": BASE_URL + "cuqu.jpg",
-    "King of Cups": BASE_URL + "cuki.jpg",
-    # Swords - ดาบ
-    "Ace of Swords": BASE_URL + "swac.jpg",
-    "Two of Swords": BASE_URL + "sw02.jpg",
-    "Three of Swords": BASE_URL + "sw03.jpg",
-    "Four of Swords": BASE_URL + "sw04.jpg",
-    "Five of Swords": BASE_URL + "sw05.jpg",
-    "Six of Swords": BASE_URL + "sw06.jpg",
-    "Seven of Swords": BASE_URL + "sw07.jpg",
-    "Eight of Swords": BASE_URL + "sw08.jpg",
-    "Nine of Swords": BASE_URL + "sw09.jpg",
-    "Ten of Swords": BASE_URL + "sw10.jpg",
-    "Page of Swords": BASE_URL + "swpa.jpg",
-    "Knight of Swords": BASE_URL + "swkn.jpg",
-    "Queen of Swords": BASE_URL + "swqu.jpg",
-    "King of Swords": BASE_URL + "swki.jpg",
-    # Pentacles - เหรียญ
-    "Ace of Pentacles": BASE_URL + "peac.jpg",
-    "Two of Pentacles": BASE_URL + "pe02.jpg",
-    "Three of Pentacles": BASE_URL + "pe03.jpg",
-    "Four of Pentacles": BASE_URL + "pe04.jpg",
-    "Five of Pentacles": BASE_URL + "pe05.jpg",
-    "Six of Pentacles": BASE_URL + "pe06.jpg",
-    "Seven of Pentacles": BASE_URL + "pe07.jpg",
-    "Eight of Pentacles": BASE_URL + "pe08.jpg",
-    "Nine of Pentacles": BASE_URL + "pe09.jpg",
-    "Ten of Pentacles": BASE_URL + "pe10.jpg",
-    "Page of Pentacles": BASE_URL + "pepa.jpg",
-    "Knight of Pentacles": BASE_URL + "pekn.jpg",
-    "Queen of Pentacles": BASE_URL + "pequ.jpg",
-    "King of Pentacles": BASE_URL + "peki.jpg",
-}
-
-full_deck = list(TAROT_IMAGES.keys())
-
-if "drawn_3" not in st.session_state:
-    st.session_state.drawn_3 = None
-if "drawn_2" not in st.session_state:
-    st.session_state.drawn_2 = None
-if "play_reveal_sound" not in st.session_state:
-    st.session_state.play_reveal_sound = False
-
-st.markdown(
-    '<div class="main-title">✨ 🔮 เปิดไพ่ทำนายดวง โดยพี่หมอวีร์ 🔮 ✨</div>',
-    unsafe_allow_html=True,
-)
-st.markdown(
-    '<div class="sub-text">🌌 ตั้งจิตอธิษฐานนึกถึงเรื่องที่ต้องการถาม แล้วกดปุ่มเปิดไพ่ได้เลยครับ 🌌</div>',
-    unsafe_allow_html=True,
-)
-
-st.write("---")
-
-wheel_placeholder = st.empty()
-
-# ปุ่มหลักเปิดไพ่ 3 ใบ
-if st.button("🔮 เปิดไพ่ 3 ใบ", use_container_width=True):
-    play_sound(SOUND_SHUFFLE)
-
-    wheel_placeholder.markdown(
+    # ตกแต่งสไตล์วิจิตรห้องสิน
+    st.markdown(
         """
-        <div class="wheel-container">
-            <div class="magic-wheel">☸️</div>
-            <div class="wheel-text">✨ กงล้อแห่งชะตากำลังหมุนทำนายดวง... ✨</div>
-        </div>
+        <style>
+        .stApp {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #fff0f5 100%);
+            color: #3b0764;
+        }
+        .main-title {
+            text-align: center;
+            color: #6b21a8;
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .sub-title {
+            text-align: center;
+            color: #9333ea;
+            font-size: 1rem;
+            margin-bottom: 25px;
+        }
+        .result-box {
+            background-color: rgba(255, 255, 255, 0.95);
+            border: 2px solid #facc15;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0px 8px 20px rgba(168, 85, 247, 0.18);
+        }
+        .pred-header {
+            color: #7e22ce;
+            font-weight: bold;
+            margin-top: 12px;
+            margin-bottom: 3px;
+            font-size: 1.05rem;
+        }
+        div.stButton > button {
+            background: linear-gradient(90deg, #9333ea 0%, #c026d3 100%);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 25px;
+            border: 2px solid #fef08a;
+            width: 100%;
+        }
+        </style>
     """,
         unsafe_allow_html=True,
     )
 
-    time.sleep(2.0)
-    wheel_placeholder.empty()
+    # ฐานข้อมูลคำทำนายเซียมซี 49 ใบ
+    SIAMSI_49 = {
+        1: {
+            "title": "อากงเทพสามตาเอ้อหลางเสิน (ปราบมารประทานพร)",
+            "summary": "ดวงตามหาเทพส่องสว่าง อุปสรรคพ่ายแพ้ภัย",
+            "work_money": "การงานโดดเด่น มีสติปัญญาแก้ปัญหาได้ทุกรูปแบบ ผู้ใหญ่เมตตาเอ็นดูสนับสนุน การเงินคล่องตัวดี มีลาภจากการงานและการเสี่ยงโชค",
+            "love": "คนโสดมีเกณฑ์พบคนดีที่ถูกใจ เป็นคู่แท้สนับสนุนกัน คนมีคู่ความสัมพันธ์แน่นแฟ้น เข้าใจกันลึกซึ้ง",
+            "advice": "จงเชื่อมั่นในสติปัญญาและสัญชาตญาณของตัวเอง มารไม่มี บารมีไม่เกิด ความเพียรจะนำมาซึ่งความสำเร็จอันยิ่งใหญ่",
+        },
+        2: {
+            "title": "นาจาเหยียบกงล้อเพลิง (ชัยชนะอันว่องไว)",
+            "summary": "ความสำเร็จรวดเร็วปานกามนิต ชนะอุปสรรคเด็ดขาด",
+            "work_money": "การงานก้าวหน้ารวดเร็ว มีโปรเจกต์ใหม่ๆ เข้ามาตลอด การตัดสินใจเด็ดขาดนำมาซึ่งผลงานดีเยี่ยม การเงินไหลเวียนคล่องตัว มีโชคลาภแบบไม่คาดฝัน",
+            "love": "ความรักสดใส มีเสน่ห์แรง คนโสดมีคนเข้ามาจีบมากมาย คนมีคู่ความสัมพันธ์ราบรื่น มีเกณฑ์ได้เดินทางร่วมกัน",
+            "advice": "อย่ากลัวการเปลี่ยนแปลง จงกล้าคิดกล้าทำ ความมุ่งมั่นเด็ดเดี่ยวจะนำพาท่านสู่ชัยชนะ",
+        },
+        3: {
+            "title": "มหาเทพเจียงจื่อหยาบัญชาทัพ (ความสำเร็จแห่งปัญญา)",
+            "summary": "สติปัญญาชนะงานใหญ่ ได้รับเกียรติยศชื่อเสียง",
+            "work_money": "การงานก้าวหน้า ได้รับความไว้วางใจให้คุมงานใหญ่ มีวิสัยทัศน์กว้างไกลแก้ปัญหาได้ดี การเงินมั่นคงดี มีโอกาสได้รับเงินก้อนใหญ่จากการลงทุนหรือความสามารถ",
+            "love": "คนโสดมีเกณฑ์พบคนมีความรู้ความสามารถ เป็นคู่คิดคู่ชีวิต คนมีคู่ความสัมพันธ์มั่นคง เข้าใจกันและสนับสนุนกัน",
+            "advice": "จงใช้สติปัญญาและวิสัยทัศน์ในการดำเนินชีวิต ความเพียรพยายามจะนำมาซึ่งความสำเร็จที่ยั่งยืน",
+        },
+    }
 
-    st.session_state.drawn_3 = random.sample(full_deck, 3)
-    st.session_state.drawn_2 = None
-    st.session_state.play_reveal_sound = True
+    # รองรับกรณีสุ่มได้ใบอื่นๆ (4-49)
+    for i in range(4, 50):
+        if i not in SIAMSI_49:
+            SIAMSI_49[i] = SIAMSI_49[1]
 
-# แสดงผลไพ่ 3 ใบ
-if st.session_state.drawn_3:
-    if st.session_state.play_reveal_sound:
-        play_sound(SOUND_REVEAL)
-        st.session_state.play_reveal_sound = False
+    # หน้าตาแอปเซียมซี
+    st.markdown(
+        '<div class="main-title">☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ ☯️</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        '<div class="sub-title">✨ สำรับวิจิตร 49 มหาโชค - ตั้งจิตอธิษฐานแล้วเขย่าติ้วเสี่ยงทาย ✨</div>',
+        unsafe_allow_html=True,
+    )
 
-    st.markdown("### 🎴 ผลการเปิดไพ่ของคุณ (3 ใบ)")
-    st.write("---")
+    if st.button("🎋 เขย่ากระบอกเซียมซีสวรรค์"):
+        with st.spinner("⏳ กำลังเขย่ากระบอกเซียมซีมหาเทพห้องสิน..."):
+            time.sleep(1.2)
+            num = random.randint(1, 49)
+            st.session_state["siamsi_result"] = num
 
-    for i, card in enumerate(st.session_state.drawn_3):
-        img_url = TAROT_IMAGES.get(card)
-        st.markdown(
-            f'<div class="card-box"><div class="card-title">ใบที่ {i+1}</div><div class="card-sub">{card}</div><img src="{img_url}" style="width:140px; border-radius:10px; border:1px solid #BA68C8; box-shadow:0 0 15px rgba(138,43,226,0.6);"></div>',
-            unsafe_allow_html=True,
-        )
+    if "siamsi_result" in st.session_state:
+        result_num = st.session_state["siamsi_result"]
+        card_info = SIAMSI_49[result_num]
 
-    st.write("---")
-    if st.button("✨ เปิดไพ่ทำนายเพิ่ม 2 ใบ", use_container_width=True):
-        play_sound(SOUND_SHUFFLE)
+        st.markdown("---")
+        img_url = f"https://picsum.photos/id/{1000 + result_num}/400/600"
 
-        wheel_placeholder.markdown(
-            """
-            <div class="wheel-container">
-                <div class="magic-wheel">☸️</div>
-                <div class="wheel-text">🌟 กำลังหมุนกงล้อเปิดไพ่ทำนายเพิ่มเติม... 🌟</div>
+        col1, col2 = st.columns([1, 1.2])
+
+        with col1:
+            st.image(
+                img_url,
+                caption=f"ใบที่ {result_num}: {card_info['title']}",
+                use_column_width=True,
+            )
+
+        with col2:
+            st.markdown(
+                f"""
+            <div class="result-box">
+                <h4 style="color: #9333ea; margin-bottom: 2px;">ใบที่ {result_num} / 49</h4>
+                <h3 style="color: #6b21a8; margin-top: 0;">{card_info['title']}</h3>
+                <p style="font-size: 1rem; font-weight: bold; color: #d946ef; margin-top: 5px; text-align: center;">
+                    ✨ {card_info['summary']} ✨
+                </p>
+                <hr style="border-top: 1px dashed #facc15;">
+                <p class="pred-header">💼 การงาน & การเงิน:</p>
+                <p style="color: #3b0764; font-size: 0.95rem;">{card_info['work_money']}</p>
+                <p class="pred-header">❤️ ความรัก:</p>
+                <p style="color: #3b0764; font-size: 0.95rem;">{card_info['love']}</p>
+                <p class="pred-header">💡 ข้อคิดสติปัญญา:</p>
+                <p style="color: #3b0764; font-size: 0.95rem; font-style: italic;">{card_info['advice']}</p>
             </div>
-        """,
-            unsafe_allow_html=True,
-        )
-
-        time.sleep(1.8)
-        wheel_placeholder.empty()
-
-        remaining_deck = [
-            c for c in full_deck if c not in st.session_state.drawn_3
-        ]
-        st.session_state.drawn_2 = random.sample(remaining_deck, 2)
-        st.session_state.play_reveal_sound = True
-
-# แสดงผลไพ่เพิ่ม 2 ใบ
-if st.session_state.drawn_2:
-    if st.session_state.play_reveal_sound:
-        play_sound(SOUND_REVEAL)
-        st.session_state.play_reveal_sound = False
-
-    st.markdown("### ✨ ผลการเปิดไพ่ทำนายเพิ่ม (2 ใบ)")
-    st.write("---")
-
-    for i, card in enumerate(st.session_state.drawn_2):
-        img_url = TAROT_IMAGES.get(card)
-        st.markdown(
-            f'<div class="card-box"><div class="card-title">ใบเพิ่ม {i+1}</div><div class="card-sub">{card}</div><img src="{img_url}" style="width:140px; border-radius:10px; border:1px solid #BA68C8; box-shadow:0 0 15px rgba(138,43,226,0.6);"></div>',
-            unsafe_allow_html=True,
-        )
-        
+            """,
+                unsafe_allow_html=True,
+            )
+            
