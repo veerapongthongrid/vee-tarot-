@@ -28,7 +28,7 @@ st.markdown(
     .main-title {
         text-align: center;
         color: #7e22ce;
-        font-size: 2.2rem;
+        font-size: 2rem;
         font-weight: bold;
         text-shadow: 0px 2px 10px rgba(234, 179, 8, 0.4);
         margin-bottom: 5px;
@@ -37,30 +37,31 @@ st.markdown(
     .sub-title {
         text-align: center;
         color: #a855f7;
-        font-size: 1.05rem;
-        margin-bottom: 25px;
+        font-size: 1rem;
+        margin-bottom: 20px;
     }
 
     .result-box {
-        background-color: rgba(255, 255, 255, 0.92);
+        background-color: rgba(255, 255, 255, 0.95);
         border: 2px solid #facc15;
-        border-radius: 20px;
-        padding: 22px;
-        box-shadow: 0px 10px 25px rgba(168, 85, 247, 0.2);
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: 0px 6px 18px rgba(168, 85, 247, 0.15);
+        margin-bottom: 15px;
     }
     
     .pred-header {
         color: #7e22ce;
         font-weight: bold;
-        margin-top: 12px;
+        margin-top: 10px;
         margin-bottom: 3px;
-        font-size: 1.05rem;
+        font-size: 1rem;
     }
 
     div.stButton > button {
         background: linear-gradient(90deg, #a855f7 0%, #d946ef 100%);
         color: white;
-        font-size: 1.2rem;
+        font-size: 1.15rem;
         font-weight: bold;
         border-radius: 25px;
         border: 2px solid #fef08a;
@@ -87,7 +88,7 @@ selected_menu = st.sidebar.radio(
 )
 
 # ==========================================
-# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (3 ใบ + สุ่มเพิ่ม 2 ใบ)
+# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (เรียงแนวนอนแถวละ 2 ใบ)
 # ==========================================
 if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายดวง":
     st.markdown(
@@ -99,46 +100,47 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
         unsafe_allow_html=True,
     )
 
+    # เปลี่ยนลิงก์รูปภาพเป็น CDN ภาพคุณภาพสูงที่โหลดติดชัวร์
     TAROT_CARDS = {
         1: {
             "name": "The Fool (ผู้เริ่มต้น)",
             "meaning": "การเริ่มต้นใหม่ การเดินทางครั้งใหม่ ความเป็นอิสระ มีโชคจากการกล้าเสี่ยง ให้ทำตามหัวใจ",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg",
+            "img": "https://picsum.photos/id/1025/400/600",
         },
         2: {
             "name": "The Magician (นักมายากล)",
-            "meaning": "ความสามารถรอบด้าน การติดต่อสื่อสารสำเร็จ ไอเดียสร้างสรรค์ เงินทองและความก้าวหน้ามาจากความสามารถ",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg",
+            "meaning": "ความสามารถรอบด้าน การติดต่อสื่อสารสำเร็จ ไอเดียสร้างสรรค์ เงินทองมาจากความสามารถ",
+            "img": "https://picsum.photos/id/1062/400/600",
         },
         3: {
             "name": "The High Priestess (นักบวชหญิง)",
             "meaning": "สัญชาตญาณแม่นยำ เสน่ห์ดึงดูด ความลึกลับ มีโชคด้านลางสังหรณ์ ให้เชื่อมั่นในความคิดแรก",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg",
+            "img": "https://picsum.photos/id/1069/400/600",
         },
         4: {
             "name": "The Empress (จักรพรรดินี)",
-            "meaning": "ความอุดมสมบูรณ์ ความรักอบอุ่น การเติบโต มั่งคั่ง มีเกณฑ์ได้รับข่าวดีเรื่องเงินทองและครอบครัว",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg",
+            "meaning": "ความอุดมสมบูรณ์ ความรักอบอุ่น การเติบโต มั่งคั่ง มีเกณฑ์ได้รับข่าวดีเรื่องเงินทอง",
+            "img": "https://picsum.photos/id/1080/400/600",
         },
         5: {
             "name": "The Emperor (จักรพรรดิ)",
             "meaning": "อำนาจบารมี ความมั่นคง การได้รับการสนับสนุนจากผู้ใหญ่ งานใหญ่ประสบความสำเร็จ",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg",
+            "img": "https://picsum.photos/id/1074/400/600",
         },
         6: {
             "name": "The Lovers (คนรัก)",
             "meaning": "ความรักสมหวัง การตัดสินใจครั้งสำคัญ พันธมิตรที่ดี ความสัมพันธ์ก้าวหน้าหวานชื่น",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/3/3a/TheLovers.jpg",
+            "img": "https://picsum.photos/id/1027/400/600",
         },
         7: {
             "name": "The Sun (ดวงอาทิตย์)",
             "meaning": "ความสำเร็จสูงสุด ข่าวดี ชื่อเสียง ความสุขความสดใส ปัญหาหมดไป ได้รับโชคลาภใหญ่",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/9/91/RWS_Tarot_19_Sun.jpg",
+            "img": "https://picsum.photos/id/1015/400/600",
         },
         8: {
             "name": "Wheel of Fortune (กงล้อแห่งโชคชะตา)",
             "meaning": "โชคชะตาเปลี่ยนไปในทางที่ดี จังหวะชีวิตเปิด ได้รับโอกาสทอง โชคลาภฟลุ๊กๆ ไหลมา",
-            "img": "https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg",
+            "img": "https://picsum.photos/id/1039/400/600",
         },
     }
 
@@ -148,15 +150,13 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
     if st.button("✨ กดเพื่อสุ่มเปิดไพ่ยิปซี (3 ใบ)"):
         with st.spinner("🔮 กำลังตั้งจิตอธิษฐานและสุ่มจับไพ่ 3 ใบ..."):
             time.sleep(1.2)
-            # สุ่มไพ่ 3 ใบไม่ซ้ำกัน
             st.session_state["tarot_main_cards"] = random.sample(
                 list(TAROT_CARDS.keys()), 3
             )
-            # ล้างค่าการสุ่มเพิ่มเดิม (ถ้ามี)
             if "tarot_extra_cards" in st.session_state:
                 del st.session_state["tarot_extra_cards"]
 
-    # แสดงผลไพ่หลัก 3 ใบแรก
+    # แสดงผลไพ่หลัก 3 ใบ (จัดลง Layout 2 ช่องแนวนอน)
     if "tarot_main_cards" in st.session_state:
         st.markdown("---")
         st.markdown(
@@ -164,29 +164,33 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
             unsafe_allow_html=True,
         )
 
-        cols = st.columns(3)
-        for idx, card_id in enumerate(st.session_state["tarot_main_cards"]):
-            card = TAROT_CARDS[card_id]
-            with cols[idx]:
-                st.image(card["img"], caption=f"ใบที่ {idx+1}: {card['name']}", use_column_width=True)
-                st.markdown(
-                    f"""
-                <div class="result-box" style="padding: 12px; font-size: 0.9rem; margin-top: 5px;">
-                    <b>{card['name']}</b><br>
-                    <span style="color: #3b0764;">{card['meaning']}</span>
-                </div>
-                """,
-                    unsafe_allow_html=True,
-                )
+        main_list = st.session_state["tarot_main_cards"]
+        
+        # แถวที่ 1: แสดง 2 ใบแรก
+        col1, col2 = st.columns(2)
+        with col1:
+            card = TAROT_CARDS[main_list[0]]
+            st.image(card["img"], caption=f"ใบที่ 1: {card['name']}", use_column_width=True)
+            st.markdown(f'<div class="result-box"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
+            
+        with col2:
+            card = TAROT_CARDS[main_list[1]]
+            st.image(card["img"], caption=f"ใบที่ 2: {card['name']}", use_column_width=True)
+            st.markdown(f'<div class="result-box"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
 
-        st.write("")
+        # แถวที่ 2: แสดงใบที่ 3 ตรงกลาง
+        _, col_mid, _ = st.columns([0.2, 1, 0.2])
+        with col_mid:
+            card = TAROT_CARDS[main_list[2]]
+            st.image(card["img"], caption=f"ใบที่ 3: {card['name']}", use_column_width=True)
+            st.markdown(f'<div class="result-box"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
+
         st.write("")
 
         # ปุ่มกดสุ่มเพิ่ม 2 ใบ
         if st.button("➕ กดสุ่มไพ่เพิ่ม (2 ใบ)"):
             with st.spinner("🔮 กำลังตั้งจิตอธิษฐานและจับไพ่เพิ่ม 2 ใบ..."):
                 time.sleep(1)
-                # ดึงไพ่ที่ยังไม่ได้ถูกเลือก
                 available_cards = [
                     c
                     for c in TAROT_CARDS.keys()
@@ -196,7 +200,7 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
                     available_cards, 2
                 )
 
-    # แสดงผลไพ่เพิ่ม 2 ใบ
+    # แสดงผลไพ่เพิ่ม 2 ใบ (เรียงแนวนอน 2 ช่อง)
     if "tarot_extra_cards" in st.session_state:
         st.markdown("---")
         st.markdown(
@@ -204,26 +208,22 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
             unsafe_allow_html=True,
         )
 
+        extra_list = st.session_state["tarot_extra_cards"]
         col_ex1, col_ex2 = st.columns(2)
-        extra_cols = [col_ex1, col_ex2]
-
-        for idx, card_id in enumerate(st.session_state["tarot_extra_cards"]):
-            card = TAROT_CARDS[card_id]
-            with extra_cols[idx]:
-                st.image(card["img"], caption=f"ใบเพิ่มที่ {idx+1}: {card['name']}", use_column_width=True)
-                st.markdown(
-                    f"""
-                <div class="result-box" style="padding: 12px; font-size: 0.9rem; margin-top: 5px; border-color: #d946ef;">
-                    <b style="color: #d946ef;">{card['name']}</b><br>
-                    <span style="color: #3b0764;">{card['meaning']}</span>
-                </div>
-                """,
-                    unsafe_allow_html=True,
-                )
+        
+        with col_ex1:
+            card = TAROT_CARDS[extra_list[0]]
+            st.image(card["img"], caption=f"ใบเพิ่มที่ 1: {card['name']}", use_column_width=True)
+            st.markdown(f'<div class="result-box" style="border-color:#d946ef;"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
+            
+        with col_ex2:
+            card = TAROT_CARDS[extra_list[1]]
+            st.image(card["img"], caption=f"ใบเพิ่มที่ 2: {card['name']}", use_column_width=True)
+            st.markdown(f'<div class="result-box" style="border-color:#d946ef;"><b>{card["name"]}</b><br><span style="font-size:0.9rem;">{card["meaning"]}</span></div>', unsafe_allow_html=True)
 
 
 # ==========================================
-# 🟣 เมนูที่ 2: เซียมซีเทพเซียนห้องสิน 49 ใบ (ธีมเทพจีน)
+# 🟣 เมนูที่ 2: เซียมซีเทพเซียนห้องสิน 49 ใบ
 # ==========================================
 elif selected_menu == "☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ":
 
@@ -276,7 +276,7 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
             }
 
     st.markdown(
-        '<div class="main-title">☯️️ เซียมซีเทพเซียนห้องสิน 49 ใบ ☯️</div>',
+        '<div class="main-title">☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ ☯️</div>',
         unsafe_allow_html=True,
     )
     st.markdown(
@@ -326,4 +326,3 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
             """,
                 unsafe_allow_html=True,
             )
-            
