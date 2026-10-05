@@ -2,244 +2,165 @@ import random
 import time
 import streamlit as st
 
+# 1. ตั้งค่าหน้าเพจ Streamlit
 st.set_page_config(
-    page_title="ไพ่ออราเคิลสาส์นศักดิ์สิทธิ์ โดยพี่หมอวีร์",
+    page_title="ระบบดูดวงสายเทพเซียน & ไพ่ยิปซี",
     page_icon="🔮",
-    initial_sidebar_state="collapsed",
+    layout="centered",
+    initial_sidebar_state="expanded",
 )
 
-st.markdown(
-    """
-    <head>
-        <meta property="og:title" content="ไพ่ออราเคิลสาส์นศักดิ์สิทธิ์ โดยพี่หมอวีร์ 🔮✨">
-        <meta property="og:description" content="สุ่มเปิดไพ่ออราเคิลรับสาส์นจากสิ่งศักดิ์สิทธิ์ เสริมพลังคำทำนายไพ่ทาโรต์">
-    </head>
-""",
-    unsafe_allow_html=True,
+# 2. สร้างแถบเมนูด้านข้าง (Sidebar) ให้เลือกฟังค์ชัน
+st.sidebar.title("🔮 เมนูเลือกบริการดูดวง")
+menu = st.sidebar.radio(
+    "เลือกประเภทการดูดวง:",
+    ["🃏 เปิดไพ่ทำนายดวง (ระบบเดิม)", "☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ (ระบบใหม่)"],
 )
 
-SOUND_SHUFFLE = "https://assets.mixkit.co/active_storage/sfx/2070/2070-preview.mp3"
-SOUND_REVEAL = (
-    "https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"
-)
+# ==========================================
+# 🟢 ฟังก์ชันที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวงเดิม
+# ==========================================
+if menu == "🃏 เปิดไพ่ทำนายดวง (ระบบเดิม)":
+    # --------------------------------------------------
+    # พี่หมอนำโค้ดเดิมทั้งหมดที่มีใน app.py มาใส่ไว้ตรงส่วนนี้ครับ
+    # --------------------------------------------------
+    st.title("🔮 เปิดไพ่ทำนายดวง โดยพี่หมอวี")
+    st.write("ยินดีต้อนรับสู่ระบบเปิดไพ่ทำนายดวง...")
+    # (วางโค้ดไพ่ยิปซีเดิมของพี่หมอต่อตรงนี้ได้เลยครับ)
 
 
-def play_sound(sound_url):
-    sound_html = f"""
-        <script>
-            var audio = new Audio('{sound_url}');
-            audio.play().catch(function(error) {{
-                console.log("Autoplay blocked:", error);
-            }});
-        </script>
-    """
-    st.markdown(sound_html, unsafe_allow_html=True)
+# ==========================================
+# 🟣 ฟังก์ชันที่ 2: ระบบเซียมซีเทพเซียนห้องสิน 49 ใบ
+# ==========================================
+elif menu == "☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ (ระบบใหม่)":
 
-
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background-color: #0F0A1C;
-        background-image: 
-            radial-gradient(gold, rgba(255,215,0,.15) 1px, transparent 30px),
-            radial-gradient(ellipse at bottom, #2A085C 0%, #0F0A1C 100%);
-        background-size: 400px 400px, 100% 100%;
-        color: #F3E5F5;
-    }
-    .main-title {
-        text-align: center; font-size: 22px; font-weight: bold; color: #FFD700;
-        text-shadow: 0 0 10px #FFD700, 0 0 20px #8A2BE2; margin-top: 10px; margin-bottom: 5px;
-    }
-    .sub-text { text-align: center; color: #E1BEE7; margin-bottom: 15px; font-size: 13px; }
-    
-    div.stButton > button {
-        width: 100%; font-size: 15px; font-weight: bold; border-radius: 10px; padding: 10px;
-        background: linear-gradient(135deg, #4A0E4E 0%, #1A0033 100%);
-        color: #FFD700 !important; border: 1px solid #FFD700 !important;
-        box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
-        margin-bottom: 5px;
-    }
-    
-    [data-testid="column"] {
-        flex: 1 1 0% !important;
-        min-width: 0 !important;
-        padding: 0 2px !important;
-    }
-
-    .card-top {
-        background: #1F0833;
-        border: 2px solid #FFD700;
-        border-bottom: none;
-        border-radius: 10px 10px 0 0;
-        padding: 4px;
-        text-align: center;
-        font-size: 11px;
-        font-weight: bold;
-        color: #FFD700;
-    }
-    
-    .card-bottom {
-        background: #1F0833;
-        border: 2px solid #FFD700;
-        border-top: none;
-        border-radius: 0 0 10px 10px;
-        padding: 6px 4px;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-    
-    .card-title {
-        font-size: 10px;
-        font-weight: bold;
-        color: #FFFFFF;
-    }
-    
-    .card-meaning {
-        font-size: 8px;
-        color: #E1BEE7;
-        margin-top: 2px;
-        line-height: 1.2;
-    }
-
-    .wheel-container { text-align: center; padding: 15px; }
-    .magic-wheel { font-size: 60px; display: inline-block; animation: spin 0.8s linear infinite; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .wheel-text { color: #FFD700; font-size: 14px; margin-top: 10px; font-weight: bold; }
-    </style>
-""",
-    unsafe_allow_html=True,
-)
-
-# 📍 ฐานข้อมูล 12 สาส์นศักดิ์สิทธิ์ (สุ่มเปิดเสริมคู่กับไพ่ทาโรต์)
-DIVINE_ORACLE_CARDS = {
-    "1. สาส์นแห่งการรอคอย": {
-        "image": "https://picsum.photos/id/1059/300/450",
-        "meaning": "ทุกอย่างมีเวลาของมัน ช้าหน่อยแต่ชัวร์ อย่าเพิ่งใจร้อน สิ่งดีๆ กำลังจัดสรร",
-    },
-    "2. สาส์นแห่งการปล่อยวาง": {
-        "image": "https://picsum.photos/id/1062/300/450",
-        "meaning": "ปล่อยความกังวลออกไป ถอยออกมาหนึ่งก้าว ยิ่งยึดติดยิ่งเหนื่อย ให้จักรวาลดูแล",
-    },
-    "3. สาส์นแห่งการปกป้อง": {
-        "image": "https://picsum.photos/id/1069/300/450",
-        "meaning": "สิ่งศักดิ์สิทธิ์กำลังคุ้มครองคุณ ปลอดภัยจากภยันตรายและคนคิดร้าย แน่นอน",
-    },
-    "4. สาส์นแห่งปัญญาญาณ": {
-        "image": "https://picsum.photos/id/1074/300/450",
-        "meaning": "เชื่อในสัญชาตญาณและเสียงข้างในจิตใจ คำตอบที่คุณตามหาอยู่ในตัวคุณเอง",
-    },
-    "5. สาส์นแห่งโชคอุปถัมภ์": {
-        "image": "https://picsum.photos/id/1084/300/450",
-        "meaning": "เทวดาพร้อมอวยพร เปิดรับโชคลาภและการช่วยเหลือจากผู้ใหญ่/สิ่งศักดิ์สิทธิ์",
-    },
-    "6. สาส์นแห่งการเยียวยา": {
-        "image": "https://picsum.photos/id/1067/300/450",
-        "meaning": "พักผ่อนใจและกาย บาดแผลในอดีตกำลังได้รับการฟื้นฟู ชาร์จพลังแล้วเริ่มใหม่",
-    },
-    "7. สาส์นแห่งทางสว่าง": {
-        "image": "https://picsum.photos/id/1058/300/450",
-        "meaning": "อุปสรรคหมอกควันกำลังจะหายไป ทางออกที่ชัดเจนกำลังเปิดให้คุณเดินต่อ",
-    },
-    "8. สาส์นแห่งผลบุญ": {
-        "image": "https://picsum.photos/id/1039/300/450",
-        "meaning": "ความดีและบุญกุศลที่เคยทำไว้นานแล้ว กำลังส่งผลเป็นโชคลาภและความสำเร็จ",
-    },
-    "9. สาส์นแห่งความกล้าหาญ": {
-        "image": "https://picsum.photos/id/1043/300/450",
-        "meaning": "อย่ากล้ว จงก้าวข้ามความขี้กลัว คุณมีความแข็งแกร่งและพลังชนะทุกอุปสรรค",
-    },
-    "10. สาส์นแห่งความสมดุล": {
-        "image": "https://picsum.photos/id/1048/300/450",
-        "meaning": "ปรับสมดุลชีวิต งาน ความรัก และการพักผ่อน ตึงไปก็ขาด หย่อนไปก็ไม่โต",
-    },
-    "11. สาส์นแห่งโอกาสใหม่": {
-        "image": "https://picsum.photos/id/1050/300/450",
-        "meaning": "ประตูบานเก่าปิด ประตูบานใหม่ใหญ่กว่ากำลังเปิด เตรียมพร้อมรับสิ่งใหม่",
-    },
-    "12. สาส์นแห่งความสงบสุข": {
-        "image": "https://picsum.photos/id/1053/300/450",
-        "meaning": "ความอุ่นใจ ชัยชนะที่นุ่มนวล ชีวิตกำลังเข้าสู่ช่วงแห่งความสงบและเปี่ยมสุข",
-    },
-}
-
-card_names = list(DIVINE_ORACLE_CARDS.keys())
-
-if "drawn_divine" not in st.session_state:
-    st.session_state.drawn_divine = None
-
-st.markdown(
-    '<div class="main-title">🔮 ✨ สาส์นศักดิ์สิทธิ์ โดยพี่หมอวีร์ ✨ 🔮</div>',
-    unsafe_allow_html=True,
-)
-st.markdown(
-    '<div class="sub-text">🌌 สิ่งศักดิ์สิทธิ์อยากบอกอะไรกับคุณในวันนี้? 🌌</div>',
-    unsafe_allow_html=True,
-)
-
-st.write("---")
-
-wheel_placeholder = st.empty()
-
-col_b1, col_b2, col_b3 = st.columns(3)
-
-num_to_draw = 0
-with col_b1:
-    if st.button("🔮 รับ 1 สาส์น", use_container_width=True):
-        num_to_draw = 1
-with col_b2:
-    if st.button("✨ รับ 2 สาส์น", use_container_width=True):
-        num_to_draw = 2
-with col_b3:
-    if st.button("👑 รับ 3 สาส์น", use_container_width=True):
-        num_to_draw = 3
-
-if num_to_draw > 0:
-    play_sound(SOUND_SHUFFLE)
-
-    wheel_placeholder.markdown(
+    # ตกแต่ง CSS เฉพาะหน้าเซียมซี
+    st.markdown(
         """
-        <div class="wheel-container">
-            <div class="magic-wheel">☸️</div>
-            <div class="wheel-text">🔮 กำลังเชื่อมต่อสาส์นศักดิ์สิทธิ์... 🔮</div>
-        </div>
+        <style>
+        .stApp {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #fff0f5 100%);
+            color: #3b0764;
+        }
+        .main-title {
+            text-align: center;
+            color: #6b21a8;
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .sub-title {
+            text-align: center;
+            color: #9333ea;
+            font-size: 1rem;
+            margin-bottom: 25px;
+        }
+        .result-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 2px solid #facc15;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0px 8px 20px rgba(168, 85, 247, 0.18);
+        }
+        .pred-header {
+            color: #7e22ce;
+            font-weight: bold;
+            margin-top: 12px;
+            margin-bottom: 3px;
+        }
+        div.stButton > button {
+            background: linear-gradient(90deg, #9333ea 0%, #c026d3 100%);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 25px;
+            border: 2px solid #fef08a;
+            width: 100%;
+        }
+        </style>
     """,
         unsafe_allow_html=True,
     )
 
-    time.sleep(1.8)
-    wheel_placeholder.empty()
+    # ฐานข้อมูลเซียมซี 49 ใบ
+    SIAMSI_49 = {
+        1: {
+            "title": "อากงเทพสามตาเอ้อหลางเสิน (ปราบมารประทานพร)",
+            "summary": "ดวงตามหาเทพส่องสว่าง อุปสรรคพ่ายแพ้ภัย",
+            "work_money": "การงานโดดเด่น มีสติปัญญาแก้ปัญหาได้ทุกรูปแบบ ผู้ใหญ่เมตตาเอ็นดูสนับสนุน การเงินคล่องตัวดี มีลาภจากการงานและการเสี่ยงโชค",
+            "love": "คนโสดมีเกณฑ์พบคนดีที่ถูกใจ เป็นคู่แท้สนับสนุนกัน คนมีคู่ความสัมพันธ์แน่นแฟ้น เข้าใจกันลึกซึ้ง",
+            "advice": "จงเชื่อมั่นในสติปัญญาและสัญชาตญาณของตัวเอง มารไม่มี บารมีไม่เกิด ความเพียรจะนำมาซึ่งความสำเร็จอันยิ่งใหญ่",
+        },
+        2: {
+            "title": "นาจาเหยียบกงล้อเพลิง (ชัยชนะอันว่องไว)",
+            "summary": "ความสำเร็จรวดเร็วปานกามนิต ชนะอุปสรรคเด็ดขาด",
+            "work_money": "การงานก้าวหน้ารวดเร็ว มีโปรเจกต์ใหม่ๆ เข้ามาตลอด การตัดสินใจเด็ดขาดนำมาซึ่งผลงานดีเยี่ยม การเงินไหลเวียนคล่องตัว มีโชคลาภแบบไม่คาดฝัน",
+            "love": "ความรักสดใส มีเสน่ห์แรง คนโสดมีคนเข้ามาจีบมากมาย คนมีคู่ความสัมพันธ์ราบรื่น มีเกณฑ์ได้เดินทางร่วมกัน",
+            "advice": "อย่ากลัวการเปลี่ยนแปลง จงกล้าคิดกล้าทำ ความมุ่งมั่นเด็ดเดี่ยวจะนำพาท่านสู่ชัยชนะ",
+        },
+        3: {
+            "title": "มหาเทพเจียงจื่อหยาบัญชาทัพ (ความสำเร็จแห่งปัญญา)",
+            "summary": "สติปัญญาชนะงานใหญ่ ได้รับเกียรติยศชื่อเสียง",
+            "work_money": "การงานก้าวหน้า ได้รับความไว้วางใจให้คุมงานใหญ่ มีวิสัยทัศน์กว้างไกลแก้ปัญหาได้ดี การเงินมั่นคงดี มีโอกาสได้รับเงินก้อนใหญ่จากการลงทุนหรือความสามารถ",
+            "love": "คนโสดมีเกณฑ์พบคนมีความรู้ความสามารถ เป็นคู่คิดคู่ชีวิต คนมีคู่ความสัมพันธ์มั่นคง เข้าใจกันและสนับสนุนกัน",
+            "advice": "จงใช้สติปัญญาและวิสัยทัศน์ในการดำเนินชีวิต ความเพียรพยายามจะนำมาซึ่งความสำเร็จที่ยั่งยืน",
+        },
+    }
 
-    st.session_state.drawn_divine = random.sample(card_names, num_to_draw)
-    play_sound(SOUND_REVEAL)
+    # เพิ่มใบอื่นๆ หรือใช้ใบที่ 1 สำรองไว้
+    for i in range(4, 50):
+        if i not in SIAMSI_49:
+            SIAMSI_49[i] = SIAMSI_49[1]
 
-if st.session_state.drawn_divine:
-    st.markdown("##### 🎴 สาส์นที่สิ่งศักดิ์สิทธิ์ประทานให้คุณ")
+    # หน้าตา UI เซียมซี
+    st.markdown(
+        '<div class="main-title">☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ ☯️</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        '<div class="sub-title">✨ สำรับวิจิตร 49 มหาโชค - ตั้งจิตอธิษฐานแล้วเขย่าติ้วเสี่ยงทาย ✨</div>',
+        unsafe_allow_html=True,
+    )
 
-    card_count = len(st.session_state.drawn_divine)
-    cols = st.columns(card_count)
+    if st.button("🎋 เขย่ากระบอกเซียมซีสวรรค์"):
+        with st.spinner("⏳ กำลังเขย่ากระบอกเซียมซีมหาเทพห้องสิน..."):
+            time.sleep(1.2)
+            num = random.randint(1, 49)
+            st.session_state["siamsi_result"] = num
 
-    for i, name in enumerate(st.session_state.drawn_divine):
-        info = DIVINE_ORACLE_CARDS[name]
+    if "siamsi_result" in st.session_state:
+        result_num = st.session_state["siamsi_result"]
+        card_info = SIAMSI_49[result_num]
 
-        with cols[i]:
-            st.markdown(
-                f'<div class="card-top">ใบที่ {i+1}</div>',
-                unsafe_allow_html=True,
+        st.markdown("---")
+        img_url = f"https://picsum.photos/id/{1000 + result_num}/400/600"
+
+        col1, col2 = st.columns([1, 1.2])
+
+        with col1:
+            st.image(
+                img_url,
+                caption=f"ใบที่ {result_num}: {card_info['title']}",
+                use_column_width=True,
             )
 
-            st.image(info["image"], use_container_width=True)
-
+        with col2:
             st.markdown(
                 f"""
-                <div class="card-bottom">
-                    <div class="card-title">{name}</div>
-                    <div class="card-meaning">{info['meaning']}</div>
-                </div>
+            <div class="result-box">
+                <h4 style="color: #9333ea; margin-bottom: 2px;">ใบที่ {result_num} / 49</h4>
+                <h3 style="color: #6b21a8; margin-top: 0;">{card_info['title']}</h3>
+                <p style="font-size: 1rem; font-weight: bold; color: #d946ef; margin-top: 5px; text-align: center;">
+                    ✨ {card_info['summary']} ✨
+                </p>
+                <hr style="border-top: 1px dashed #facc15;">
+                <p class="pred-header">💼 การงาน & การเงิน:</p>
+                <p style="color: #3b0764; font-size: 0.95rem;">{card_info['work_money']}</p>
+                <p class="pred-header">❤️ ความรัก:</p>
+                <p style="color: #3b0764; font-size: 0.95rem;">{card_info['love']}</p>
+                <p class="pred-header">💡 ข้อคิดสติปัญญา:</p>
+                <p style="color: #3b0764; font-size: 0.95rem; font-style: italic;">{card_info['advice']}</p>
+            </div>
             """,
                 unsafe_allow_html=True,
             )
-
-    st.write("---")
-
-    
