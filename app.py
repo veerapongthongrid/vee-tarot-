@@ -303,7 +303,7 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
 
 
 # ==========================================
-# 🟣 เมนูที่ 2: เซียมซีเทพเซียนห้องสิน 49 ใบ (ครบถ้วนสมบูรณ์ 49 ใบ ไม่ซ้ำกัน)
+# 🟣 เมนูที่ 2: เซียมซีเทพเซียนห้องสิน 49 ใบ
 # ==========================================
 elif selected_menu == "☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ":
 
@@ -390,7 +390,6 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
         },
     }
 
-    # รายการข้อความเพิ่มเติมสำหรับใบที่ 11 ถึง 49
     names_11_49 = [
         "มหาเทพไท่กงหนุนนำ",
         "กระบี่วิเศษปราบมาร",
@@ -472,4 +471,29 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
         with col1:
             st.image(
                 siamsi_card_img,
-                caption=f"ใบที่ {result_num}: {c
+                caption=f"ใบที่ {result_num}: {card_info['title']}",
+                use_container_width=True,
+            )
+
+        with col2:
+            st.markdown(
+                f"""
+            <div class="siamsi-bg-box">
+                <h4 style="color: #7e22ce; margin-bottom: 2px; text-shadow: 0px 1px 2px rgba(255,255,255,0.8);">ใบที่ {result_num} / 49</h4>
+                <h3 style="color: #6b21a8; margin-top: 0; font-size: 1.15rem; text-shadow: 0px 1px 2px rgba(255,255,255,0.8);">{card_info['title']}</h3>
+                <p style="font-size: 0.95rem; font-weight: bold; color: #b45309; margin-top: 5px; text-align: center; text-shadow: 0px 1px 2px rgba(255,255,255,0.8);">
+                    ✨ {card_info['summary']} ✨
+                </p>
+                <hr style="border-top: 1px dashed #ca8a04;">
+                <p class="pred-header">💼 การงาน & การเงิน:</p>
+                <p style="color: #3b0764; font-size: 0.9rem; font-weight: 500;">{card_info['work_money']}</p>
+                <p class="pred-header">❤️ ความรัก:</p>
+                <p style="color: #3b0764; font-size: 0.9rem; font-weight: 500;">{card_info['love']}</p>
+                <p class="pred-header">💡 ข้อคิดสติปัญญา:</p>
+                <p style="color: #3b0764; font-size: 0.9rem; font-style: italic; font-weight: 500;">{card_info['advice']}</p>
+            </div>
+            """,
+                unsafe_allow_html=True,
+            )
+
+
