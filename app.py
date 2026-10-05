@@ -29,6 +29,40 @@ def load_card_image_base64(url):
     return url
 
 
+# ฟังก์ชันสร้างการ์ดรูปภาพเซียมซีเทพเซียนห้องสิน มงคลจีนเฉพาะใบ
+def generate_siamsi_card_svg(title_th, number, symbol="☯️", bg_color1="#7e22ce", bg_color2="#3b0764"):
+    svg_code = f"""
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 380" width="100%" height="100%">
+        <defs>
+            <linearGradient id="siamsiBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="{bg_color1}" />
+                <stop offset="100%" stop-color="{bg_color2}" />
+            </linearGradient>
+            <linearGradient id="goldFrame" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fef08a" />
+                <stop offset="50%" stop-color="#eab308" />
+                <stop offset="100%" stop-color="#ca8a04" />
+            </linearGradient>
+        </defs>
+        <rect x="5" y="5" width="230" height="370" rx="12" fill="url(#siamsiBg)" stroke="url(#goldFrame)" stroke-width="4"/>
+        <rect x="12" y="12" width="216" height="356" rx="8" fill="none" stroke="url(#goldFrame)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        
+        <text x="120" y="42" font-family="'Sarabun', sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#fef08a">เซียมซีห้องสิน ใบที่ {number}</text>
+        
+        <circle cx="120" cy="160" r="55" fill="rgba(255,255,255,0.08)" stroke="url(#goldFrame)" stroke-width="2"/>
+        <circle cx="120" cy="160" r="46" fill="none" stroke="#fef08a" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="120" y="178" font-family="'Sarabun', sans-serif" font-size="50" text-anchor="middle" fill="#fef08a">{symbol}</text>
+        
+        <rect x="20" y="250" width="200" height="90" rx="8" fill="rgba(15, 23, 42, 0.85)" stroke="url(#goldFrame)" stroke-width="1"/>
+        <text x="120" y="280" font-family="'Sarabun', sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#ffffff">สาส์นสวรรค์มงคล</text>
+        <text x="120" y="305" font-family="'Sarabun', sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#fef08a">{title_th[:22]}</text>
+        <text x="120" y="325" font-family="'Sarabun', sans-serif" font-size="10" text-anchor="middle" fill="#cbd5e1">☯️ ตำนานเทพเซียนห้องสิน 49 ใบ</text>
+    </svg>
+    """
+    b64 = base64.b64encode(svg_code.encode('utf-8')).decode('utf-8')
+    return f"data:image/svg+xml;base64,{b64}"
+
+
 # 2. ฐานข้อมูลไพ่ยิปซีคลาสสิก Rider-Waite จริง
 TAROT_CARDS_RAW = {
     1: {
@@ -73,7 +107,7 @@ TAROT_CARDS_RAW = {
     },
 }
 
-# 3. CSS สไตล์เทพมงคลจีน + ปรับปุ่มเมนู Sidebar ให้ใหญ่และกดง่ายบนมือถือ
+# 3. CSS สไตล์เทพมงคลจีน
 st.markdown(
     """
     <style>
@@ -88,7 +122,6 @@ st.markdown(
         border-right: 2px solid #fde047;
     }
 
-    /* ตกแต่งเมนูตัวเลือกใน Sidebar ให้ใหญ่ขึ้น กดง่ายบนมือถือ */
     div[data-testid="stRadio"] > label {
         font-size: 1.1rem !important;
         font-weight: bold !important;
@@ -109,14 +142,12 @@ st.markdown(
         align-items: center !important;
     }
 
-    /* ปรับขนาดตัวหนังสือคำในตัวเลือก */
     div[data-testid="stRadio"] div[role="radiogroup"] > label p {
         font-size: 1.05rem !important;
         font-weight: 600 !important;
         color: #3b0764 !important;
     }
 
-    /* เมื่อปุ่มถูกเลือก */
     div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) {
         border-color: #a855f7 !important;
         background: linear-gradient(135deg, #ffffff 0%, #f3e8ff 100%) !important;
@@ -139,7 +170,6 @@ st.markdown(
         margin-bottom: 15px;
     }
 
-    /* บังคับ Layout คอลัมน์ให้เรียงแนวนอนบนมือถือ */
     div[data-testid="stHorizontalBlock"] {
         display: flex !important;
         flex-direction: row !important;
@@ -157,7 +187,7 @@ st.markdown(
     }
 
     div[data-testid="stImage"] > img {
-        max-height: 125px !important;
+        max-height: 135px !important;
         width: auto !important;
         margin: 0 auto !important;
         border-radius: 6px !important;
@@ -219,7 +249,7 @@ selected_menu = st.sidebar.radio(
 )
 
 # ==========================================
-# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (ภาพจริง + 3 ใบแนวนอน)
+# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง
 # ==========================================
 if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายดวง":
     st.markdown(
@@ -231,11 +261,8 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
         unsafe_allow_html=True,
     )
 
-    st.info(
-        "💡 ตั้งจิตอธิษฐานนึกถึงเรื่องที่ต้องการถาม แล้วกดปุ่มสุ่มเปิดไพ่ยิปซี"
-    )
+    st.info("💡 ตั้งจิตอธิษฐานนึกถึงเรื่องที่ต้องการถาม แล้วกดปุ่มสุ่มเปิดไพ่ยิปซี")
 
-    # ปุ่มสุ่มหลัก 3 ใบ
     if st.button("✨ กดเพื่อสุ่มเปิดไพ่ยิปซี (3 ใบ)"):
         with st.spinner("🔮 กำลังสุ่มจับไพ่ยิปซี 3 ใบ..."):
             time.sleep(0.5)
@@ -245,7 +272,6 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
             if "tarot_extra_cards" in st.session_state:
                 del st.session_state["tarot_extra_cards"]
 
-    # แสดงผลไพ่หลัก 3 ใบเรียงแนวนอนในจอเดียว
     if "tarot_main_cards" in st.session_state:
         st.markdown(
             "<h4 style='text-align: center; color: #6b21a8; margin-top: 10px; margin-bottom: 10px;'>🔮 ไพ่ยิปซีหลัก 3 ใบของคุณ</h4>",
@@ -273,7 +299,6 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
 
         st.write("")
 
-        # ปุ่มกดสุ่มเพิ่ม 2 ใบ
         if st.button("➕ กดสุ่มไพ่เพิ่ม (2 ใบ)"):
             with st.spinner("🔮 กำลังสุ่มจับไพ่ยิปซีเพิ่ม 2 ใบ..."):
                 time.sleep(0.5)
@@ -286,7 +311,6 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
                     available_cards, 2
                 )
 
-    # แสดงผลไพ่เพิ่ม 2 ใบ
     if "tarot_extra_cards" in st.session_state:
         st.markdown(
             "<h4 style='text-align: center; color: #d946ef; margin-top: 15px; margin-bottom: 10px;'>✨ ไพ่ทำนายเพิ่มเติม 2 ใบ</h4>",
@@ -314,7 +338,7 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
 
 
 # ==========================================
-# 🟣 เมนูที่ 2: เซียมซีเทพเซียนห้องสิน 49 ใบ
+# 🟣 เมนูที่ 2: เซียมซีเทพเซียนห้องสิน 49 ใบ (แยกคำทำนายและสัญลักษณ์รายใบ)
 # ==========================================
 elif selected_menu == "☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ":
 
@@ -322,6 +346,9 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
         1: {
             "title": "อากงเทพสามตาเอ้อหลางเสิน (ปราบมารประทานพร)",
             "summary": "ดวงตามหาเทพส่องสว่าง อุปสรรคพ่ายแพ้ภัย",
+            "symbol": "👁️",
+            "color1": "#6b21a8",
+            "color2": "#3b0764",
             "work_money": "การงานโดดเด่น มีสติปัญญาแก้ปัญหาได้ทุกรูปแบบ ผู้ใหญ่เมตตาเอ็นดูสนับสนุน การเงินคล่องตัวดี มีลาภจากการงานและโชคลาภ",
             "love": "คนโสดพบคนดีที่ถูกใจ เป็นคู่แท้สนับสนุนกัน คนมีคู่ความสัมพันธ์แน่นแฟ้น เข้าใจกันลึกซึ้ง",
             "advice": "จงเชื่อมั่นในสติปัญญาและสัญชาตญาณของตัวเอง มารไม่มี บารมีไม่เกิด ความเพียรจะนำมาซึ่งความสำเร็จ",
@@ -329,6 +356,9 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
         2: {
             "title": "นาจาเหยียบกงล้อเพลิง (ชัยชนะอันว่องไว)",
             "summary": "ความสำเร็จรวดเร็วปานกามนิต ชนะอุปสรรคเด็ดขาด",
+            "symbol": "🔥",
+            "color1": "#991b1b",
+            "color2": "#450a0a",
             "work_money": "การงานก้าวหน้ารวดเร็ว มีโปรเจกต์ใหม่เข้ามาตลอด การตัดสินใจเด็ดขาดนำผลงานดีเยี่ยม การเงินไหลเวียนดี มีลาภฟลุ๊กๆ",
             "love": "ความรักสดใส มีเสน่ห์แรง คนโสดมีคนเข้ามาจีบมากมาย คนมีคู่ราบรื่น เกณฑ์เดินทางร่วมกัน",
             "advice": "อย่ากลัวการเปลี่ยนแปลง จงกล้าคิดกล้าทำ ความมุ่งมั่นเด็ดเดี่ยวจะนำพาท่านสู่ชัยชนะ",
@@ -336,21 +366,74 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
         3: {
             "title": "มหาเทพเจียงจื่อหยาบัญชาทัพ (ความสำเร็จแห่งปัญญา)",
             "summary": "สติปัญญาชนะงานใหญ่ ได้รับเกียรติยศชื่อเสียง",
+            "symbol": "📜",
+            "color1": "#1e3a8a",
+            "color2": "#172554",
             "work_money": "การงานก้าวหน้า ได้รับความไว้วางใจให้คุมงานใหญ่ มีวิสัยทัศน์กว้างไกล การเงินมั่นคง มีเกณฑ์ได้เงินก้อนใหญ่",
             "love": "คนโสดพบคนมีความรู้ความสามารถ เป็นคู่คิดคู่ชีวิต คนมีคู่มั่นคง สนับสนุนกัน",
             "advice": "จงใช้สติปัญญาและวิสัยทัศน์ในการดำเนินชีวิต ความเพียรพยายามจะนำพาความสำเร็จที่ยั่งยืน",
         },
+        4: {
+            "title": "เจ้าแม่หนี่วาประทานพร (เยียวยาและฟื้นฟู)",
+            "summary": "สุขภาพแข็งแรง ฟื้นฟูจิตใจ ความสัมพันธ์สดใส",
+            "symbol": "🌸",
+            "color1": "#831843",
+            "color2": "#500724",
+            "work_money": "การงานราบรื่น ปัญหาเก่าได้รับการแก้ไข ได้รับความช่วยเหลือจากเพื่อนร่วมงาน การเงินฟื้นตัวดีขึ้นเรื่อยๆ",
+            "love": "ความรักสมหวัง คนโสดพบคนเมตตาจิตใจดี คนมีคู่กลับมาเข้าใจกันลึกซึ้งผูกพันกว่าเดิม",
+            "advice": "จงรักษาจิตใจให้ผ่องใสและมีเมตตา พลังงานบวกจะดึงดูดสิ่งดีๆ เข้ามาในชีวิต",
+        },
+        5: {
+            "title": "ศาลามหาเทพแต่งตั้งเซียน (เกียรติยศชื่อเสียง)",
+            "summary": "ผลงานได้รับการยอมรับ เลื่อนขั้นยศตำแหน่ง",
+            "symbol": "🏛️",
+            "color1": "#854d0e",
+            "color2": "#422006",
+            "work_money": "การงานโดดเด่น ผลงานประจักษ์ ได้โปรโมตหรือรับหน้าที่สำคัญ การเงินดีเยี่ยม รายได้เพิ่มตามความสามารถ",
+            "love": "คนโสดมีคนโปรไฟล์ดีเข้ามาจีบ คนมีคู่สนับสนุนกันและกันจนก้าวหน้าในสังคม",
+            "advice": "จงมุ่งมั่นสร้างผลงานด้วยความซื่อสัตย์ ความสำเร็จและเกียรติยศจะเป็นของท่านอย่างแน่นอน",
+        },
     }
 
-    for i in range(4, 50):
-        if i not in SIAMSI_49:
-            SIAMSI_49[i] = {
-                "title": f"สาส์นสวรรค์มงคล ใบที่ {i}",
-                "summary": "สิ่งศักดิ์สิทธิ์อำนวยพร ความเจริญรุ่งเรืองบังเกิด",
-                "work_money": "การงานก้าวหน้าตามลำดับ มีผู้ใหญ่คอยหนุนหลัง การเงินมั่นคง มีรายได้เข้ามาไม่ขาดสาย",
-                "love": "ความรักราบรื่น เข้าใจกันดี คนโสดมีเกณฑ์พบมิตรสหายนำพารักแท้มาให้",
-                "advice": "หมั่นทำบุญทานกุศล สะสมบารมี แล้วโชคลาภและความสำเร็จจะสถิตอยู่กับท่าน",
-            }
+    # เติมคำทำนายแยกต่างกันสำหรับใบที่ 6 ถึง 49
+    symbols_list = ["☯️", "⚔️", "🐉", "🛡️", "🌟", "📜", "⚡", "🔮"]
+    colors_list = [
+        ("#6b21a8", "#3b0764"),
+        ("#166534", "#052e16"),
+        ("#9a3412", "#431407"),
+        ("#1e40af", "#1e1b4b"),
+    ]
+
+    for i in range(6, 50):
+        c1, c2 = colors_list[i % len(colors_list)]
+        sym = symbols_list[i % len(symbols_list)]
+        
+        if i % 3 == 0:
+            summary = "โชคลาภหลั่งไหล การงานสำเร็จก้าวหน้า"
+            work = "การงานขยายตัว ได้รับโอกาสใหม่ๆ ที่ท้าทาย การเงินคล่องตัว มีเกณฑ์ได้ลาภลอยหรือเงินก้อนพิเศษ"
+            love = "คนโสดมีเสน่ห์โดดเด่น พบคนเก่งเข้ามาคุย คนมีคู่เกณฑ์วางแผนอนาคตร่วมกันอย่างอบอุ่น"
+            adv = "จงคว้าโอกาสที่เข้ามาอย่างมั่นใจ ความขยันและจริงใจจะพาไปสู่ความมั่งคั่ง"
+        elif i % 3 == 1:
+            summary = "เมตตาบารมี ผู้ใหญ่อุปถัมภ์ชี้ช่องทาง"
+            work = "ได้รับการสนับสนุนจากผู้ใหญ่หรือผู้บังคับบัญชา ปัญหาได้รับการแก้ไข การเงินมั่นคงไม่ขาดมือ"
+            love = "ความรักราบรื่น อบอุ่นเข้าใจกันดี คนโสดมีคนแนะนำมิตรสหายที่ดีมาให้รู้จัก"
+            adv = "หมั่นอ่อนน้อมถ่อมตนและกตัญญู บารมีจะส่งผลให้ทำสิ่งใดก็เจริญรุ่งเรือง"
+        else:
+            summary = "สติปัญญาเฉียบแหลม ชนะอุปสรรคทั้งปวง"
+            work = "ต้องใช้สติและความรอบคอบในการทำงาน แล้วจะผ่านพ้นทุกอุปสรรคได้ราบรื่น การเงินประหยัดเก็บออมได้ดี"
+            love = "ความสัมพันธ์ค่อยเป็นค่อยไป ชะลอความใจร้อน คนโสดเน้นพัฒนาตัวเองแล้วความรักดีๆ จะตามมา"
+            adv = "ความใจเย็นและความอดทนคือคีย์สำคัญ มุ่งมั่นทำหน้าที่ของตนให้ดีที่สุด"
+
+        SIAMSI_49[i] = {
+            "title": f"สาส์นสวรรค์มงคลห้องสิน ใบที่ {i}",
+            "summary": summary,
+            "symbol": sym,
+            "color1": c1,
+            "color2": c2,
+            "work_money": work,
+            "love": love,
+            "advice": adv,
+        }
 
     st.markdown(
         '<div class="main-title">☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ ☯️</div>',
@@ -372,15 +455,19 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
         card_info = SIAMSI_49[result_num]
 
         st.markdown("---")
-        img_data = load_card_image_base64(
-            "https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg"
+        img_url = generate_siamsi_card_svg(
+            card_info["title"],
+            result_num,
+            card_info["symbol"],
+            card_info["color1"],
+            card_info["color2"],
         )
 
         col1, col2 = st.columns([1, 1.2])
 
         with col1:
             st.image(
-                img_data,
+                img_url,
                 caption=f"ใบที่ {result_num}: {card_info['title']}",
                 use_container_width=True,
             )
@@ -405,4 +492,4 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
             """,
                 unsafe_allow_html=True,
             )
-            
+    
