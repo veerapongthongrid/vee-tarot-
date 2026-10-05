@@ -14,20 +14,17 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* พื้นหลังนุ่มนวลแบบเทพจีนมงคล */
     .stApp {
         background: linear-gradient(135deg, #fefce8 0%, #fae8ff 40%, #fce7f3 70%, #ffffff 100%);
         color: #3b0764;
         font-family: 'Sarabun', sans-serif;
     }
     
-    /* ตกแต่ง Sidebar เมนูด้านข้าง */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #faf5ff 0%, #f3e8ff 100%);
         border-right: 2px solid #fde047;
     }
 
-    /* หัวข้อหลักสไตล์มหาเทพ */
     .main-title {
         text-align: center;
         color: #7e22ce;
@@ -37,7 +34,6 @@ st.markdown(
         margin-bottom: 5px;
     }
     
-    /* หัวข้อรอง */
     .sub-title {
         text-align: center;
         color: #a855f7;
@@ -45,7 +41,6 @@ st.markdown(
         margin-bottom: 25px;
     }
 
-    /* กล่องคำทำนายวิจิตร */
     .result-box {
         background-color: rgba(255, 255, 255, 0.92);
         border: 2px solid #facc15;
@@ -62,7 +57,6 @@ st.markdown(
         font-size: 1.05rem;
     }
 
-    /* ปุ่มกดมงคลแบบไล่สี */
     div.stButton > button {
         background: linear-gradient(90deg, #a855f7 0%, #d946ef 100%);
         color: white;
@@ -93,7 +87,7 @@ selected_menu = st.sidebar.radio(
 )
 
 # ==========================================
-# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (ธีมเทพจีน)
+# 🟢 เมนูที่ 1: ระบบเปิดไพ่ยิปซีทำนายดวง (3 ใบ + สุ่มเพิ่ม 2 ใบ)
 # ==========================================
 if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายดวง":
     st.markdown(
@@ -105,7 +99,6 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
         unsafe_allow_html=True,
     )
 
-    # ฐานข้อมูลไพ่ยิปซี
     TAROT_CARDS = {
         1: {
             "name": "The Fool (ผู้เริ่มต้น)",
@@ -151,31 +144,82 @@ if selected_menu == "🃏 เปิดไพ่ยิปซีทำนายด
 
     st.info("💡 ตั้งจิตอธิษฐานนึกถึงเรื่องที่ต้องการถาม แล้วกดปุ่มสุ่มเปิดไพ่ยิปซี")
 
-    if st.button("✨ กดเพื่อสุ่มเปิดไพ่ยิปซีทำนายดวง"):
-        with st.spinner("🔮 กำลังตั้งจิตอธิษฐานและจับไพ่ยิปซี..."):
+    # ปุ่มสุ่มหลัก 3 ใบ
+    if st.button("✨ กดเพื่อสุ่มเปิดไพ่ยิปซี (3 ใบ)"):
+        with st.spinner("🔮 กำลังตั้งจิตอธิษฐานและสุ่มจับไพ่ 3 ใบ..."):
             time.sleep(1.2)
-            card_id = random.randint(1, len(TAROT_CARDS))
-            st.session_state["tarot_result"] = card_id
-
-    if "tarot_result" in st.session_state:
-        card = TAROT_CARDS[st.session_state["tarot_result"]]
-        st.markdown("---")
-
-        col1, col2 = st.columns([1, 1.2])
-        with col1:
-            st.image(card["img"], caption=card["name"], use_column_width=True)
-        with col2:
-            st.markdown(
-                f"""
-            <div class="result-box">
-                <h3 style="color: #6b21a8; margin-top:0;">✨ {card['name']}</h3>
-                <hr style="border-top: 1px dashed #facc15;">
-                <p class="pred-header">🔮 คำทำนายดวงชะตา:</p>
-                <p style="color: #3b0764; font-size: 1.05rem; line-height: 1.6;">{card['meaning']}</p>
-            </div>
-            """,
-                unsafe_allow_html=True,
+            # สุ่มไพ่ 3 ใบไม่ซ้ำกัน
+            st.session_state["tarot_main_cards"] = random.sample(
+                list(TAROT_CARDS.keys()), 3
             )
+            # ล้างค่าการสุ่มเพิ่มเดิม (ถ้ามี)
+            if "tarot_extra_cards" in st.session_state:
+                del st.session_state["tarot_extra_cards"]
+
+    # แสดงผลไพ่หลัก 3 ใบแรก
+    if "tarot_main_cards" in st.session_state:
+        st.markdown("---")
+        st.markdown(
+            "<h3 style='text-align: center; color: #6b21a8;'>🔮 ไพ่ยิปซีหลัก 3 ใบของคุณ</h3>",
+            unsafe_allow_html=True,
+        )
+
+        cols = st.columns(3)
+        for idx, card_id in enumerate(st.session_state["tarot_main_cards"]):
+            card = TAROT_CARDS[card_id]
+            with cols[idx]:
+                st.image(card["img"], caption=f"ใบที่ {idx+1}: {card['name']}", use_column_width=True)
+                st.markdown(
+                    f"""
+                <div class="result-box" style="padding: 12px; font-size: 0.9rem; margin-top: 5px;">
+                    <b>{card['name']}</b><br>
+                    <span style="color: #3b0764;">{card['meaning']}</span>
+                </div>
+                """,
+                    unsafe_allow_html=True,
+                )
+
+        st.write("")
+        st.write("")
+
+        # ปุ่มกดสุ่มเพิ่ม 2 ใบ
+        if st.button("➕ กดสุ่มไพ่เพิ่ม (2 ใบ)"):
+            with st.spinner("🔮 กำลังตั้งจิตอธิษฐานและจับไพ่เพิ่ม 2 ใบ..."):
+                time.sleep(1)
+                # ดึงไพ่ที่ยังไม่ได้ถูกเลือก
+                available_cards = [
+                    c
+                    for c in TAROT_CARDS.keys()
+                    if c not in st.session_state["tarot_main_cards"]
+                ]
+                st.session_state["tarot_extra_cards"] = random.sample(
+                    available_cards, 2
+                )
+
+    # แสดงผลไพ่เพิ่ม 2 ใบ
+    if "tarot_extra_cards" in st.session_state:
+        st.markdown("---")
+        st.markdown(
+            "<h3 style='text-align: center; color: #d946ef;'>✨ ไพ่ทำนายเพิ่มเติม 2 ใบ</h3>",
+            unsafe_allow_html=True,
+        )
+
+        col_ex1, col_ex2 = st.columns(2)
+        extra_cols = [col_ex1, col_ex2]
+
+        for idx, card_id in enumerate(st.session_state["tarot_extra_cards"]):
+            card = TAROT_CARDS[card_id]
+            with extra_cols[idx]:
+                st.image(card["img"], caption=f"ใบเพิ่มที่ {idx+1}: {card['name']}", use_column_width=True)
+                st.markdown(
+                    f"""
+                <div class="result-box" style="padding: 12px; font-size: 0.9rem; margin-top: 5px; border-color: #d946ef;">
+                    <b style="color: #d946ef;">{card['name']}</b><br>
+                    <span style="color: #3b0764;">{card['meaning']}</span>
+                </div>
+                """,
+                    unsafe_allow_html=True,
+                )
 
 
 # ==========================================
@@ -232,7 +276,7 @@ elif selected_menu == "☯️ เซียมซีเทพเซียนห�
             }
 
     st.markdown(
-        '<div class="main-title">☯️ เซียมซีเทพเซียนห้องสิน 49 ใบ ☯️</div>',
+        '<div class="main-title">☯️️ เซียมซีเทพเซียนห้องสิน 49 ใบ ☯️</div>',
         unsafe_allow_html=True,
     )
     st.markdown(
