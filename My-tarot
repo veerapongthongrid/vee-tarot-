@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarot 78 Cards - Private Reader</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 15px;
+            text-align: center;
+        }
+        h1 {
+            color: #d4af37;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        p.subtitle {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        .btn-container {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+        button {
+            background-color: #d4af37;
+            color: #121212;
+            border: none;
+            padding: 12px 18px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        button:disabled {
+            background-color: #444;
+            color: #888;
+            cursor: not-allowed;
+        }
+        .cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        .card-box {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 15px;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            text-align: left;
+        }
+        .card-img-container {
+            flex-shrink: 0;
+            width: 90px;
+            height: 150px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #d4af37;
+            background-color: #000;
+        }
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .position-label {
+            font-size: 0.75rem;
+            color: #d4af37;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+        .card-title {
+            color: #fff;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+        .card-desc {
+            font-size: 0.85rem;
+            color: #ccc;
+            line-height: 1.3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🔮 Tarot 78 Cards Private Tool</h1>
+    <p class="subtitle">ระบบสุ่มไพ่พร้อมภาพจริง (3 ใบหลัก + สุ่มเพิ่ม 2 ใบ)</p>
+
+    <div class="btn-container">
+        <button id="draw3Btn" onclick="drawInitialCards()">สุ่ม 3 ใบหลัก</button>
+        <button id="drawExtraBtn" onclick="drawExtraCard()" disabled>สุ่มเพิ่ม (+1 ใบ)</button>
+        <button onclick="resetCards()" style="background-color: #333; color: #fff;">รีเซ็ตใหม่</button>
+    </div>
+
+    <div class="cards-grid" id="cardsContainer">
+        <!-- ผลลัพธ์ไพ่จะแสดงที่นี่ -->
+    </div>
+
+    <script>
+        // ฐานข้อมูลไพ่ยิปซีครบ 78 ใบ พร้อมลิงก์ภาพตัวอย่างมาตรฐาน (Rider-Waite)
+        const tarotDeck = [
+            // --- Major Arcana (22 ใบ) ---
+            { name: "0. The Fool", th: "เดอะ ฟูล", meaning: "การเริ่มต้นใหม่ การเดินทาง ความเสี่ยง โอกาสใหม่ๆ", img: "https://upload.wikimedia.org/wikipedia/commons/9/90/Rider-Waite_Tarot_00_Fool.jpg" },
+            { name: "I. The Magician", th: "เดอะ เมจิเชียน", meaning: "ความสามารถ ศักยภาพ การริเริ่มทำสิ่งใหม่ ไอเดียพร้อม", img: "https://upload.wikimedia.org/wikipedia/commons/d/de/Rider-Waite_Tarot_01_Magician.jpg" },
+            { name: "II. The High Priestess", th: "ไฮพรีสเตส", meaning: "สัญชาตญาณ ลางสังหรณ์ ความลับ สิ่งที่ยังไม่เปิดเผย", img: "https://upload.wikimedia.org/wikipedia/commons/8/88/Rider-Waite_Tarot_02_High_Priestess.jpg" },
+            { name: "III. The Empress", th: "เดอะ เอ็มเพรส", meaning: "ความอุดมสมบูรณ์ การดูแลเอาใจใส่ ความเจริญงอกงาม", img: "https://upload.wikimedia.org/wikipedia/commons/d/d2/Rider-Waite_Tarot_03_Empress.jpg" },
+            { name: "IV. The Emperor", th: "เอ็มเพอเรอร์", meaning: "อำนาจ การควบคุม ความเป็นผู้นำ ความมั่นคง", img: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Rider-Waite_Tarot_04_Emperor.jpg" },
+            { name: "V. The Hierophant", th: "ไฮโรแฟนท์", meaning: "หลักการ ศีลธรรม ผู้ใหญ่ช่วยเหลือ การศึกษา", img: "https://upload.wikimedia.org/wikipedia/commons/8/8d/Rider-Waite_Tarot_05_Hierophant.jpg" },
+            { name: "VI. The Lovers", th: "เดอะ เลิฟเวอร์ส", meaning: "ความรัก การตัดสินใจ ความสัมพันธ์อันลึกซึ้ง ความลงตัว", img: "https://upload.wikimedia.org/wikipedia/commons/d/db/Rider-Waite_Tarot_06_Lovers.jpg" },
+            { name: "VII. The Chariot", th: "เดอะ แชริออท", meaning: "ชัยชนะ ความมุ่งมั่น การเดินทาง ฝ่าฟันอุปสรรค", img: "https://upload.wikimedia.org/wikipedia/commons/3/3b/Rider-Waite_Tarot_07_Chariot.jpg" },
+            { name: "VIII. Strength", th: "สเตรงท์", meaning: "ความอดทน ความกล้าหาญ สยบปัญหาด้วยความนิ่มนวล", img: "https://upload.wikimedia.org/wikipedia/commons/f/f5/Rider-Waite_Tarot_08_Strength.jpg" },
+            { name: "IX. The Hermit", th: "เดอะ เฮอร์มิต", meaning: "การทบทวนตัวเอง ความสันโดษ ค้นหาคำตอบภายในใจ", img: "https://upload.wikimedia.org/wikipedia/commons/4/4d/Rider-Waite_Tarot_09_Hermit.jpg" },
+            { name: "X. Wheel of Fortune", th: "วงล้อโชคชะตา", meaning: "การเปลี่ยนแปลง จังหวะชีวิตที่ดี โชคลาภ โอกาส", img: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Rider-Waite_Tarot_10_Wheel_of_Fortune.jpg" },
+            { name: "XI. Justice", th: "ความยุติธรรม", meaning: "ความถูกต้อง ความสมดุล การตัดสินใจ เอกสารสัญญา", img: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Rider-Waite_Tarot_11_Justice.jpg" },
+            { name: "XII. The Hanged Man", th: "แฮงด์แมน", meaning: "การเสียสละ การรอคอย มุมมองใหม่ การชะลอตัว", img: "https://upload.wikimedia.org/wikipedia/commons/2/2b/Rider-Waite_Tarot_12_Hanged_Man.jpg" },
+            { name: "XIII. Death", th: "เดธ (ความตาย)", meaning: "การสิ้นสุดเพื่อเริ่มต้นใหม่ การเปลี่ยนแปลงครั้งใหญ่", img: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Rider-Waite_Tarot_13_Death.jpg" },
+            { name: "XIV. Temperance", th: "เทมเพอแรนซ์", meaning: "ความพอดี การปรับตัวเข้าหากัน การเยียวยา", img: "https://upload.wikimedia.org/wikipedia/commons/d/d0/Rider-Waite_Tarot_14_Temperance.jpg" },
+            { name: "XV. The Devil", th: "เดอะ เดวิล", meaning: "กิเลส ความลุ่มหลง พันธนาการ ตัดไม่ขาด", img: "https://upload.wikimedia.org/wikipedia/commons/5/50/Rider-Waite_Tarot_15_Devil.jpg" },
+            { name: "XVI. The Tower", th: "เดอะ ทาวเวอร์", meaning: "การเปลี่ยนแปลงฉับพลัน เหตุการณ์ไม่คาดฝัน พังทลาย", img: "https://upload.wikimedia.org/wikipedia/commons/5/53/Rider-Waite_Tarot_16_Tower.jpg" },
+            { name: "XVII. The Star", th: "เดอะ สตาร์", meaning: "ความหวัง แรงบันดาลใจ การเยียวยา อนาคตสดใส", img: "https://upload.wikimedia.org/wikipedia/commons/d/db/Rider-Waite_Tarot_17_Star.jpg" },
+            { name: "XVIII. The Moon", th: "เดอะ มูน", meaning: "ความวิตกกังวล ภาพลวงตา ความไม่ชัดเจน อ่อนไหว", img: "https://upload.wikimedia.org/wikipedia/commons/7/7f/Rider-Waite_Tarot_18_Moon.jpg" },
+            { name: "XIX. The Sun", th: "เดอะ ซัน", meaning: "ความสุข ความสำเร็จ ความสดใส พลังงานบวก", img: "https://upload.wikimedia.org/wikipedia/commons/1/17/Rider-Waite_Tarot_19_Sun.jpg" },
+            { name: "XX. Judgement", th: "จัดจ์เมนต์", meaning: "การตื่นรู้ ได้โอกาสแก้ตัว ผลลัพธ์จากอดีต", img: "https://upload.wikimedia.org/wikipedia/commons/d/dd/Rider-Waite_Tarot_20_Judgement.jpg" },
+            { name: "XXI. The World", th: "เดอะ เวิลด์", meaning: "ความสำเร็จสมบูรณ์ การเดินทาง จบสิ้นภารกิจงดงาม", img: "https://upload.wikimedia.org/wikipedia/commons/f/ff/Rider-Waite_Tarot_21_World.jpg" },
+
+            // --- Minor Arcana: Wands / ไม้เท้า (14 ใบ) ---
+            { name: "Ace of Wands", th: "เอซไม้เท้า", meaning: "จุดเริ่มต้นโปรเจกต์ใหม่ พลังงานแรง ความคิดสร้างสรรค์", img: "https://upload.wikimedia.org/wikipedia/commons/1/11/Wands01.jpg" },
+            { name: "Two of Wands", th: "2 ไม้เท้า", meaning: "การวางแผนอนาคต การมองหาโอกาส ขยายขอบเขต", img: "https://upload.wikimedia.org/wikipedia/commons/0/0f/Wands02.jpg" },
+            { name: "Three of Wands", th: "3 ไม้เท้า", meaning: "รอคอยผลลัพธ์ ขยายกิจการ การเติบโตและการเดินทาง", img: "https://upload.wikimedia.org/wikipedia/commons/f/ff/Wands03.jpg" },
+            { name: "Four of Wands", th: "4 ไม้เท้า", meaning: "ความมั่นคง ความสุข ความสำเร็จเฉลิมฉลอง บ้านใหม่", img: "https://upload.wikimedia.org/wikipedia/commons/a/a4/Wands04.jpg" },
+            { name: "Five of Wands", th: "5 ไม้เท้า", meaning: "การแข่งขัน ความขัดแย้งเล็กน้อย แย่งชิงความโดดเด่น", img: "https://upload.wikimedia.org/wikipedia/commons/d/df/Wands05.jpg" },
+            { name: "Six of Wands", th: "6 ไม้เท้า", meaning: "ชัยชนะ ได้รับการยอมรับ ข่าวดี คนชื่นชม", img: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Wands06.jpg" },
+            { name: "Seven of Wands", th: "7 ไม้เท้า", meaning: "ปกป้องจุดยืน การแข่งขันดุเดือด แรงกดดันรอบด้าน", img: "https://upload.wikimedia.org/wikipedia/commons/5/52/Wands07.jpg" },
+            { name: "Eight of Wands", th: "8 ไม้เท้า", meaning: "ความรวดเร็ว ข่าวสารไว เดินทางฉับพลัน ทุกอย่างเดินหน้า", img: "https://upload.wikimedia.org/wikipedia/commons/c/c2/Wands08.jpg" },
+            { name: "Nine of Wands", th: "9 ไม้เท้า", meaning: "ความระแวดระวัง เหนื่อยล้าใกล้สำเร็จ ป้องกันตัว", img: "https://upload.wikimedia.org/wikipedia/commons/e/e7/Wands09.jpg" },
+            { name: "Ten of Wands", th: "10 ไม้เท้า", meaning: "ภาระหน้าที่หนักอึ้ง ความเครียด รับผิดชอบคนเดียว", img: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Wands10.jpg" },
+            { name: "Page of Wands", th: "เด็กถือไม้เท้า", meaning: "ข่าวดีเรื่องงาน ไอเดียสร้างสรรค์ เด็กหนุ่มไฟแรง", img: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Wands11.jpg" },
+            { name: "Knight of Wands", th: "อัศวินไม้เท้า", meaning: "เดินทางรวดเร็ว ใจร้อน กระตือรือร้น", img: "https://upload.wikimedia.org/wikipedia/commons/1/16/Wands12.jpg" },
+            { name: "Queen of Wands", th: "ราชินีไม้เท้า", meaning: "ผู้หญิงมีเสน่ห์ มั่นใจ ผู้นำ ทำงานเก่ง รักอิสระ", img: "https://upload.wikimedia.org/wikipedia/commons/0/0d/Wands13.jpg" },
+            { name: "King of Wands", th: "ราชาไม้เท้า", meaning: "ผู้ชายมีวิสัยทัศน์ นักธุรกิจ ผู้นำ เด็ดขาด", img: "https://upload.wikimedia.org/wikipedia/commons/c/ce/Wands14.jpg" },
+
+            // --- Minor Arcana: Cups / ถ้วย (14 ใบ) ---
+            { name: "Ace of Cups", th: "เอซถ้วย", meaning: "ความรักครั้งใหม่ หัวใจพองโต สุขล้นปรี่", img: "https://upload.wikimedia.org/wikipedia/commons/3/36/Cups01.jpg" },
+            { name: "Two of Cups", th: "2 ถ้วย", meaning: "ร่วมหุ้น ความรักความเข้าใจ ตกลงปลงใจลงตัว", img: "https://upload.wikimedia.org/wikipedia/commons/f/f8/Cups02.jpg" },
+            { name: "Three of Cups", th: "3 ถ้วย", meaning: "เฉลิมฉลอง ปาร์ตี้ สังสรรค์ มิตรภาพที่ดี", img: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Cups03.jpg" },
+            { name: "Four of Cups", th: "4 ถ้วย", meaning: "ความเบื่อหน่าย เมินเฉย ข้อเสนอที่ยังไม่ถูกใจ", img: "https://upload.wikimedia.org/wikipedia/commons/3/35/Cups04.jpg" },
+            { name: "Five of Cups", th: "5 ถ้วย", meaning: "ความเสียใจ ผิดหวัง จมกับอดีต แต่ยังมีสิ่งดีเหลือ", img: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Cups05.jpg" },
+            { name: "Six of Cups", th: "6 ถ้วย", meaning: "ความทรงจำวัยเด็ก คนเก่ากลับมา บริสุทธิ์ใจ", img: "https://upload.wikimedia.org/wikipedia/commons/1/17/Cups06.jpg" },
+            { name: "Seven of Cups", th: "7 ถ้วย", meaning: "ภาพลวงตา ตัวเลือกเยอะลังเล เพ้อฝัน", img: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Cups07.jpg" },
+            { name: "Eight of Cups", th: "8 ถ้วย", meaning: "เดินออกมาจากสิ่งไม่ตอบโจทย์ แสวงหาความหมายใหม่", img: "https://upload.wikimedia.org/wikipedia/commons/6/60/Cups08.jpg" },
+            { name: "Nine of Cups", th: "9 ถ้วย", meaning: "ความสุขสมหวังดั่งใจปรารถนา พึงพอใจในสิ่งที่มี", img: "https://upload.wikimedia.org/wikipedia/commons/2/24/Cups09.jpg" },
+            { name: "Ten of Cups", th: "10 ถ้วย", meaning: "สุขในครอบครัว ความรักสมบูรณ์แบบ อบอุ่นระยะยาว", img: "https://upload.wikimedia.org/wikipedia/commons/8/84/Cups10.jpg" },
+            { name: "Page of Cups", th: "เด็กถือถ้วย", meaning: "ข้อความรัก อ่อนโยน เซอร์ไพรส์ทางใจ ข่าวดี", img: "https://upload.wikimedia.org/wikipedia/commons/a/ad/Cups11.jpg" },
+            { name: "Knight of Cups", th: "อัศวินถ้วย", meaning: "ข้อเสนอความรัก หนุ่มเจ้าเสน่ห์ โรแมนติก", img: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Cups12.jpg" },
+            { name: "Queen of Cups", th: "ราชินีถ้วย", meaning: "ผู้หญิงใจดี อ่อนโยน เห็นอกเห็นใจ สัญชาตญาณแม่น", img: "https://upload.wikimedia.org/wikipedia/commons/6/62/Cups13.jpg" },
+            { name: "King of Cups", th: "ราชาถ้วย", meaning: "ผู้ชายใจเย็น คุมอารมณ์เก่ง เป็นที่ปรึกษา เมตตา", img: "https://upload.wikimedia.org/wikipedia/commons/0/04/Cups14.jpg" },
+
+            // --- Minor Arcana: Swords / ดาบ (14 ใบ) ---
+            { name: "Ace of Swords", th: "เอซดาบ", meaning: "ความคิดเฉียบคม ตัดสินใจเด็ดขาด ชัยชนะปัญญา", img: "https://upload.wikimedia.org/wikipedia/commons/1/1a/Swords01.jpg" },
+            { name: "Two of Swords", th: "2 ดาบ", meaning: "ปิดกั้นทางเลือก ลังเลใจ หลีกเลี่ยงเผชิญหน้า", img: "https://upload.wikimedia.org/wikipedia/commons/9/9e/Swords02.jpg" },
+            { name: "Three of Swords", th: "3 ดาบ", meaning: "เสียใจ อกหัก ผิดหวัง คำพูดทำร้ายจิตใจ เจ็บปวด", img: "https://upload.wikimedia.org/wikipedia/commons/0/02/Swords03.jpg" },
+            { name: "Four of Swords", th: "4 ดาบ", meaning: "การพักผ่อน หยุดพักชาร์จแบต สงบจิตใจ", img: "https://upload.wikimedia.org/wikipedia/commons/b/bf/Swords04.jpg" },
+            { name: "Five of Swords", th: "5 ดาบ", meaning: "พ่ายแพ้ ความขัดแย้ง ชัยชนะไม่น่าจดจำ ถูกเอาเปรียบ", img: "https://upload.wikimedia.org/wikipedia/commons/2/23/Swords05.jpg" },
+            { name: "Six of Swords", th: "6 ดาบ", meaning: "ย้ายถิ่นฐาน พ้นช่วงลำบากสู่ที่ที่ดีขึ้น เยียวยาใจ", img: "https://upload.wikimedia.org/wikipedia/commons/2/29/Swords06.jpg" },
+            { name: "Seven of Swords", th: "7 ดาบ", meaning: "แอบทำลับหลัง เล่ห์เหลี่ยม ขโมยไอเดีย ไม่ซื่อสัตย์", img: "https://upload.wikimedia.org/wikipedia/commons/3/34/Swords07.jpg" },
+            { name: "Eight of Swords", th: "8 ดาบ", meaning: "รู้สึกติดกับดัก อึดอัดทางความคิด หาทางออกไม่เจอ", img: "https://upload.wikimedia.org/wikipedia/commons/a/a7/Swords08.jpg" },
+            { name: "Nine of Swords", th: "9 ดาบ", meaning: "เครียดวิตกกังวล นอนไม่หลับ กลัวอนาคต คิดมาก", img: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Swords09.jpg" },
+            { name: "Ten of Swords", th: "10 ดาบ", meaning: "จุดจบเจ็บปวด โดนหักหลังใหญ่ ล้มเหลวแต่เริ่มฟื้น", img: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords10.jpg" },
+            { name: "Page of Swords", th: "เด็กถือดาบ", meaning: "สอดส่องหาข้อมูล อยากรู้อยากเห็น ระแวดระวัง", img: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Swords11.jpg" },
+            { name: "Knight of Swords", th: "อัศวินดาบ", meaning: "ใจร้อน พุ่งชน บุกด้วยเหตุผล โต้เถียงดุเดือด", img: "https://upload.wikimedia.org/wikipedia/commons/b/b0/Swords12.jpg" },
+            { name: "Queen of Swords", th: "ราชินีดาบ", meaning: "ผู้หญิงเด็ดเดี่ยว ฉลาด เฉียบคม มองคนทะลุปรุโปร่ง", img: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords13.jpg" },
+            { name: "King of Swords", th: "ราชาดาบ", meaning: "ผู้พิพากษา นักกฎหมาย ใช้เหตุผลยุติธรรมเคร่งครัด", img: "https://upload.wikimedia.org/wikipedia/commons/3/33/Swords14.jpg" },
+
+            // --- Minor Arcana: Pentacles / เหรียญ (14 ใบ) ---
+            { name: "Ace of Pentacles", th: "เอซเหรียญ", meaning: "โอกาสทองเรื่องเงิน โชคลาภ ทรัพย์สินมั่นคง", img: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Pentacles01.jpg" },
+            { name: "Two of Pentacles", th: "2 เหรียญ", meaning: "บริหารจัดการเงิน หมุนเงิน ปรับตัวกับภาระหลายอย่าง", img: "https://upload.wikimedia.org/wikipedia/commons/4/42/Pentacles02.jpg" },
+            { name: "Three of Pentacles", th: "3 เหรียญ", meaning: "รายได้จากงานร่วมกัน ฝีมือได้รับการยอมรับ ค่าตอบแทนดี", img: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Pentacles03.jpg" },
+            { name: "Four of Pentacles", th: "4 เหรียญ", meaning: "ความตระหนี่ หวงแหนทรัพย์สิน มั่นคงปลอดภัยสูง", img: "https://upload.wikimedia.org/wikipedia/commons/3/32/Pentacles04.jpg" },
+            { name: "Five of Pentacles", th: "5 เหรียญ", meaning: "ปัญหาการเงิน ยากลำบาก ขาดแคลนโดดเดี่ยว", img: "https://upload.wikimedia.org/wikipedia/commons/d/fb/Pentacles05.jpg" },
+            { name: "Six of Pentacles", th: "6 เหรียญ", meaning: "การแบ่งปัน ช่วยเหลือหรือได้รับความช่วยเหลือ ให้และรับ", img: "https://upload.wikimedia.org/wikipedia/commons/0/03/Pentacles06.jpg" },
+            { name: "Seven of Pentacles", th: "7 เหรียญ", meaning: "ประเมินผลงาน รอคอยผลผลิตลงทุนระยะยาว", img: "https://upload.wikimedia.org/wikipedia/commons/b/b5/Pentacles07.jpg" },
+            { name: "Eight of Pentacles", th: "8 เหรียญ", meaning: "ตั้งใจทำงาน ขยันขันแข็ง ฝึกฝนทักษะสร้างรายได้", img: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Pentacles08.jpg" },
+            { name: "Nine of Pentacles", th: "9 เหรียญ", meaning: "ความมั่งคั่ง สบายใจ ชีวิตอิสระ กำไรลงทุนงอกงาม", img: "https://upload.wikimedia.org/wikipedia/commons/8/88/Pentacles09.jpg" },
+            { name: "Ten of Pentacles", th: "10 เหรียญ", meaning: "มั่งคั่งระดับครอบครัว มรดก ทรัพย์สินระยะยาว", img: "https://upload.wikimedia.org/wikipedia/commons/1/1d/Pentacles10.jpg" },
+            { name: "Page of Pentacles", th: "เด็กถือเหรียญ", meaning: "โอกาสเงินทอง เริ่มเรียนรู้ทักษะอาชีพ ข่าวดีรายได้", img: "https://upload.wikimedia.org/wikipedia/commons/2/26/Pentacles11.jpg" },
+            { name: "Knight of Pentacles", th: "อัศวินเหรียญ", meaning: "ขยันมั่นคง ทำงานรอบคอบ ช้าแต่มั่นใจ ปลอดภัย", img: "https://upload.wikimedia.org/wikipedia/commons/1/16/Pentacles12.jpg" },
+            { name: "Queen of Pentacles", th: "ราชินีเหรียญ", meaning: "ผู้หญิงสายซัพพอร์ต บริหารเงินเก่ง รักครอบครัว", img: "https://upload.wikimedia.org/wikipedia/commons/0/09/Pentacles13.jpg" },
+            { name: "King of Pentacles", th: "ราชาเหรียญ", meaning: "เศรษฐี นักลงทุน นักธุรกิจผู้มั่งคั่ง สำเร็จการเงิน", img: "https://upload.wikimedia.org/wikipedia/commons/1/1c/Pentacles14.jpg" }
+        ];
+
+        const positionLabels = [
+            "ตำแหน่งที่ 1: สถานการณ์ปัจจุบัน / อดีตที่ส่งผล",
+            "ตำแหน่งที่ 2: ปัญหา / อุปสรรคที่ต้องเจอ",
+            "ตำแหน่งที่ 3: แนวโน้ม / คำแนะนำ (สรุป)",
+            "ตำแหน่งที่ 4: เจาะลึกเพิ่มเติม (มุมมองเสริม)",
+            "ตำแหน่งที่ 5: บทสรุปผลลัพธ์ / โชคลาภ"
+        ];
+
+        let currentCards = [];
+
+        function getRandomCard(excludeList) {
+            let available = tarotDeck.filter(card => !excludeList.includes(card.name));
+            if (available.length === 0) return null;
+            let randomIndex = Math.floor(Math.random() * available.length);
+            return available[randomIndex];
+        }
+
+        function drawInitialCards() {
+            currentCards = [];
+            for (let i = 0; i < 3; i++) {
+                let card = getRandomCard(currentCards.map(c => c.name));
+                if (card) currentCards.push(card);
+          
